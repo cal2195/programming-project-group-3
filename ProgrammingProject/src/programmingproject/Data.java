@@ -9,11 +9,11 @@ import processing.data.Table;
 public class Data
 {
     Table taxiData;
-    ProgrammingProject programmingProject;
+    RenderArea renderArea;
     
-    public Data(String filename, ProgrammingProject programmingProject)
+    public Data(String filename, RenderArea renderArea)
     {
-        this.programmingProject = programmingProject;
-        taxiData = programmingProject.loadTable(filename); //Load in the .cvs file into a table!
+        this.renderArea = renderArea;
+        taxiData = renderArea.loadTable(filename, "header"); //Load in the .cvs file into a table!
     }
 }
