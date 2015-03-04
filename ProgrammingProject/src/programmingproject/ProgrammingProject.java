@@ -76,6 +76,7 @@ public class ProgrammingProject extends PApplet
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.add(programmingProject);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         programmingProject.init();
     }
