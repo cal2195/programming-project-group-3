@@ -17,19 +17,24 @@ public class ProgrammingProject extends PApplet
     Tower[] otherTowers = new Tower[30];
     float percent = 0;
     Random random = new Random();
+    
+    Data data;
 
     @Override
     public void setup()
     {
         size(1000, 600, P3D);
-        bg = loadImage("newyork.png");
+        bg = loadImage("res/newyork.png");
+        
+        data = new Data("res/trip_data_small.csv", this);
+        
         for (int i = 0; i < towers.length; i++)
         {
-            towers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(200));
+            towers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(100));
         }
         for (int i = 0; i < otherTowers.length; i++)
         {
-            otherTowers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(200));
+            otherTowers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(100));
         }
     }
 
