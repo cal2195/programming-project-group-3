@@ -11,7 +11,15 @@ public class ProgrammingProject extends PApplet
 {
     RenderArea renderArea;
     
-    public ProgrammingProject()
+    //n.b. these values are currently all bullshit, to be used to find the relative x and y of a taxi
+    double ORIGIN_LONGITUDE = 73.8;
+    double ORIGIN_LATITUDE = 40.6;
+    double SCALE_FACTOR = 1000;
+    
+    Data data;
+
+    @Override
+    public void setup()
     {
         createUserInterface();
     }
