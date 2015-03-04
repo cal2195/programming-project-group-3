@@ -34,18 +34,18 @@ public class RenderArea extends PApplet
     @Override
     public void setup()
     {
-        size(1000, 600, P3D);
+        size(width, height, P3D);
         bg = loadImage("res/newyork.png");
         
         data = new Data("res/trip_data_small.csv", this);
         
         for (int i = 0; i < towers.length; i++)
         {
-            towers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(100));
+            towers[i] = new Tower(random.nextInt(width - 20) - (width / 2) - 20, random.nextInt(height - 20) - (height / 2) - 20, random.nextInt(100));
         }
         for (int i = 0; i < otherTowers.length; i++)
         {
-            otherTowers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(100));
+            otherTowers[i] = new Tower(random.nextInt(width - 20) - (width / 2) - 20, random.nextInt(height - 20) - (height / 2) - 20, random.nextInt(100));
         }
     }
 
@@ -58,10 +58,10 @@ public class RenderArea extends PApplet
             percent += 0.005;
         }
 
-        translate(bg.width / 2, bg.height / 2, -00);
+        translate(width / 2, height / 2, -00);
         rotateX(cameraY);
         rotateZ(cameraX);
-        image(bg, -bg.width / 2, -bg.height / 2, 1000, 600);
+        image(bg, -width / 2, -height / 2, width, height);
         fill(255, 0, 0);
 
         for (int i = 0; i < towers.length; i++)

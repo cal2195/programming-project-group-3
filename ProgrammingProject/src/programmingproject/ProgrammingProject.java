@@ -24,7 +24,6 @@ public class ProgrammingProject extends PApplet
         renderArea = new RenderArea();
         
         mainWindow.setSize(1000, 600);
-        mainWindow.setResizable(false);
         mainWindow.setLocationRelativeTo(null);
         mainWindow.add(renderArea);
         
