@@ -1,6 +1,7 @@
 package programmingproject;
 
 import processing.data.Table;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,7 +20,6 @@ public class Data
         // 0 = String, 1 = int, 4 = double
         int[] columnTypes = {0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4};
         taxiData.setColumnTypes(columnTypes);
-        //(-1 to account for titles) <- Not needed anymore, since adding "header" above!
         numberOfRecords = taxiData.getRowCount();
     }
 }
