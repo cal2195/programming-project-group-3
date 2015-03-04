@@ -25,11 +25,11 @@ public class ProgrammingProject extends PApplet
         bg = loadImage("newyork.png");
         for (int i = 0; i < towers.length; i++)
         {
-            towers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(200) - 100);
+            towers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(200));
         }
         for (int i = 0; i < otherTowers.length; i++)
         {
-            otherTowers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(200) - 100);
+            otherTowers[i] = new Tower(random.nextInt(840) - 480, random.nextInt(540) - 280, random.nextInt(200));
         }
     }
 
