@@ -1,5 +1,6 @@
 package programmingproject;
 
+import java.awt.event.MouseEvent;
 import java.util.Random;
 import javax.swing.JFrame;
 import processing.core.PApplet;
@@ -22,6 +23,11 @@ public class RenderArea extends PApplet
     double ORIGIN_LONGITUDE = 73.8;
     double ORIGIN_LATITUDE = 40.6;
     double SCALE_FACTOR = 1000;
+    
+    //Camera Rotation
+    float cameraX, cameraY;
+    MouseEvent lastMousePosition;
+    float MOUSE_SENSITIVITY = 300f;
     
     Data data;
 
@@ -53,8 +59,8 @@ public class RenderArea extends PApplet
         }
 
         translate(bg.width / 2, bg.height / 2, -00);
-        rotateX(mouseY / 300f);
-        rotateZ(mouseX / 300f);
+        rotateX(cameraY);
+        rotateZ(cameraX);
         image(bg, -bg.width / 2, -bg.height / 2, 1000, 600);
         fill(255, 0, 0);
 
@@ -77,4 +83,23 @@ public class RenderArea extends PApplet
             popMatrix();
         }
     }
+
+    @Override
+    public void mouseDragged(MouseEvent e)
+    {
+        if (lastMousePosition == null)
+        {
+            lastMousePosition = e;
+        }
+        cameraX -= (e.getXOnScreen() - lastMousePosition.getXOnScreen()) / MOUSE_SENSITIVITY;
+        cameraY -= (e.getYOnScreen() - lastMousePosition.getYOnScreen()) / MOUSE_SENSITIVITY;
+        lastMousePosition = e;
+    }
+    
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+        lastMousePosition = null;
+    }
+    
 }
