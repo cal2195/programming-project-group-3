@@ -10,6 +10,7 @@ public class Data
 {
     Table taxiData;
     ProgrammingProject programmingProject;
+    int numberOfRecords;
     
     public Data(String filename, ProgrammingProject programmingProject)
     {
@@ -18,5 +19,7 @@ public class Data
         // 0 = String, 1 = int, 4 = double
         int[] columnTypes = {0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4};
         taxiData.setColumnTypes(columnTypes);
+        //-1 to account for titles
+        numberOfRecords = taxiData.getRowCount() - 1;
     }
 }
