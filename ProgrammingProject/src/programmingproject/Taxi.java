@@ -8,13 +8,13 @@ import java.util.ArrayList;
  */
 public class Taxi
 {
-    private String medallion, hack_license, vendor_id;
+    private String medallion, hack, vendorID;
     private ArrayList<Trip> trips;
 
     public Taxi(String medallion, String hackLicense, String vendorID)
     {
         this.medallion = medallion;
-        this.hack_license = hackLicense;
-        this.vendor_id = vendorID;
+        this.hack = hackLicense;
+        this.vendorID = vendorID;
     }
 }

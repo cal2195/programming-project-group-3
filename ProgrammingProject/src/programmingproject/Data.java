@@ -22,7 +22,7 @@ public class Data
         numberOfRecords = taxiData.getRowCount();
     }
     
-    public static double latToZPos(double latitude, int height){
+    public static double latToYPos(double latitude, int height){
         double pixelLat = (latitude - 40.874139)*-1;
         //calculating using ratio 0.210139:height
         double pixelYPos = ((pixelLat/0.210139)*height)-height/2;

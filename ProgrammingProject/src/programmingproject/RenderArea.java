@@ -104,7 +104,7 @@ public class RenderArea extends PApplet
     }
     
     public void testCoords(){
-        float ZPos = (float)Data.latToZPos(40.774139, height);
+        float ZPos = (float)Data.latToYPos(40.774139, height);
         float XPos = (float)Data.longToXPos(-74.012073, width);
         System.out.println(ZPos + ".." + XPos); 
         fill(0,0,255);
