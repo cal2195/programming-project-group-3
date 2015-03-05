@@ -1,6 +1,7 @@
 package programmingproject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import processing.data.Table;
 import processing.data.TableRow;
 
@@ -10,7 +11,7 @@ import processing.data.TableRow;
  */
 public class Data
 {
-    ArrayList<Taxi> taxis;
+    HashMap<String,Taxi> taxis;
     Table taxiData;
     RenderArea renderArea;
     
@@ -46,6 +47,7 @@ public class Data
         };
         taxiData.setColumnTypes(columnTypes);
         numberOfRecords = taxiData.getRowCount();
+        taxis = new HashMap();
     }
 
     public static float latToYPos(float latitude, int height)
@@ -68,7 +70,26 @@ public class Data
     Trip getTrip(int row){
        TableRow tempRow = taxiData.getRow(row);
        //use this to grab stuff from row...
+       String medallion = tempRow.getString(MEDALLION);
+       if(!taxis.containsKey(medallion))
+       {
+           taxis.put(medallion, new Taxi(medallion, tempRow.getString(HACK), 
+                     tempRow.getString(VENDORID)));
+       }
+       Taxi temp = taxis.get(medallion);
+       Trip newTrip = new Trip(tempRow.getString(PICKUPTIME), 
+                                tempRow.getString(DROPOFFTIME),
+                                tempRow.getString(STOREANDFWDFLAG),
+                                tempRow.getInt(RATECODE), 
+                                tempRow.getInt(PASSENGER), 
+                                tempRow.getInt(TIME),
+                                tempRow.getDouble(TRIPDISTANCE), 
+                                tempRow.getDouble(PICKUPLAT),
+                                tempRow.getDouble(PICKUPLONG),
+                                tempRow.getDouble(DROPOFFLAT), 
+                                tempRow.getDouble(DROPOFFLONG));
+       temp.addTrip(newTrip);
        double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
-       return null; 
+       return newTrip; 
     }
 }
