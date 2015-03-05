@@ -71,4 +71,29 @@ public class Data
        double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
        return null; 
     }
+    
+    public void printTaxiInfo()
+    {
+        for (TableRow row : taxiData.rows()) 
+        {
+          String rowString = ""; 
+          rowString += row.getString(MEDALLION) + " :";
+          rowString += row.getString(HACK) + " :";
+          rowString += row.getString(VENDORID) + " :";
+          rowString += row.getString(RATECODE) + " :";
+          rowString += row.getString(STOREANDFWDFLAG) + " :";
+          rowString += row.getString(PICKUPTIME) + " :";
+          rowString += row.getString(DROPOFFTIME) + " :";
+          rowString += row.getString(PASSENGER) + " :";
+          rowString += row.getString(TIME) + " :";
+          rowString += row.getString(TRIPDISTANCE) + " :";
+          rowString += row.getString(PICKUPLONG) + " :";
+          rowString += row.getString(PICKUPLAT) + " :";
+          rowString += row.getString(DROPOFFLONG) + " :";
+          rowString += row.getString(DROPOFFLAT);
+
+          System.out.println(rowString);
+        }
+    }
+    
 }
