@@ -82,6 +82,7 @@ public class RenderArea extends PApplet
             box(20, 20, otherTowers[i].z * percent);
             popMatrix();
         }
+        testCoords();
     }
 
     @Override
@@ -100,6 +101,17 @@ public class RenderArea extends PApplet
     public void mouseReleased(MouseEvent e)
     {
         lastMousePosition = null;
+    }
+    
+    public void testCoords(){
+        float ZPos = (float)Data.latToZPos(40.774139, height);
+        float XPos = (float)Data.longToXPos(-74.012073, width);
+        System.out.println(ZPos + ".." + XPos); 
+        fill(0,0,255);
+        pushMatrix();
+        translate(XPos,ZPos,50);
+        box(5,5,100);
+        popMatrix();        
     }
     
 }

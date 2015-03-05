@@ -21,4 +21,19 @@ public class Data
         taxiData.setColumnTypes(columnTypes);
         numberOfRecords = taxiData.getRowCount();
     }
+    
+    public static double latToZPos(double latitude, int height){
+        double pixelLat = (latitude - 40.874139)*-1;
+        //calculating using ratio 0.210139:height
+        double pixelYPos = ((pixelLat/0.210139)*height)-height/2;
+        return pixelYPos;
+        
+    }
+    public static double longToXPos(double longitude, int width){
+        double pixelLong = (longitude + 74.212073);
+        //calculating using ratio 0.495377:width 
+        double pixelXPos = ((pixelLong/0.495377)*width)-width/2;
+        return pixelXPos;
+    }
+    
 }
