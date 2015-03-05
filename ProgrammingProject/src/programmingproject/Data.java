@@ -11,7 +11,7 @@ public class Data
 
     Table taxiData;
     RenderArea renderArea;
-    
+
     //these are used so we can use our sensible names to refer to the original column names
     private final String MEDALLION = "medallion";
     private final String HACK = "hack_license";
@@ -62,10 +62,11 @@ public class Data
         float pixelXPos = ((pixelLong / 0.495377f) * width) - width / 2;
         return pixelXPos;
     }
-    
-    Trip getTrip(int row){
-       // TableRow tempRow = taxiData.getRow(row);
-       
-       return null; 
+
+    public Trip getTrip(int row)
+    {
+        // TableRow tempRow = taxiData.getRow(row);
+
+        return null;
     }
 }
