@@ -71,4 +71,14 @@ public class Data
        double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
        return null; 
     }
+    
+       String getRowString(int row){
+       TableRow tempRow = taxiData.getRow(row);
+       //use this to grab stuff from row...
+       String rowString = "";
+       rowString += tempRow.getString(MEDALLION);
+       rowString += tempRow.getString(HACK);
+       double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
+       return null; 
+    }
 }
