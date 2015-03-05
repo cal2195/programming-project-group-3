@@ -48,6 +48,10 @@ public class Data
         taxiData.setColumnTypes(columnTypes);
         numberOfRecords = taxiData.getRowCount();
         taxis = new HashMap();
+        for(int i = 0; i < numberOfRecords; i++)
+        {
+            getTrip(i);
+        }
     }
 
     public static float latToYPos(float latitude, int height)
@@ -91,5 +95,24 @@ public class Data
        temp.addTrip(newTrip);
        double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
        return newTrip; 
+    }
+    public void printTaxiInfo()
+    {
+        for (String key : taxis.keySet()) 
+        {
+          Taxi temp= taxis.get(key);
+          System.out.print(temp.toString());
+        }
+    }
+    
+    public String toString()
+    {
+        String result = "";
+        for (String key : taxis.keySet()) 
+        {
+          Taxi temp= taxis.get(key);
+          result += temp.toString();
+        }
+        return result;
     }
 }

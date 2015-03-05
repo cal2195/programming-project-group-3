@@ -30,4 +30,21 @@ public class Trip
         this.dropoffLong = dropoffLong;
 
     }
+    
+    public String toString(){
+        String result = "";
+        result += pickupTime + " ";
+        result += dropoffTime + " ";
+        result += storeAndFwdFlag ? "Y " : "N ";
+        result += rateCode + " ";
+        result += passengers + " ";
+        result += time + " ";
+        result += distance + " ";
+        result += pickupLat + " ";
+        result += pickupLong + " ";
+        result += dropoffLat + " ";
+        result += dropoffLong + " ";
+        
+        return result;
+    }
 }
