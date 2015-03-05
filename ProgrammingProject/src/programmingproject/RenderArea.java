@@ -19,10 +19,7 @@ public class RenderArea extends PApplet
     float percent = 0;
     Random random = new Random();
     
-    //n.b. these values are currently all bullshit, to be used to find the relative x and y of a taxi
-    double ORIGIN_LONGITUDE = 73.8;
-    double ORIGIN_LATITUDE = 40.6;
-    double SCALE_FACTOR = 1000;
+    
     
     //Camera Rotation
     float cameraX, cameraY;
@@ -104,12 +101,14 @@ public class RenderArea extends PApplet
     }
     
     public void testCoords(){
-        float ZPos = (float)Data.latToYPos(40.774139, height);
-        float XPos = (float)Data.longToXPos(-74.012073, width);
-        System.out.println(ZPos + ".." + XPos); 
+        double lat = 40.664000;
+        double lon = -73.716696; 
+        double ZPos = Data.latToYPos(lat , height);
+        double XPos = Data.longToXPos(lon , width);
+        System.out.println(lat + ", " + lon); 
         fill(0,0,255);
         pushMatrix();
-        translate(XPos,ZPos,50);
+        translate((float)XPos,(float)ZPos,50);
         box(5,5,100);
         popMatrix();        
     }
