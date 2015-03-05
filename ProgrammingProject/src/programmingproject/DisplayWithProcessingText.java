@@ -26,13 +26,14 @@ public class DisplayWithProcessingText
     {
         //color background2 = color();
         this.renderArea = renderArea;
+        data = new Data("res/trip_data_small.csv",renderArea);
     }
 
     public void draw()
     {
-          renderArea.textSize(15);
-          renderArea.text("LOOOOOOOSE", 150, 20);
-
+          renderArea.textSize(15); 
+          renderArea.text(data.toString(), 150, 20);
+          
     }
 
     public void mouseDragged(MouseEvent e)
