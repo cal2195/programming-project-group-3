@@ -10,10 +10,10 @@ public class Trip
     String pickupTime, dropoffTime;
     boolean storeAndFwdFlag;
     int rateCode, passengers, time;
-    double pickupLat, pickupLong, dropoffLat, dropoffLong;
+    double distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
 
     public Trip(String pickupTime, String dropoffTime,  String storeAndFwdFlag, int rateCode, int passengers, 
-            int time, double pickupLat, double pickupLong, double dropoffLat, double dropoffLong)
+            int time, double distance, double pickupLat, double pickupLong, double dropoffLat, double dropoffLong)
     {
 
         this.pickupTime = pickupTime;
@@ -22,6 +22,7 @@ public class Trip
         this.rateCode = rateCode;
         this.passengers = passengers;
         this.time = time;
+        this.distance = distance;
         this.pickupLat = pickupLat;
         this.pickupLong = pickupLong;
         this.dropoffLat = dropoffLat;
