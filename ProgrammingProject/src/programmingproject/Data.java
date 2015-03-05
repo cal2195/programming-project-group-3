@@ -1,6 +1,8 @@
 package programmingproject;
 
+import java.util.ArrayList;
 import processing.data.Table;
+import processing.data.TableRow;
 
 /**
  *
@@ -8,7 +10,7 @@ import processing.data.Table;
  */
 public class Data
 {
-
+    ArrayList<Taxi> taxis;
     Table taxiData;
     RenderArea renderArea;
     
@@ -64,8 +66,9 @@ public class Data
     }
     
     Trip getTrip(int row){
-       // TableRow tempRow = taxiData.getRow(row);
-       
+       TableRow tempRow = taxiData.getRow(row);
+       //use this to grab stuff from row...
+       double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
        return null; 
     }
 }
