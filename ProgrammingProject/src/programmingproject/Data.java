@@ -11,6 +11,23 @@ public class Data
 
     Table taxiData;
     RenderArea renderArea;
+    
+    //these are used so we can use our sensible names to refer to the original column names
+    private final String MEDALLION = "medallion";
+    private final String HACK = "hack_license";
+    private final String VENDORID = "vendor_id";
+    private final String RATECODE = "rate_code";
+    private final String STOREANDFWDFLAG = "store_and_fwd_flag";
+    private final String PICKUPTIME = "pickup_datetime";
+    private final String DROPOFFTIME = "dropoff_datetime";
+    private final String PASSENGER = "passenger_count";
+    private final String TIME = "trip_time_in_secs";
+    private final String TRIPDISTANCE = "trip_distance";
+    private final String PICKUPLONG = "pickup_longitude";
+    private final String PICKUPLAT = "pickup_latitude";
+    private final String DROPOFFLONG = "dropoff_longitude";
+    private final String DROPOFFLAT = "dropoff_latitude";
+
     int numberOfRecords;
     //n.b. these values are currently all bullshit, to be used to find the relative x and y of a taxi
     static float TOP_LEFT_LONGITUDE = -74.212073f;
@@ -45,5 +62,10 @@ public class Data
         float pixelXPos = ((pixelLong / 0.495377f) * width) - width / 2;
         return pixelXPos;
     }
-
+    
+    Trip getTrip(int row){
+       // TableRow tempRow = taxiData.getRow(row);
+       
+       return null; 
+    }
 }
