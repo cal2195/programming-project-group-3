@@ -18,14 +18,12 @@ public class RenderArea extends PApplet
     Tower[] otherTowers = new Tower[30];
     float percent = 0;
     Random random = new Random();
-    
-    
-    
+
     //Camera Rotation
     float cameraX, cameraY;
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
-    
+
     Data data;
 
     @Override
@@ -33,9 +31,9 @@ public class RenderArea extends PApplet
     {
         size(width, height, P3D);
         bg = loadImage("res/newyork.png");
-        
+
         data = new Data("res/trip_data_small.csv", this);
-        
+
         for (int i = 0; i < towers.length; i++)
         {
             towers[i] = new Tower(random.nextInt(width - 20) - (width / 2) - 20, random.nextInt(height - 20) - (height / 2) - 20, random.nextInt(100));
@@ -93,24 +91,25 @@ public class RenderArea extends PApplet
         cameraY -= (e.getYOnScreen() - lastMousePosition.getYOnScreen()) / MOUSE_SENSITIVITY;
         lastMousePosition = e;
     }
-    
+
     @Override
     public void mouseReleased(MouseEvent e)
     {
         lastMousePosition = null;
     }
-    
-    public void testCoords(){
-        double lat = 40.664000;
-        double lon = -73.716696; 
-        double ZPos = Data.latToYPos(lat , height);
-        double XPos = Data.longToXPos(lon , width);
-        System.out.println(lat + ", " + lon); 
-        fill(0,0,255);
+
+    public void testCoords()
+    {
+        float lat = 40.664000f;
+        float lon = -73.716696f;
+        float ZPos = Data.latToYPos(lat, height);
+        float XPos = Data.longToXPos(lon, width);
+        System.out.println(lat + ", " + lon);
+        fill(0, 0, 255);
         pushMatrix();
-        translate((float)XPos,(float)ZPos,50);
-        box(5,5,100);
-        popMatrix();        
+        translate(XPos, ZPos, 50);
+        box(5, 5, 100);
+        popMatrix();
     }
-    
+
 }

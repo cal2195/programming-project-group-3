@@ -1,8 +1,6 @@
 package programmingproject;
 
-import java.util.ArrayList;
 import processing.data.Table;
-import processing.data.TableRow;
 
 /**
  *
@@ -10,7 +8,7 @@ import processing.data.TableRow;
  */
 public class Data
 {
-    ArrayList<Taxi> taxis;
+
     Table taxiData;
     RenderArea renderArea;
     
@@ -31,39 +29,43 @@ public class Data
     private final String DROPOFFLAT = "dropoff_latitude";
 
     int numberOfRecords;
-    
-    //used to find the relative x and y of an object
-    static double TOP_LEFT_LONGITUDE = -74.212073;
-    static double TOP_LEFT_LATITUDE = 40.874139;
-    
+    //n.b. these values are currently all bullshit, to be used to find the relative x and y of a taxi
+    static float TOP_LEFT_LONGITUDE = -74.212073f;
+    static float TOP_LEFT_LATITUDE = 40.874139f;
+
     public Data(String filename, RenderArea renderArea)
     {
         this.renderArea = renderArea;
         taxiData = renderArea.loadTable(filename, "header"); //Load in the .cvs file into a table!
         // 0 = String, 1 = int, 4 = double
-        int[] columnTypes = {0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4};
+        int[] columnTypes =
+        {
+            0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4
+        };
         taxiData.setColumnTypes(columnTypes);
         numberOfRecords = taxiData.getRowCount();
     }
-    
-    public static double latToYPos(double latitude, int height){
-        double pixelLat = (latitude - TOP_LEFT_LATITUDE)*-1;
+
+    public static float latToYPos(float latitude, int height)
+    {
+        float pixelLat = (latitude - TOP_LEFT_LATITUDE) * -1;
         //calculating using ratio 0.210139:height
-        double pixelYPos = ((pixelLat/0.210139)*height)-height/2;
+        float pixelYPos = ((pixelLat / 0.210139f) * height) - height / 2;
         return pixelYPos;
-        
+
     }
-    public static double longToXPos(double longitude, int width){
-        double pixelLong = (longitude - TOP_LEFT_LONGITUDE);
+
+    public static float longToXPos(float longitude, int width)
+    {
+        float pixelLong = (longitude - TOP_LEFT_LONGITUDE);
         //calculating using ratio 0.495377:width 
-        double pixelXPos = ((pixelLong/0.495377)*width)-width/2;
+        float pixelXPos = ((pixelLong / 0.495377f) * width) - width / 2;
         return pixelXPos;
     }
     
     Trip getTrip(int row){
-       TableRow tempRow = taxiData.getRow(row);
-       //use this to grab stuff from row...
-       double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
+       // TableRow tempRow = taxiData.getRow(row);
+       
        return null; 
     }
 }
