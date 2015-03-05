@@ -6,9 +6,9 @@ package programmingproject;
  */
 class Tower
 {
-  int x, y, z;
+  float x, y, z;
   
-  Tower(int x, int y, int z)
+  Tower(float x, float y, float z)
   {
     this.x = x;
     this.y = y;
