@@ -16,6 +16,7 @@ public class Taxi
         this.medallion = medallion;
         this.hack = hackLicense;
         this.vendorID = vendorID;
+        trips = new ArrayList<Trip>();
     }
     
     public String getMedallion()
@@ -26,5 +27,19 @@ public class Taxi
     public boolean addTrip(Trip newTrip)
     {
        return trips.add(newTrip);
+    }
+    
+    public String toString()
+    {
+        String result = "";
+        for(Trip t : trips)
+        {
+            result += medallion + " ";
+            result += hack + " ";
+            result += vendorID + " ";
+            result += t.toString();
+            result += "\n";
+        }
+        return result;
     }
 }
