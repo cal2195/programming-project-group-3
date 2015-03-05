@@ -17,4 +17,14 @@ public class Taxi
         this.hack = hackLicense;
         this.vendorID = vendorID;
     }
+    
+    public String getMedallion()
+    {
+        return medallion;
+    }
+    
+    public boolean addTrip(Trip newTrip)
+    {
+       return trips.add(newTrip);
+    }
 }
