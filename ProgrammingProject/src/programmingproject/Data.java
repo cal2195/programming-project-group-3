@@ -10,25 +10,26 @@ import processing.data.TableRow;
  */
 public class Data
 {
+
     ArrayList<Taxi> taxis;
     Table taxiData;
     RenderArea renderArea;
-    
+
     //these are used so we can use our sensible names to refer to the original column names
-    private final String MEDALLION = "medallion";
-    private final String HACK = "hack_license";
-    private final String VENDORID = "vendor_id";
-    private final String RATECODE = "rate_code";
-    private final String STOREANDFWDFLAG = "store_and_fwd_flag";
-    private final String PICKUPTIME = "pickup_datetime";
-    private final String DROPOFFTIME = "dropoff_datetime";
-    private final String PASSENGER = "passenger_count";
-    private final String TIME = "trip_time_in_secs";
-    private final String TRIPDISTANCE = "trip_distance";
-    private final String PICKUPLONG = "pickup_longitude";
-    private final String PICKUPLAT = "pickup_latitude";
-    private final String DROPOFFLONG = "dropoff_longitude";
-    private final String DROPOFFLAT = "dropoff_latitude";
+    static final String MEDALLION = "medallion";
+    static final String HACK = "hack_license";
+    static final String VENDORID = "vendor_id";
+    static final String RATECODE = "rate_code";
+    static final String STOREANDFWDFLAG = "store_and_fwd_flag";
+    static final String PICKUPTIME = "pickup_datetime";
+    static final String DROPOFFTIME = "dropoff_datetime";
+    static final String PASSENGER = "passenger_count";
+    static final String TIME = "trip_time_in_secs";
+    static final String TRIPDISTANCE = "trip_distance";
+    static final String PICKUPLONG = "pickup_longitude";
+    static final String PICKUPLAT = "pickup_latitude";
+    static final String DROPOFFLONG = "dropoff_longitude";
+    static final String DROPOFFLAT = "dropoff_latitude";
 
     int numberOfRecords;
     //n.b. these values are currently all bullshit, to be used to find the relative x and y of a taxi
@@ -52,7 +53,7 @@ public class Data
     {
         float pixelLat = (latitude - TOP_LEFT_LATITUDE) * -1;
         //calculating using ratio 0.210139:height
-        float pixelYPos = ((pixelLat / 0.210139f) * height) - height / 2;
+        float pixelYPos = ((pixelLat / 0.210139f) * height);
         return pixelYPos;
 
     }
@@ -61,14 +62,15 @@ public class Data
     {
         float pixelLong = (longitude - TOP_LEFT_LONGITUDE);
         //calculating using ratio 0.495377:width 
-        float pixelXPos = ((pixelLong / 0.495377f) * width) - width / 2;
+        float pixelXPos = ((pixelLong / 0.495377f) * width);
         return pixelXPos;
     }
-    
-    Trip getTrip(int row){
-       TableRow tempRow = taxiData.getRow(row);
-       //use this to grab stuff from row...
-       double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
-       return null; 
+
+    Trip getTrip(int row)
+    {
+        TableRow tempRow = taxiData.getRow(row);
+        //use this to grab stuff from row...
+        double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
+        return null;
     }
 }

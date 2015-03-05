@@ -19,8 +19,6 @@ public class RenderArea extends PApplet
     {
         size(width, height, P3D);
         
-        data = new Data("res/trip_data_small.csv", this);
-        
         heightMapGraph = new HeightMapGraph(this);
     }
 

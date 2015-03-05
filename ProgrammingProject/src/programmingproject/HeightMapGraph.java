@@ -3,7 +3,6 @@ package programmingproject;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 import static processing.core.PApplet.radians;
-import static processing.core.PConstants.P3D;
 import processing.core.PImage;
 
 /**
@@ -12,12 +11,16 @@ import processing.core.PImage;
  */
 public class HeightMapGraph
 {
+
     RenderArea renderArea;
-    
+
+    //Constants
+    final int GRID_WIDTH = 135;
+    final int GRID_HEIGHT = 100;
+
     PImage bg;
-    Tower[] towers = new Tower[30];
-    Tower[] otherTowers = new Tower[30];
-    float percent = 0;
+    Tower[][] gridOfTowers;
+    float percent = 1f;
     Random random = new Random();
 
     //Camera Rotation
@@ -26,19 +29,38 @@ public class HeightMapGraph
     float MOUSE_SENSITIVITY = 300f;
 
     Data data;
-    
+
     public HeightMapGraph(RenderArea renderArea)
     {
         this.renderArea = renderArea;
         bg = renderArea.loadImage("res/newyork.png");
-        
-        for (int i = 0; i < towers.length; i++)
+
+        gridOfTowers = new Tower[GRID_WIDTH][GRID_HEIGHT];
+
+        for (int i = 0; i < GRID_WIDTH; i++)
         {
-            towers[i] = new Tower(random.nextInt(renderArea.width - 20) - (renderArea.width / 2) - 20, random.nextInt(renderArea.height - 20) - (renderArea.height / 2) - 20, random.nextInt(100));
+            for (int ii = 0; ii < GRID_HEIGHT; ii++)
+            {
+                gridOfTowers[i][ii] = new Tower((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), 2);
+            }
         }
-        for (int i = 0; i < otherTowers.length; i++)
+
+        //Load in data!
+        data = new Data("res/trip_data_small.csv", renderArea);
+        for (int i = 0; i < data.taxiData.getRowCount(); i++)
         {
-            otherTowers[i] = new Tower(random.nextInt(renderArea.width - 20) - (renderArea.width / 2) - 20, random.nextInt(renderArea.height - 20) - (renderArea.height / 2) - 20, random.nextInt(100));
+            float latitude = data.taxiData.getFloat(i, Data.PICKUPLAT);
+            float longitude = data.taxiData.getFloat(i, Data.PICKUPLONG);
+            int x = (int) Data.longToXPos(longitude, GRID_WIDTH);
+            int y = (int) Data.latToYPos(latitude, GRID_HEIGHT);
+            System.out.println("x = " + x + " y = " + y);
+            //x /= (float) GRID_WIDTH;
+            //y /= (float) GRID_HEIGHT;
+            System.out.println("x = " + x + " y = " + y);
+            if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
+            {
+                gridOfTowers[x][y].z += 10;
+            }
         }
     }
 
@@ -56,24 +78,40 @@ public class HeightMapGraph
         renderArea.image(bg, -renderArea.width / 2, -renderArea.height / 2, renderArea.width, renderArea.height);
         renderArea.fill(255, 0, 0);
 
-        for (int i = 0; i < towers.length; i++)
-        {
-            renderArea.pushMatrix();
-            renderArea.translate(towers[i].x, towers[i].y, towers[i].z * percent / 2);
-            renderArea.rotateZ(radians(30));
-            renderArea.box(20, 20, towers[i].z * percent);
-            renderArea.popMatrix();
-        }
+        renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
+//        for (int i = 0; i < GRID_WIDTH; i++)
+//        {
+//            renderArea.line(i * renderArea.width / GRID_WIDTH, 0, i * renderArea.width / GRID_WIDTH, renderArea.height);
+//        }
+//        for (int i = 0; i < GRID_HEIGHT; i++)
+//        {
+//            renderArea.line(0, i * renderArea.height / GRID_HEIGHT, renderArea.width, i * renderArea.height / GRID_HEIGHT);
+//        }
 
-        renderArea.fill(255, 255, 0);
-        for (int i = 0; i < otherTowers.length; i++)
+        for (int i = 0; i < GRID_WIDTH; i++)
         {
-            renderArea.pushMatrix();
-            renderArea.translate(otherTowers[i].x, otherTowers[i].y, otherTowers[i].z * percent / 2);
-            renderArea.rotateZ(radians(30));
-            renderArea.box(20, 20, otherTowers[i].z * percent);
-            renderArea.popMatrix();
+            for (int ii = 0; ii < GRID_HEIGHT; ii++)
+            {
+                if (gridOfTowers[i][ii].z != 2)
+                {
+                    renderArea.pushMatrix();
+                    renderArea.translate(gridOfTowers[i][ii].x, gridOfTowers[i][ii].y, gridOfTowers[i][ii].z * percent / 2);
+                    //renderArea.rotateZ(radians(30));
+                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, gridOfTowers[i][ii].z * percent);
+                    renderArea.popMatrix();
+                }
+            }
         }
+//
+//        renderArea.fill(255, 255, 0);
+//        for (int i = 0; i < otherTowers.length; i++)
+//        {
+//            renderArea.pushMatrix();
+//            renderArea.translate(otherTowers[i].x, otherTowers[i].y, otherTowers[i].z * percent / 2);
+//            renderArea.rotateZ(radians(30));
+//            renderArea.box(20, 20, otherTowers[i].z * percent);
+//            renderArea.popMatrix();
+//        }
         //testCoords();
     }
 
