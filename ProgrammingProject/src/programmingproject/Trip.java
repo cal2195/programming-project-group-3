@@ -9,7 +9,7 @@ public class Trip
 {
     //store_and_fwd_flag should be a boolean, storing as string atm because it's Y/N in the csv
     String pickupTime, dropoffTime;
-    boolean storeAndFwdFlag;
+    boolean storeAndFwdFlag; //Should convert these to a boolean[] array at some point...
     int rateCode, passengers, time;
     float distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
     boolean accountedFor = false;
