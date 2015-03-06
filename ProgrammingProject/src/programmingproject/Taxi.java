@@ -29,6 +29,11 @@ public class Taxi
        return trips.add(newTrip);
     }
     
+    public ArrayList<Trip> getTrips()
+    {
+        return (ArrayList<Trip>) trips.clone();
+    }
+    
     public String toString()
     {
         String result = "";

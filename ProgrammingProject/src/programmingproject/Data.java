@@ -1,7 +1,13 @@
 package programmingproject;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import processing.data.Table;
 import processing.data.TableRow;
 
@@ -12,9 +18,19 @@ import processing.data.TableRow;
 public class Data
 {
 
-    HashMap<String, Taxi> taxis;
+    ConcurrentHashMap<String, Taxi> taxis;
     Table taxiData;
     RenderArea renderArea;
+    String dataFile = "";
+    Thread loadDataThread = new Thread( new Runnable()
+    {
+
+        @Override
+        public void run()
+        {
+            loadData(dataFile);
+        }
+    }, "Load Data Thread");
 
     //these are used so we can use our sensible names to refer to the original column names
     static final String MEDALLION = "medallion";
@@ -40,18 +56,69 @@ public class Data
     public Data(String filename, RenderArea renderArea)
     {
         this.renderArea = renderArea;
-        taxiData = renderArea.loadTable(filename, "header"); //Load in the .cvs file into a table!
-        // 0 = String, 1 = int, 4 = double
-        int[] columnTypes =
+//        taxiData = renderArea.loadTable(filename, "header"); //Load in the .cvs file into a table!
+//        // 0 = String, 1 = int, 4 = double
+//        int[] columnTypes =
+//        {
+//            0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4
+//        };
+//        taxiData.setColumnTypes(columnTypes);
+//        numberOfRecords = taxiData.getRowCount();
+        taxis = new ConcurrentHashMap<>();
+        dataFile = "res/trip_data_1.csv";
+        loadDataThread.start();
+//        for (int i = 0; i < numberOfRecords; i++)
+//        {
+//            getTrip(i);
+//        }
+    }
+
+    public void loadData(String file)
+    {
+        BufferedReader buff = null;
+        try
         {
-            0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4
-        };
-        taxiData.setColumnTypes(columnTypes);
-        numberOfRecords = taxiData.getRowCount();
-        taxis = new HashMap();
-        for (int i = 0; i < numberOfRecords; i++)
+            buff = new BufferedReader(new FileReader(file));
+            String current = "";
+            int count = 0;
+            buff.readLine(); //Skip the headers!
+            while ((current = buff.readLine()) != null)
+            {
+                count++;
+                if (count % 100 == 0)
+                {
+                    System.out.println("Loading Line " + count + "...");
+                }
+                String[] currentLine = current.split(",");
+                if (!taxis.containsKey(currentLine[0]))
+                {
+                    taxis.put(currentLine[0], new Taxi(currentLine[0], currentLine[1], currentLine[2]));
+                }
+                Taxi temp = taxis.get(currentLine[0]);
+                temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], currentLine[5], currentLine[6], Integer.parseInt(currentLine[7]), Integer.parseInt(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12]), Float.parseFloat(currentLine[13])));
+                try
+                {
+                    Thread.sleep(0, 1);
+                } catch (InterruptedException ex)
+                {
+                    Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (FileNotFoundException ex)
         {
-            getTrip(i);
+            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+        } finally
+        {
+            try
+            {
+                buff.close();
+            } catch (IOException ex)
+            {
+                Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -72,7 +139,7 @@ public class Data
         return pixelXPos;
     }
 
-    Trip getTrip(int row)
+    public Trip getTrip(int row)
     {
         TableRow tempRow = taxiData.getRow(row);
         //use this to grab stuff from row...
@@ -83,19 +150,20 @@ public class Data
                     tempRow.getString(VENDORID)));
         }
         Taxi temp = taxis.get(medallion);
-        Trip newTrip = new Trip(tempRow.getString(PICKUPTIME),
-                tempRow.getString(DROPOFFTIME),
-                tempRow.getString(STOREANDFWDFLAG),
+        Trip newTrip = new Trip(
                 tempRow.getInt(RATECODE),
+                tempRow.getString(STOREANDFWDFLAG),
+                tempRow.getString(PICKUPTIME),
+                tempRow.getString(DROPOFFTIME),
                 tempRow.getInt(PASSENGER),
                 tempRow.getInt(TIME),
-                tempRow.getDouble(TRIPDISTANCE),
-                tempRow.getDouble(PICKUPLAT),
-                tempRow.getDouble(PICKUPLONG),
-                tempRow.getDouble(DROPOFFLAT),
-                tempRow.getDouble(DROPOFFLONG));
+                tempRow.getFloat(TRIPDISTANCE),
+                tempRow.getFloat(PICKUPLAT),
+                tempRow.getFloat(PICKUPLONG),
+                tempRow.getFloat(DROPOFFLAT),
+                tempRow.getFloat(DROPOFFLONG));
         temp.addTrip(newTrip);
-        double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
+        double pickupLat = (tempRow.getFloat(PICKUPLAT));  // Prints "Mosquito"
         return newTrip;
     }
 

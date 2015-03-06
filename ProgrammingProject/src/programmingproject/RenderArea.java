@@ -34,7 +34,19 @@ public class RenderArea extends PApplet
                 break;
         }
     }
+
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+        switch (currentScreen)
+        {
+            case 0:
+                heightMapGraph.mousePressed(e);
+                break;
+        }
+    }
     
+    @Override
     public void mouseDragged(MouseEvent e)
     {
         switch (currentScreen)
