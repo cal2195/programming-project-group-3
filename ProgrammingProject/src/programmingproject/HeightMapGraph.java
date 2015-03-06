@@ -1,8 +1,9 @@
 package programmingproject;
 
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
-import static processing.core.PApplet.radians;
 import processing.core.PImage;
 
 /**
@@ -27,8 +28,7 @@ public class HeightMapGraph
     float cameraX, cameraY;
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
-
-    Data data;
+    boolean demoMode = true;
 
     public HeightMapGraph(RenderArea renderArea)
     {
@@ -41,27 +41,10 @@ public class HeightMapGraph
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
             {
-                gridOfTowers[i][ii] = new Tower((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), 2);
+                gridOfTowers[i][ii] = new Tower((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), 0);
             }
         }
 
-        //Load in data!
-        data = new Data("res/trip_data_small.csv", renderArea);
-        for (int i = 0; i < data.taxiData.getRowCount(); i++)
-        {
-            float latitude = data.taxiData.getFloat(i, Data.PICKUPLAT);
-            float longitude = data.taxiData.getFloat(i, Data.PICKUPLONG);
-            int x = (int) Data.longToXPos(longitude, GRID_WIDTH);
-            int y = (int) Data.latToYPos(latitude, GRID_HEIGHT);
-            System.out.println("x = " + x + " y = " + y);
-            //x /= (float) GRID_WIDTH;
-            //y /= (float) GRID_HEIGHT;
-            System.out.println("x = " + x + " y = " + y);
-            if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
-            {
-                gridOfTowers[x][y].z += 10;
-            }
-        }
     }
 
     public void draw()
@@ -71,12 +54,21 @@ public class HeightMapGraph
         {
             percent += 0.005;
         }
+        
+        if (demoMode)
+        {
+            if (cameraY < 1)
+            {
+                cameraY += 0.005f;
+            }
+            cameraX += 0.001f;
+        }
 
         renderArea.translate(renderArea.width / 2, renderArea.height / 2, 0);
         renderArea.rotateX(cameraY);
         renderArea.rotateZ(cameraX);
         renderArea.image(bg, -renderArea.width / 2, -renderArea.height / 2, renderArea.width, renderArea.height);
-        renderArea.fill(255, 0, 0);
+        renderArea.fill(255, 0, 0, 100f);
 
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
 //        for (int i = 0; i < GRID_WIDTH; i++)
@@ -87,17 +79,37 @@ public class HeightMapGraph
 //        {
 //            renderArea.line(0, i * renderArea.height / GRID_HEIGHT, renderArea.width, i * renderArea.height / GRID_HEIGHT);
 //        }
-
+        for (HashMap.Entry key : renderArea.data.taxis.entrySet())
+        {
+            Taxi taxi = (Taxi) key.getValue();
+            for (Trip trip : taxi.getTrips())
+            {
+                if (!trip.accountedFor)
+                {
+                    trip.accountedFor = true;
+                    float latitude = trip.pickupLat;
+                    float longitude = trip.pickupLong;
+                    int x = (int) Data.longToXPos(longitude, GRID_WIDTH);
+                    int y = (int) Data.latToYPos(latitude, GRID_HEIGHT);
+                    //System.out.println("x = " + x + " y = " + y);
+                    if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
+                    {
+                        gridOfTowers[x][y].z += 1;
+                    }
+                }
+            }
+        }
+        
         for (int i = 0; i < GRID_WIDTH; i++)
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
             {
-                if (gridOfTowers[i][ii].z != 2)
+                if (gridOfTowers[i][ii].z != 0)
                 {
                     renderArea.pushMatrix();
-                    renderArea.translate(gridOfTowers[i][ii].x, gridOfTowers[i][ii].y, gridOfTowers[i][ii].z * percent / 2);
+                    renderArea.translate(gridOfTowers[i][ii].x, gridOfTowers[i][ii].y, (float) ((gridOfTowers[i][ii].z * percent / 2) + 1));
                     //renderArea.rotateZ(radians(30));
-                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, gridOfTowers[i][ii].z * percent);
+                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) ((gridOfTowers[i][ii].z * percent / 2)));
                     renderArea.popMatrix();
                 }
             }
@@ -113,6 +125,11 @@ public class HeightMapGraph
 //            renderArea.popMatrix();
 //        }
         //testCoords();
+    }
+    
+    public void mousePressed(MouseEvent e)
+    {
+        demoMode = false;
     }
 
     public void mouseDragged(MouseEvent e)
