@@ -8,10 +8,11 @@ import java.util.ArrayList;
  */
 public class Taxi
 {
-    private String medallion, hack, vendorID;
+    private String hack, vendorID;
+    private byte medallion;
     private ArrayList<Trip> trips;
 
-    public Taxi(String medallion, String hackLicense, String vendorID)
+    public Taxi(byte medallion, String hackLicense, String vendorID)
     {
         this.medallion = medallion;
         this.hack = hackLicense;
@@ -19,7 +20,7 @@ public class Taxi
         trips = new ArrayList<Trip>();
     }
     
-    public String getMedallion()
+    public byte getMedallion()
     {
         return medallion;
     }
