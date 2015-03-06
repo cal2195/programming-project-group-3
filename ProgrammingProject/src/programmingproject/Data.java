@@ -31,6 +31,7 @@ public class Data
             loadData(dataFile);
         }
     }, "Load Data Thread");
+    boolean dataLoaded = false;
 
     //these are used so we can use our sensible names to refer to the original column names
     static final String MEDALLION = "medallion";
@@ -85,24 +86,24 @@ public class Data
             while ((current = buff.readLine()) != null)
             {
                 count++;
-                if (count % 100 == 0)
+                if (count % 10000 == 0)
                 {
                     System.out.println("Loading Line " + count + "...");
                 }
                 String[] currentLine = current.split(",");
                 if (!taxis.containsKey(currentLine[0]))
                 {
-                    taxis.put(currentLine[0], new Taxi(currentLine[0], currentLine[1], currentLine[2]));
+                    taxis.put(currentLine[0], new Taxi((byte) taxis.size(), currentLine[1], currentLine[2]));
                 }
                 Taxi temp = taxis.get(currentLine[0]);
                 temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], currentLine[5], currentLine[6], Integer.parseInt(currentLine[7]), Integer.parseInt(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12]), Float.parseFloat(currentLine[13])));
-                try
-                {
-                    Thread.sleep(0, 1);
-                } catch (InterruptedException ex)
-                {
-                    Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try
+//                {
+//                    Thread.sleep(0, 1);
+//                } catch (InterruptedException ex)
+//                {
+//                    Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
         } catch (FileNotFoundException ex)
         {
@@ -120,6 +121,7 @@ public class Data
                 Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        dataLoaded = true;
     }
 
     public static float latToYPos(float latitude, int height)
@@ -146,7 +148,7 @@ public class Data
         String medallion = tempRow.getString(MEDALLION);
         if (!taxis.containsKey(medallion))
         {
-            taxis.put(medallion, new Taxi(medallion, tempRow.getString(HACK),
+            taxis.put(medallion, new Taxi((byte) taxis.size(), tempRow.getString(HACK),
                     tempRow.getString(VENDORID)));
         }
         Taxi temp = taxis.get(medallion);
