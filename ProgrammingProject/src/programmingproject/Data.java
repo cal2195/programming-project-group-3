@@ -11,10 +11,11 @@ import processing.data.TableRow;
  */
 public class Data
 {
-    HashMap<String,Taxi> taxis;
+
+    HashMap<String, Taxi> taxis;
     Table taxiData;
     RenderArea renderArea;
-    
+
     //these are used so we can use our sensible names to refer to the original column names
     static final String MEDALLION = "medallion";
     static final String HACK = "hack_license";
@@ -48,7 +49,7 @@ public class Data
         taxiData.setColumnTypes(columnTypes);
         numberOfRecords = taxiData.getRowCount();
         taxis = new HashMap();
-        for(int i = 0; i < numberOfRecords; i++)
+        for (int i = 0; i < numberOfRecords; i++)
         {
             getTrip(i);
         }
@@ -58,7 +59,7 @@ public class Data
     {
         float pixelLat = (latitude - TOP_LEFT_LATITUDE) * -1;
         //calculating using ratio 0.210139:height
-        float pixelYPos = ((pixelLat / 0.210139f) * height) - height / 2;
+        float pixelYPos = ((pixelLat / 0.210139f) * height);
         return pixelYPos;
 
     }
@@ -67,51 +68,53 @@ public class Data
     {
         float pixelLong = (longitude - TOP_LEFT_LONGITUDE);
         //calculating using ratio 0.495377:width 
-        float pixelXPos = ((pixelLong / 0.495377f) * width) - width / 2;
+        float pixelXPos = ((pixelLong / 0.495377f) * width);
         return pixelXPos;
     }
-    
-    Trip getTrip(int row){
-       TableRow tempRow = taxiData.getRow(row);
-       //use this to grab stuff from row...
-       String medallion = tempRow.getString(MEDALLION);
-       if(!taxis.containsKey(medallion))
-       {
-           taxis.put(medallion, new Taxi(medallion, tempRow.getString(HACK), 
-                     tempRow.getString(VENDORID)));
-       }
-       Taxi temp = taxis.get(medallion);
-       Trip newTrip = new Trip(tempRow.getString(PICKUPTIME), 
-                                tempRow.getString(DROPOFFTIME),
-                                tempRow.getString(STOREANDFWDFLAG),
-                                tempRow.getInt(RATECODE), 
-                                tempRow.getInt(PASSENGER), 
-                                tempRow.getInt(TIME),
-                                tempRow.getDouble(TRIPDISTANCE), 
-                                tempRow.getDouble(PICKUPLAT),
-                                tempRow.getDouble(PICKUPLONG),
-                                tempRow.getDouble(DROPOFFLAT), 
-                                tempRow.getDouble(DROPOFFLONG));
-       temp.addTrip(newTrip);
-       double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
-       return newTrip; 
+
+    Trip getTrip(int row)
+    {
+        TableRow tempRow = taxiData.getRow(row);
+        //use this to grab stuff from row...
+        String medallion = tempRow.getString(MEDALLION);
+        if (!taxis.containsKey(medallion))
+        {
+            taxis.put(medallion, new Taxi(medallion, tempRow.getString(HACK),
+                    tempRow.getString(VENDORID)));
+        }
+        Taxi temp = taxis.get(medallion);
+        Trip newTrip = new Trip(tempRow.getString(PICKUPTIME),
+                tempRow.getString(DROPOFFTIME),
+                tempRow.getString(STOREANDFWDFLAG),
+                tempRow.getInt(RATECODE),
+                tempRow.getInt(PASSENGER),
+                tempRow.getInt(TIME),
+                tempRow.getDouble(TRIPDISTANCE),
+                tempRow.getDouble(PICKUPLAT),
+                tempRow.getDouble(PICKUPLONG),
+                tempRow.getDouble(DROPOFFLAT),
+                tempRow.getDouble(DROPOFFLONG));
+        temp.addTrip(newTrip);
+        double pickupLat = (tempRow.getDouble(PICKUPLAT));  // Prints "Mosquito"
+        return newTrip;
     }
+
     public void printTaxiInfo()
     {
-        for (String key : taxis.keySet()) 
+        for (String key : taxis.keySet())
         {
-          Taxi temp= taxis.get(key);
-          System.out.print(temp.toString());
+            Taxi temp = taxis.get(key);
+            System.out.print(temp.toString());
         }
     }
-    
+
     public String toString()
     {
         String result = "";
-        for (String key : taxis.keySet()) 
+        for (String key : taxis.keySet())
         {
-          Taxi temp= taxis.get(key);
-          result += temp.toString();
+            Taxi temp = taxis.get(key);
+            result += temp.toString();
         }
         return result;
     }
