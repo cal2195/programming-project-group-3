@@ -11,7 +11,7 @@ public class RenderArea extends PApplet
 {
     int currentScreen = 0; //0: HeightMapGraph
     HeightMapGraph heightMapGraph;
-    
+    DisplayWithProcessingText displayWithProcessingText;
     Data data;
 
     @Override
@@ -20,8 +20,9 @@ public class RenderArea extends PApplet
         size(width, height, P3D);
         
         data = new Data("res/trip_data_small.csv", this);
-        //data.printTaxiInfo();
-        heightMapGraph = new HeightMapGraph(this);
+        data.printTaxiInfo();
+        //heightMapGraph = new HeightMapGraph(this);
+        displayWithProcessingText = new DisplayWithProcessingText(this);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.draw();
+                displayWithProcessingText.draw();
                 break;
         }
     }
@@ -40,7 +41,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.mouseDragged(e);
+                displayWithProcessingText.mouseDragged(e);
                 break;
         }
     }
@@ -51,7 +52,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.mouseReleased(e);
+                displayWithProcessingText.mouseReleased(e);
                 break;
         }
     }
