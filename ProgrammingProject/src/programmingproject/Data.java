@@ -32,6 +32,10 @@ public class Data
         }
     }, "Load Data Thread");
     boolean dataLoaded = false;
+    
+    //these are no fun, anyone able to check? it wasnt a leap year!
+    public static final long[] SECONDS_TILL_MONTH_STARTS = {0,2678400,5097600,7776000, 10368000, 13046400, 15638400,
+                                                            18316800, 20995200, 23587200, 26265600, 28857600};
 
     //these are used so we can use our sensible names to refer to the original column names
     static final String MEDALLION = "medallion";
@@ -50,7 +54,7 @@ public class Data
     static final String DROPOFFLAT = "dropoff_latitude";
 
     int numberOfRecords;
-    //n.b. these values are currently all bullshit, to be used to find the relative x and y of a taxi
+    //to be used to find the relative x and y of a taxi
     static float TOP_LEFT_LONGITUDE = -74.212073f;
     static float TOP_LEFT_LATITUDE = 40.874139f;
 
@@ -141,6 +145,29 @@ public class Data
         return pixelXPos;
     }
 
+    public void printTaxiInfo()
+    {
+        for (String key : taxis.keySet())
+        {
+            Taxi temp = taxis.get(key);
+            System.out.print(temp.toString());
+        }
+    }
+
+    public String toString()
+    {
+        String result = "";
+        for (String key : taxis.keySet())
+        {
+            Taxi temp = taxis.get(key);
+            result += temp.toString();
+        }
+        return result;
+    }
+    
+    
+    //deprecated load method from when we were using a table
+    /*
     public Trip getTrip(int row)
     {
         TableRow tempRow = taxiData.getRow(row);
@@ -165,27 +192,8 @@ public class Data
                 tempRow.getFloat(DROPOFFLAT),
                 tempRow.getFloat(DROPOFFLONG));
         temp.addTrip(newTrip);
-        double pickupLat = (tempRow.getFloat(PICKUPLAT));  // Prints "Mosquito"
+        double pickupLat = (tempRow.getFloat(PICKUPLAT)); 
         return newTrip;
     }
-
-    public void printTaxiInfo()
-    {
-        for (String key : taxis.keySet())
-        {
-            Taxi temp = taxis.get(key);
-            System.out.print(temp.toString());
-        }
-    }
-
-    public String toString()
-    {
-        String result = "";
-        for (String key : taxis.keySet())
-        {
-            Taxi temp = taxis.get(key);
-            result += temp.toString();
-        }
-        return result;
-    }
+*/
 }
