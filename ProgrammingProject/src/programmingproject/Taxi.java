@@ -8,7 +8,8 @@ import java.util.ArrayList;
  */
 public class Taxi
 {
-    private String hack, vendorID;
+    private String hack;
+    private boolean vendorID;
     private byte medallion;
     private ArrayList<Trip> trips;
 
@@ -16,7 +17,7 @@ public class Taxi
     {
         this.medallion = medallion;
         this.hack = hackLicense;
-        this.vendorID = vendorID;
+        this.vendorID = vendorID.equals("CMT");
         trips = new ArrayList<Trip>();
     }
     
@@ -42,7 +43,7 @@ public class Taxi
         {
             result += medallion + " ";
             result += hack + " ";
-            result += vendorID + " ";
+            result += (vendorID? "CMT" : "VTS") + " ";
             result += t.toString();
             result += "\n";
         }
