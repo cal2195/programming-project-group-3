@@ -32,7 +32,7 @@ public class PreprocessData
         dataFile = file;
         try
         {
-            out = new PrintWriter("data.csv");
+            out = new PrintWriter("taxi_data.csv");
             meds = new PrintWriter("meds.txt");
             hack = new PrintWriter("hacks.txt");
         } catch (FileNotFoundException ex)
@@ -91,6 +91,14 @@ public class PreprocessData
                     currentLine[1] = "" + hacks.size();
                 }
                 currentLine[5] = "" + DateTime.dateTimeToSecs(currentLine[5]);
+                if (currentLine[4].equals("Y"))
+                {
+                    currentLine[4] = "1";
+                }
+                else
+                {
+                    currentLine[4] = "0";
+                }
 
                 appendData(currentLine);
             }
