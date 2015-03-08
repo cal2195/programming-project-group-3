@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,21 +56,10 @@ public class Data
     public Data(String filename, RenderArea renderArea)
     {
         this.renderArea = renderArea;
-//        taxiData = renderArea.loadTable(filename, "header"); //Load in the .cvs file into a table!
-//        // 0 = String, 1 = int, 4 = double
-//        int[] columnTypes =
-//        {
-//            0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4
-//        };
-//        taxiData.setColumnTypes(columnTypes);
-//        numberOfRecords = taxiData.getRowCount();
+
         taxis = new ConcurrentHashMap<>();
-        dataFile = "res/trip_data_1.csv";
+        dataFile = "res/trip_data_2.csv";
         loadDataThread.start();
-//        for (int i = 0; i < numberOfRecords; i++)
-//        {
-//            getTrip(i);
-//        }
     }
 
     public void loadData(String file)
@@ -186,6 +174,7 @@ public class Data
         }
     }
 
+    @Override
     public String toString()
     {
         String result = "";
