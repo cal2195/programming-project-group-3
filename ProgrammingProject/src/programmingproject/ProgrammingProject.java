@@ -37,6 +37,7 @@ public class ProgrammingProject extends PApplet
     
     public static void main(String[] args)
     {
-        new ProgrammingProject();
+        //new ProgrammingProject();
+        new PreprocessData("res/trip_data_small.csv");
     }
 }

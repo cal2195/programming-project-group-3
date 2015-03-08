@@ -96,7 +96,15 @@ public class Data
                     taxis.put(currentLine[0], new Taxi((byte) taxis.size(), currentLine[1], currentLine[2]));
                 }
                 Taxi temp = taxis.get(currentLine[0]);
-                temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], currentLine[5], currentLine[6], Integer.parseInt(currentLine[7]), Integer.parseInt(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12]), Float.parseFloat(currentLine[13])));
+                try
+                {
+                    temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], currentLine[5], currentLine[6], Integer.parseInt(currentLine[7]), Integer.parseInt(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12]), Float.parseFloat(currentLine[13])));
+                } catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                    System.out.println("With line: " + current);
+                    //Malformed data! Ignoring! ;)
+                }
 //                try
 //                {
 //                    Thread.sleep(0, 1);
