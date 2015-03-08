@@ -25,6 +25,7 @@ public class PreprocessData
     ArrayList<String> medallions = new ArrayList<>();
     ArrayList<String> hacks = new ArrayList<>();
     PrintWriter out;
+    PrintWriter meds, hack;
 
     public PreprocessData(String file)
     {
@@ -32,12 +33,14 @@ public class PreprocessData
         try
         {
             out = new PrintWriter("data.csv");
+            meds = new PrintWriter("meds.txt");
+            hack = new PrintWriter("hacks.txt");
         } catch (FileNotFoundException ex)
         {
             Logger.getLogger(PreprocessData.class.getName()).log(Level.SEVERE, null, ex);
         }
         processData();
-        writeAuxDataFiles();
+        //writeAuxDataFiles();
     }
 
     public void processData()
@@ -69,6 +72,7 @@ public class PreprocessData
                 if (!found)
                 {
                     medallions.add(currentLine[0]);
+                    writeMed(currentLine[0]);
                     currentLine[0] = "" + medallions.size();
                 }
                 found = false;
@@ -83,6 +87,7 @@ public class PreprocessData
                 if (!found)
                 {
                     hacks.add(currentLine[1]);
+                    writeHack(currentLine[1]);
                     currentLine[1] = "" + hacks.size();
                 }
                 currentLine[5] = "" + DateTime.dateTimeToSecs(currentLine[5]);
@@ -101,6 +106,8 @@ public class PreprocessData
             {
                 buff.close();
                 out.close();
+                meds.close();
+                hack.close();
             } catch (IOException ex)
             {
                 Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,6 +135,16 @@ public class PreprocessData
         {
             Logger.getLogger(PreprocessData.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void writeMed(String med)
+    {
+        meds.println(med);
+    }
+    
+    public void writeHack(String med)
+    {
+        hack.println(med);
     }
 
     public void appendData(String[] data)
