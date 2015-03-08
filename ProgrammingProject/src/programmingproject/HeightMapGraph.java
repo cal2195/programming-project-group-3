@@ -110,9 +110,10 @@ public class HeightMapGraph
                 if (gridOfTowers[i][ii].z != 0)
                 {
                     renderArea.pushMatrix();
-                    renderArea.translate(gridOfTowers[i][ii].x, gridOfTowers[i][ii].y, (float) Math.log10((gridOfTowers[i][ii].z * percent / 2) + 1));
+                    renderArea.translate(gridOfTowers[i][ii].x, gridOfTowers[i][ii].y, (float) Math.log10((gridOfTowers[i][ii].z) + 1));
+                    renderArea.fill(255, 0, 0, 100f);
                     //renderArea.rotateZ(radians(30));
-                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].z * percent / 2)));
+                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].z)) * 2);
                     renderArea.popMatrix();
                 }
             }
