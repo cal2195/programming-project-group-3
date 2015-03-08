@@ -8,15 +8,15 @@ import java.util.ArrayList;
  */
 public class Taxi
 {
-    private String hack, vendorID;
+    //private String hack, vendorID;
     private byte medallion;
     private ArrayList<Trip> trips;
 
     public Taxi(byte medallion, String hackLicense, String vendorID)
     {
         this.medallion = medallion;
-        this.hack = hackLicense;
-        this.vendorID = vendorID;
+        //this.hack = hackLicense;
+        //this.vendorID = vendorID;
         trips = new ArrayList<Trip>();
     }
     
@@ -41,8 +41,8 @@ public class Taxi
         for(Trip t : trips)
         {
             result += medallion + " ";
-            result += hack + " ";
-            result += vendorID + " ";
+            //result += hack + " ";
+            //result += vendorID + " ";
             result += t.toString();
             result += "\n";
         }
