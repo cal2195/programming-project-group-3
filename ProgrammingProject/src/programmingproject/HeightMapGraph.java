@@ -20,7 +20,7 @@ public class HeightMapGraph
 
     PImage bg;
     Tower[][] gridOfTowers;
-    float percent = 1f;
+    float percent = 0f;
     Random random = new Random();
 
     //Camera Rotation
@@ -71,14 +71,7 @@ public class HeightMapGraph
         renderArea.fill(255, 0, 0, 100f);
 
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
-//        for (int i = 0; i < GRID_WIDTH; i++)
-//        {
-//            renderArea.line(i * renderArea.width / GRID_WIDTH, 0, i * renderArea.width / GRID_WIDTH, renderArea.height);
-//        }
-//        for (int i = 0; i < GRID_HEIGHT; i++)
-//        {
-//            renderArea.line(0, i * renderArea.height / GRID_HEIGHT, renderArea.width, i * renderArea.height / GRID_HEIGHT);
-//        }
+        
         //if (renderArea.data.dataLoaded)
         {
             for (HashMap.Entry key : renderArea.data.taxis.entrySet())
@@ -93,7 +86,6 @@ public class HeightMapGraph
                         float longitude = trip.pickupLong;
                         int x = (int) Data.longToXPos(longitude, GRID_WIDTH);
                         int y = (int) Data.latToYPos(latitude, GRID_HEIGHT);
-                        //System.out.println("x = " + x + " y = " + y);
                         if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
                         {
                             gridOfTowers[x][y].height += 10;
@@ -110,25 +102,12 @@ public class HeightMapGraph
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     renderArea.pushMatrix();
-                    renderArea.translate((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), (float) Math.log10((gridOfTowers[i][ii].height) + 1) * 2);
-                    //renderArea.fill(255, 255, 255, 100f);
-                    //renderArea.rotateZ(radians(30));
-                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].height)) * 2);
+                    renderArea.translate((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
+                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
                     renderArea.popMatrix();
                 }
             }
         }
-//
-//        renderArea.fill(255, 255, 0);
-//        for (int i = 0; i < otherTowers.length; i++)
-//        {
-//            renderArea.pushMatrix();
-//            renderArea.translate(otherTowers[i].x, otherTowers[i].y, otherTowers[i].z * percent / 2);
-//            renderArea.rotateZ(radians(30));
-//            renderArea.box(20, 20, otherTowers[i].z * percent);
-//            renderArea.popMatrix();
-//        }
-        //testCoords();
 
         renderArea.popMatrix();
     }
@@ -153,18 +132,4 @@ public class HeightMapGraph
     {
         lastMousePosition = null;
     }
-
-//    public void testCoords()
-//    {
-//        float lat = 40.664000f;
-//        float lon = -73.716696f;
-//        float ZPos = Data.latToYPos(lat, height);
-//        float XPos = Data.longToXPos(lon, width);
-//        System.out.println(lat + ", " + lon);
-//        fill(0, 0, 255);
-//        pushMatrix();
-//        translate(XPos, ZPos, 50);
-//        box(5, 5, 100);
-//        popMatrix();
-//    }
 }
