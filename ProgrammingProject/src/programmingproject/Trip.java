@@ -7,7 +7,7 @@ package programmingproject;
 public class Trip
 {
     long pickupTime;
-    boolean[] flags; //flags is currently[storeAndFwdFlag], but we can use this to store useful data like evening/etc
+    boolean[] flags = new boolean[1]; //flags is currently[storeAndFwdFlag], but we can use this to store useful data like evening/etc
     int rateCode, passengers, time;
     float distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
     boolean accountedFor = false;

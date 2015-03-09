@@ -33,7 +33,7 @@ public class Data
     boolean dataLoaded = false;
     
     //these are no fun, anyone able to check? it wasnt a leap year!
-    public static final long[] SECONDS_TILL_MONTH_STARTS = {0,2678400,5097600,7776000, 10368000, 13046400, 15638400,
+    public static final int[] SECONDS_TILL_MONTH_STARTS = {0,2678400,5097600,7776000, 10368000, 13046400, 15638400,
                                                             18316800, 20995200, 23587200, 26265600, 28857600};
 
     //these are used so we can use our sensible names to refer to the original column names
@@ -53,8 +53,9 @@ public class Data
     static final String DROPOFFLAT = "dropoff_latitude";
 
     int numberOfRecords;
+    int errorCount = 0;
     //to be used to find the relative x and y of a taxi
-    static float TOP_LEFT_LONGITUDE = -74.212073f;
+    static float TOP_LEFT_LONGITUDE = -74.195073f;
     static float TOP_LEFT_LATITUDE = 40.874139f;
 
     public Data(String filename, RenderArea renderArea)
@@ -94,6 +95,10 @@ public class Data
                 {
                     System.out.println("Loading Line " + count + "...");
                 }
+                if (count == 2000000)
+                {
+                    return;
+                }
                 String[] currentLine = current.split(",");
                 if (!taxis.containsKey(currentLine[0]))
                 {
@@ -107,15 +112,9 @@ public class Data
                 {
                     exception.printStackTrace();
                     System.out.println("With line: " + current);
+                    errorCount++;
                     //Malformed data! Ignoring! ;)
                 }
-//                try
-//                {
-//                    Thread.sleep(0, 1);
-//                } catch (InterruptedException ex)
-//                {
-//                    Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-//                }
             }
         } catch (FileNotFoundException ex)
         {
@@ -133,6 +132,7 @@ public class Data
                 Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        System.out.println("TOTAL ERRORS FOUND: " + errorCount);
         dataLoaded = true;
     }
 
@@ -152,34 +152,6 @@ public class Data
         float pixelXPos = ((pixelLong / 0.495377f) * width);
         return pixelXPos;
     }
-
-//    public Trip getTrip(int row)
-//    {
-//        TableRow tempRow = taxiData.getRow(row);
-//        //use this to grab stuff from row...
-//        String medallion = tempRow.getString(MEDALLION);
-//        if (!taxis.containsKey(medallion))
-//        {
-//            taxis.put(medallion, new Taxi((byte) taxis.size(), tempRow.getString(HACK),
-//                    tempRow.getString(VENDORID)));
-//        }
-//        Taxi temp = taxis.get(medallion);
-//        Trip newTrip = new Trip(
-//                tempRow.getInt(RATECODE),
-//                tempRow.getString(STOREANDFWDFLAG),
-//                tempRow.getString(PICKUPTIME),
-//                tempRow.getString(DROPOFFTIME),
-//                tempRow.getInt(PASSENGER),
-//                tempRow.getInt(TIME),
-//                tempRow.getFloat(TRIPDISTANCE),
-//                tempRow.getFloat(PICKUPLAT),
-//                tempRow.getFloat(PICKUPLONG),
-//                tempRow.getFloat(DROPOFFLAT),
-//                tempRow.getFloat(DROPOFFLONG));
-//        temp.addTrip(newTrip);
-//        double pickupLat = (tempRow.getFloat(PICKUPLAT));  // Prints "Mosquito"
-//        return newTrip;
-//    }
 
     public void printTaxiInfo()
     {
