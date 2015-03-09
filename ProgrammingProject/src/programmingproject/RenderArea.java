@@ -11,6 +11,7 @@ public class RenderArea extends PApplet
 {
     int currentScreen = 0; //0: HeightMapGraph
     HeightMapGraph heightMapGraph;
+    GUI gui;
     
     Data data;
 
@@ -19,6 +20,7 @@ public class RenderArea extends PApplet
     {
         size(width, height, P3D);
         
+        gui = new GUI(this);
         data = new Data("res/trip_data_small.csv", this);
         //data.printTaxiInfo();
         heightMapGraph = new HeightMapGraph(this);
