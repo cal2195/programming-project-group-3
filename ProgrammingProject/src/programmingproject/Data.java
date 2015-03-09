@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import processing.data.Table;
-import processing.data.TableRow;
 
 /**
  *

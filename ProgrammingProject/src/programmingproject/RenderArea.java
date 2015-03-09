@@ -22,7 +22,7 @@ public class RenderArea extends PApplet
         
         gui = new GUI(this);
         data = new Data("res/trip_data_small.csv", this);
-        //data.printTaxiInfo();
+
         heightMapGraph = new HeightMapGraph(this);
     }
 
