@@ -6,12 +6,10 @@ package programmingproject;
  */
 class Tower
 {
-  float x, y, z;
+  float height;
   
-  Tower(float x, float y, float z)
+  Tower(float height)
   {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.height = height;
   }
 }
