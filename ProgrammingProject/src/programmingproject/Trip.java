@@ -6,20 +6,17 @@ package programmingproject;
  */
 public class Trip
 {
-
-    //store_and_fwd_flag should be a boolean, storing as string atm because it's Y/N in the csv
     long pickupTime;
-    boolean storeAndFwdFlag; //Should convert these to a boolean[] array at some point...
+    boolean[] flags; //flags is currently[storeAndFwdFlag], but we can use this to store useful data like evening/etc
     int rateCode, passengers, time;
     float distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
     boolean accountedFor = false;
 
-    public Trip(int rateCode, String storeAndFwdFlag, long pickupTime, int passengers,
+    public Trip(int rateCode, String storeAndFwdFlag, long pickupTime, int passengers, 
             int time, float distance, float pickupLong, float pickupLat, float dropoffLong, float dropoffLat)
     {
-
         this.pickupTime = pickupTime;
-        this.storeAndFwdFlag = storeAndFwdFlag.equals("Y");
+        this.flags[0] = storeAndFwdFlag.equals("Y");
         this.rateCode = rateCode;
         this.passengers = passengers;
         this.time = time;
@@ -34,9 +31,9 @@ public class Trip
     public String toString()
     {
         String result = "";
-        result += pickupTime + " ";
+        result += DateTime.secsToDateTime(pickupTime) + " ";
         result += DateTime.secsToDateTime(pickupTime + time) + " ";
-        result += storeAndFwdFlag ? "Y " : "N ";
+        result += flags[0] ? "Y " : "N ";
         result += rateCode + " ";
         result += passengers + " ";
         result += time + " ";
