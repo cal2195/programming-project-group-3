@@ -1,4 +1,3 @@
-
 package programmingproject;
 
 /**
@@ -7,6 +6,7 @@ package programmingproject;
  */
 public class Trip
 {
+
     //store_and_fwd_flag should be a boolean, storing as string atm because it's Y/N in the csv
     long pickupTime;
     boolean storeAndFwdFlag; //Should convert these to a boolean[] array at some point...
@@ -14,7 +14,7 @@ public class Trip
     float distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
     boolean accountedFor = false;
 
-    public Trip(int rateCode, String storeAndFwdFlag, long pickupTime, int passengers, 
+    public Trip(int rateCode, String storeAndFwdFlag, long pickupTime, int passengers,
             int time, float distance, float pickupLong, float pickupLat, float dropoffLong, float dropoffLat)
     {
 
@@ -30,8 +30,9 @@ public class Trip
         this.dropoffLong = dropoffLong;
 
     }
-    
-    public String toString(){
+
+    public String toString()
+    {
         String result = "";
         result += pickupTime + " ";
         result += DateTime.secsToDateTime(pickupTime + time) + " ";
@@ -44,7 +45,7 @@ public class Trip
         result += pickupLong + " ";
         result += dropoffLat + " ";
         result += dropoffLong + " ";
-        
+
         return result;
     }
 }
