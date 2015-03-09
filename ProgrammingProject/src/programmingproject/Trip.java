@@ -1,4 +1,3 @@
-
 package programmingproject;
 
 /**
@@ -13,10 +12,10 @@ public class Trip
     float distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
     boolean accountedFor = false;
 
-    public Trip(int rateCode, String storeAndFwdFlag, String pickupTime, String dropOffTime, int passengers, 
+    public Trip(int rateCode, String storeAndFwdFlag, long pickupTime, int passengers, 
             int time, float distance, float pickupLong, float pickupLat, float dropoffLong, float dropoffLat)
     {
-        this.pickupTime = DateTime.dateTimeToSecs(pickupTime);
+        this.pickupTime = pickupTime;
         this.flags[0] = storeAndFwdFlag.equals("Y");
         this.rateCode = rateCode;
         this.passengers = passengers;
@@ -28,8 +27,9 @@ public class Trip
         this.dropoffLong = dropoffLong;
 
     }
-    
-    public String toString(){
+
+    public String toString()
+    {
         String result = "";
         result += DateTime.secsToDateTime(pickupTime) + " ";
         result += DateTime.secsToDateTime(pickupTime + time) + " ";
@@ -42,7 +42,7 @@ public class Trip
         result += pickupLong + " ";
         result += dropoffLat + " ";
         result += dropoffLong + " ";
-        
+
         return result;
     }
 }

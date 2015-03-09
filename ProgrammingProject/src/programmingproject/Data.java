@@ -16,11 +16,12 @@ import processing.data.Table;
 public class Data
 {
 
-    ConcurrentHashMap<String, Taxi> taxis;
+    String[] meds, hacks;
+    ConcurrentHashMap<Integer, Taxi> taxis;
     Table taxiData;
     RenderArea renderArea;
     String dataFile = "";
-    Thread loadDataThread = new Thread( new Runnable()
+    Thread loadDataThread = new Thread(new Runnable()
     {
 
         @Override
@@ -59,23 +60,24 @@ public class Data
     public Data(String filename, RenderArea renderArea)
     {
         this.renderArea = renderArea;
-//        taxiData = renderArea.loadTable(filename, "header"); //Load in the .cvs file into a table!
-//        // 0 = String, 1 = int, 4 = double
-//        int[] columnTypes =
-//        {
-//            0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 4, 4, 4, 4
-//        };
-//        taxiData.setColumnTypes(columnTypes);
-//        numberOfRecords = taxiData.getRowCount();
+
         taxis = new ConcurrentHashMap<>();
-        dataFile = "res/trip_data_1.csv";
+        dataFile = "res/taxi_data.csv";
+        loadMeds("res/meds.txt");
+        loadHacks("res/hacks.txt");
         loadDataThread.start();
-//        for (int i = 0; i < numberOfRecords; i++)
-//        {
-//            getTrip(i);
-//        }
     }
 
+    public void loadMeds(String file)
+    {
+        meds = renderArea.loadStrings(file);
+    }
+
+    public void loadHacks(String file)
+    {
+        hacks = renderArea.loadStrings(file);
+    }
+    
     public void loadData(String file)
     {
         BufferedReader buff = null;
@@ -95,10 +97,18 @@ public class Data
                 String[] currentLine = current.split(",");
                 if (!taxis.containsKey(currentLine[0]))
                 {
-                    taxis.put(currentLine[0], new Taxi((byte) taxis.size(), currentLine[1], currentLine[2]));
+                    taxis.put(new Integer(currentLine[0]), new Taxi((byte) taxis.size(), currentLine[1], currentLine[2]));
                 }
-                Taxi temp = taxis.get(currentLine[0]);
-                temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], currentLine[5], currentLine[6], Integer.parseInt(currentLine[7]), Integer.parseInt(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12]), Float.parseFloat(currentLine[13])));
+                Taxi temp = taxis.get(new Integer(currentLine[0]));
+                try
+                {
+                    temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], Long.parseLong(currentLine[5]), Integer.parseInt(currentLine[6]), Integer.parseInt(currentLine[7]), Float.parseFloat(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12])));
+                } catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                    System.out.println("With line: " + current);
+                    //Malformed data! Ignoring! ;)
+                }
 //                try
 //                {
 //                    Thread.sleep(0, 1);
@@ -143,55 +153,52 @@ public class Data
         return pixelXPos;
     }
 
+//    public Trip getTrip(int row)
+//    {
+//        TableRow tempRow = taxiData.getRow(row);
+//        //use this to grab stuff from row...
+//        String medallion = tempRow.getString(MEDALLION);
+//        if (!taxis.containsKey(medallion))
+//        {
+//            taxis.put(medallion, new Taxi((byte) taxis.size(), tempRow.getString(HACK),
+//                    tempRow.getString(VENDORID)));
+//        }
+//        Taxi temp = taxis.get(medallion);
+//        Trip newTrip = new Trip(
+//                tempRow.getInt(RATECODE),
+//                tempRow.getString(STOREANDFWDFLAG),
+//                tempRow.getString(PICKUPTIME),
+//                tempRow.getString(DROPOFFTIME),
+//                tempRow.getInt(PASSENGER),
+//                tempRow.getInt(TIME),
+//                tempRow.getFloat(TRIPDISTANCE),
+//                tempRow.getFloat(PICKUPLAT),
+//                tempRow.getFloat(PICKUPLONG),
+//                tempRow.getFloat(DROPOFFLAT),
+//                tempRow.getFloat(DROPOFFLONG));
+//        temp.addTrip(newTrip);
+//        double pickupLat = (tempRow.getFloat(PICKUPLAT));  // Prints "Mosquito"
+//        return newTrip;
+//    }
+
     public void printTaxiInfo()
     {
-        for (String key : taxis.keySet())
+        for (Integer key : taxis.keySet())
         {
             Taxi temp = taxis.get(key);
             System.out.print(temp.toString());
         }
     }
 
+    @Override
     public String toString()
     {
         String result = "";
-        for (String key : taxis.keySet())
+        for (Integer key : taxis.keySet())
         {
             Taxi temp = taxis.get(key);
             result += temp.toString();
         }
         return result;
     }
-    
-    
-    //deprecated load method from when we were using a table
-    /*
-    public Trip getTrip(int row)
-    {
-        TableRow tempRow = taxiData.getRow(row);
-        //use this to grab stuff from row...
-        String medallion = tempRow.getString(MEDALLION);
-        if (!taxis.containsKey(medallion))
-        {
-            taxis.put(medallion, new Taxi((byte) taxis.size(), tempRow.getString(HACK),
-                    tempRow.getString(VENDORID)));
-        }
-        Taxi temp = taxis.get(medallion);
-        Trip newTrip = new Trip(
-                tempRow.getInt(RATECODE),
-                tempRow.getString(STOREANDFWDFLAG),
-                tempRow.getString(PICKUPTIME),
-                tempRow.getString(DROPOFFTIME),
-                tempRow.getInt(PASSENGER),
-                tempRow.getInt(TIME),
-                tempRow.getFloat(TRIPDISTANCE),
-                tempRow.getFloat(PICKUPLAT),
-                tempRow.getFloat(PICKUPLONG),
-                tempRow.getFloat(DROPOFFLAT),
-                tempRow.getFloat(DROPOFFLONG));
-        temp.addTrip(newTrip);
-        double pickupLat = (tempRow.getFloat(PICKUPLAT)); 
-        return newTrip;
-    }
-*/
 }
