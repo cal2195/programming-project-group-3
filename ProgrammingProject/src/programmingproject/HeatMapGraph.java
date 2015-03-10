@@ -17,10 +17,13 @@ public class HeatMapGraph
     //Constants
     final int GRID_WIDTH = 135;
     final int GRID_HEIGHT = 100;
+    final int SCALE = 10;
+
+    Gradient gradient;
 
     PImage bg;
     Tower[][] gridOfTowers;
-    float percent = 0f;
+    float percent = 1f;
     Random random = new Random();
 
     //Camera Rotation
@@ -33,6 +36,19 @@ public class HeatMapGraph
     {
         this.renderArea = renderArea;
         bg = renderArea.loadImage("res/newyork.png");
+
+        gradient = new Gradient(renderArea);
+        gradient.addColor(renderArea.color(0, 0, 0));
+        gradient.addColor(renderArea.color(102, 0, 102));
+        gradient.addColor(renderArea.color(0, 144, 255));
+        gradient.addColor(renderArea.color(0, 255, 207));
+        gradient.addColor(renderArea.color(51, 204, 102));
+        gradient.addColor(renderArea.color(111, 255, 0));
+        gradient.addColor(renderArea.color(191, 255, 0));
+        gradient.addColor(renderArea.color(255, 240, 0));
+        gradient.addColor(renderArea.color(255, 153, 102));
+        gradient.addColor(renderArea.color(204, 51, 0));
+        gradient.addColor(renderArea.color(153, 0, 0));
 
         gridOfTowers = new Tower[GRID_WIDTH][GRID_HEIGHT];
 
@@ -71,7 +87,7 @@ public class HeatMapGraph
         renderArea.fill(255, 0, 0, 100f);
 
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
-        
+
         //if (renderArea.data.dataLoaded)
         {
             for (HashMap.Entry key : renderArea.data.taxis.entrySet())
@@ -102,9 +118,10 @@ public class HeatMapGraph
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     renderArea.pushMatrix();
-                    renderArea.translate((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
-                    renderArea.fill(255, (float) Math.log10((gridOfTowers[i][ii].height))*40, (float) Math.log10((gridOfTowers[i][ii].height))*15);
-                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
+                    renderArea.translate((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), (float) Math.log10((gridOfTowers[i][ii].height)) * SCALE * percent / 2);
+                    renderArea.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
+                    //renderArea.fill(255, (float) Math.log10((gridOfTowers[i][ii].height)) * 40, (float) Math.log10((gridOfTowers[i][ii].height)) * 15);
+                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].height)) * SCALE * percent);
                     renderArea.popMatrix();
                 }
             }

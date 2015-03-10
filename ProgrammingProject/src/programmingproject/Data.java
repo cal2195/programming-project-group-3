@@ -97,7 +97,7 @@ public class Data
                 }
                 if (count == 2000000)
                 {
-                    return;
+                //    return;
                 }
                 String[] currentLine = current.split(",");
                 if (!taxis.containsKey(currentLine[0]))

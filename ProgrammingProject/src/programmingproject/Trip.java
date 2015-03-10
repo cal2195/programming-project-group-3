@@ -10,7 +10,7 @@ public class Trip
     boolean[] flags = new boolean[1]; //flags is currently[storeAndFwdFlag], but we can use this to store useful data like evening/etc
     int rateCode, passengers, time;
     float distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
-    boolean accountedFor = false;
+    boolean accountedFor = false, unaccountedFor = false;
 
     public Trip(int rateCode, String storeAndFwdFlag, long pickupTime, int passengers, 
             int time, float distance, float pickupLong, float pickupLat, float dropoffLong, float dropoffLat)

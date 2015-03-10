@@ -10,7 +10,7 @@ import processing.core.PApplet;
 public class RenderArea extends PApplet
 {
     int currentScreen = 0; //0: HeightMapGraph
-    HeightMapGraph heightMapGraph;
+    HeatMapGraph heightMapGraph;
     GUI gui;
     
     Data data;
@@ -20,10 +20,10 @@ public class RenderArea extends PApplet
     {
         size(width, height, P3D);
         
-        gui = new GUI(this);
+        //gui = new GUI(this);
         data = new Data("res/trip_data_small.csv", this);
 
-        heightMapGraph = new HeightMapGraph(this);
+        heightMapGraph = new HeatMapGraph(this);
     }
 
     @Override
