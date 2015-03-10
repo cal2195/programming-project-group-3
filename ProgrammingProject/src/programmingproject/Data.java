@@ -63,7 +63,7 @@ public class Data
         this.renderArea = renderArea;
 
         taxis = new ConcurrentHashMap<>();
-        dataFile = "res/taxi_data.csv";
+        dataFile = filename;
         loadMeds("res/meds.txt");
         loadHacks("res/hacks.txt");
         loadDataThread.start();
@@ -91,13 +91,13 @@ public class Data
             while ((current = buff.readLine()) != null)
             {
                 count++;
-                if (count % 10000 == 0)
+                if (count % 15000 == 0)
                 {
                     System.out.println("Loading Line " + count + "...");
                 }
                 if (count == 2000000)
                 {
-                //    return;
+                    return;
                 }
                 String[] currentLine = current.split(",");
                 if (!taxis.containsKey(currentLine[0]))
@@ -107,11 +107,11 @@ public class Data
                 Taxi temp = taxis.get(new Integer(currentLine[0]));
                 try
                 {
-                    temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], Long.parseLong(currentLine[5]), Integer.parseInt(currentLine[6]), Integer.parseInt(currentLine[7]), Float.parseFloat(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12])));
-                } catch (Exception exception)
+                    temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], Integer.parseInt(currentLine[5]), Integer.parseInt(currentLine[6]), Integer.parseInt(currentLine[7]), Float.parseFloat(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12])));
+                } catch (ArrayIndexOutOfBoundsException exception)
                 {
-                    exception.printStackTrace();
-                    System.out.println("With line: " + current);
+                    //exception.printStackTrace();
+                    System.out.println("Error parsing line: " + current);
                     errorCount++;
                     //Malformed data! Ignoring! ;)
                 }

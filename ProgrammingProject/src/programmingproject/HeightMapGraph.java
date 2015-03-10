@@ -18,6 +18,8 @@ public class HeightMapGraph
     final int GRID_WIDTH = 135;
     final int GRID_HEIGHT = 100;
 
+    int MODE = 0;
+
     PImage bg;
     Tower[][] gridOfTowers;
     float percent = 0f;
@@ -72,29 +74,6 @@ public class HeightMapGraph
         renderArea.noStroke();
 
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
-        
-        //if (renderArea.data.dataLoaded)
-        {
-            for (HashMap.Entry key : renderArea.data.taxis.entrySet())
-            {
-                Taxi taxi = (Taxi) key.getValue();
-                for (Trip trip : taxi.getTrips())
-                {
-                    if (!trip.accountedFor)
-                    {
-                        trip.accountedFor = true;
-                        float latitude = trip.pickupLat;
-                        float longitude = trip.pickupLong;
-                        int x = (int) Data.longToXPos(longitude, GRID_WIDTH);
-                        int y = (int) Data.latToYPos(latitude, GRID_HEIGHT);
-                        if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
-                        {
-                            gridOfTowers[x][y].height += 10;
-                        }
-                    }
-                }
-            }
-        }
 
         for (int i = 0; i < GRID_WIDTH; i++)
         {
