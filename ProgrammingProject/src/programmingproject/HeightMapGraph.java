@@ -49,7 +49,7 @@ public class HeightMapGraph
     public void draw()
     {
         renderArea.pushMatrix();
-        renderArea.background(0);
+        renderArea.background(179, 209, 255);
         if (percent < 1)
         {
             percent += 0.005;
@@ -68,7 +68,8 @@ public class HeightMapGraph
         renderArea.rotateX(cameraY);
         renderArea.rotateZ(cameraX);
         renderArea.image(bg, -renderArea.width / 2, -renderArea.height / 2, renderArea.width, renderArea.height);
-        renderArea.fill(255, 0, 0, 100f);
+        renderArea.fill(0);
+        renderArea.noStroke();
 
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
         
@@ -99,11 +100,13 @@ public class HeightMapGraph
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
             {
-                if (gridOfTowers[i][ii].height != 0)
+                if (gridOfTowers[i][ii].height != 0)// && gridOfTowers[i][ii].height != 10)
                 {
                     renderArea.pushMatrix();
                     renderArea.translate((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
-                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
+                    renderArea.fill(15f * (float) Math.log((gridOfTowers[i][ii].height)));
+                    //renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
+                    renderArea.ellipse(0, 0, (float) Math.log10((gridOfTowers[i][ii].height)) * 6, (float) Math.log10((gridOfTowers[i][ii].height)) * 6);
                     renderArea.popMatrix();
                 }
             }
