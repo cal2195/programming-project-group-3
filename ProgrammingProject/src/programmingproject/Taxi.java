@@ -32,7 +32,8 @@ public class Taxi
     
     public ArrayList<Trip> getTrips()
     {
-        return (ArrayList<Trip>) trips.clone();
+        //return (ArrayList<Trip>) trips.clone();
+        return trips;
     }
     
     public String toString()

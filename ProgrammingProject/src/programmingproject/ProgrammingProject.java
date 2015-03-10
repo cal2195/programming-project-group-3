@@ -29,7 +29,7 @@ public class ProgrammingProject extends PApplet
         
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setVisible(true);
-        mainWindow.setExtendedState(mainWindow.MAXIMIZED_BOTH);
+        //mainWindow.setExtendedState(mainWindow.MAXIMIZED_BOTH);
         
         renderArea.init();
     }

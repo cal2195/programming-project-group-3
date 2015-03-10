@@ -1,8 +1,11 @@
 package programmingproject;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import processing.core.PImage;
 
 /**
@@ -21,6 +24,9 @@ public class HeatMapGraph
 
     Gradient gradient;
 
+    ArrayList<Trip> trips = new ArrayList<>();
+    ArrayList<Trip> queuedTrips = new ArrayList<>();
+
     PImage bg;
     Tower[][] gridOfTowers;
     float percent = 1f;
@@ -31,6 +37,7 @@ public class HeatMapGraph
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
+    boolean minimize = false;
 
     public HeatMapGraph(RenderArea renderArea)
     {
@@ -52,6 +59,11 @@ public class HeatMapGraph
 
         gridOfTowers = new Tower[GRID_WIDTH][GRID_HEIGHT];
 
+        resetTowers();
+    }
+
+    public void resetTowers()
+    {
         for (int i = 0; i < GRID_WIDTH; i++)
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
@@ -59,16 +71,55 @@ public class HeatMapGraph
                 gridOfTowers[i][ii] = new Tower(0);
             }
         }
+    }
 
+    public void calculateTowers()
+    {
+        for (Trip trip : trips)
+        {
+            float latitude = trip.dropoffLat;
+            float longitude = trip.dropoffLong;
+            int x = (int) Data.longToXPos(longitude, GRID_WIDTH);
+            int y = (int) Data.latToYPos(latitude, GRID_HEIGHT);
+            if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
+            {
+                gridOfTowers[x][y].height += 10;
+            }
+        }
+    }
+
+    public void setData(ArrayList<Trip> data)
+    {
+        minimize = true;
+        queuedTrips = data;
+    }
+
+    public void switchData()
+    {
+        trips = queuedTrips;
+        resetTowers();
+        calculateTowers();
+        System.out.println("TRIP SIZE: " + trips.size());
     }
 
     public void draw()
     {
         renderArea.pushMatrix();
-        renderArea.background(0);
-        if (percent < 1)
+        renderArea.background(179, 209, 255);//renderArea.background(0);
+        if (minimize)
         {
-            percent += 0.005;
+            if (percent > 0f)
+            {
+                percent -= 0.05f;
+            } else
+            {
+                minimize = false;
+                switchData();
+            }
+        }
+        if (!minimize && percent < 1)
+        {
+            percent += 0.05;
         }
 
         if (demoMode)
@@ -88,29 +139,6 @@ public class HeatMapGraph
 
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
 
-        //if (renderArea.data.dataLoaded)
-        {
-            for (HashMap.Entry key : renderArea.data.taxis.entrySet())
-            {
-                Taxi taxi = (Taxi) key.getValue();
-                for (Trip trip : taxi.getTrips())
-                {
-                    if (!trip.accountedFor)
-                    {
-                        trip.accountedFor = true;
-                        float latitude = trip.pickupLat;
-                        float longitude = trip.pickupLong;
-                        int x = (int) Data.longToXPos(longitude, GRID_WIDTH);
-                        int y = (int) Data.latToYPos(latitude, GRID_HEIGHT);
-                        if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
-                        {
-                            gridOfTowers[x][y].height += 10;
-                        }
-                    }
-                }
-            }
-        }
-
         for (int i = 0; i < GRID_WIDTH; i++)
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
@@ -118,10 +146,10 @@ public class HeatMapGraph
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     renderArea.pushMatrix();
-                    renderArea.translate((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), (float) Math.log10((gridOfTowers[i][ii].height)) * SCALE * percent / 2);
+                    renderArea.translate((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), (float) Math.log((gridOfTowers[i][ii].height)) * SCALE * percent / 2);
                     renderArea.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
                     //renderArea.fill(255, (float) Math.log10((gridOfTowers[i][ii].height)) * 40, (float) Math.log10((gridOfTowers[i][ii].height)) * 15);
-                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log10((gridOfTowers[i][ii].height)) * SCALE * percent);
+                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log((double) (gridOfTowers[i][ii].height)) * SCALE * percent);
                     renderArea.popMatrix();
                 }
             }
@@ -149,5 +177,19 @@ public class HeatMapGraph
     public void mouseReleased(MouseEvent e)
     {
         lastMousePosition = null;
+    }
+
+    public void keyPressed(KeyEvent e)
+    {
+        if (e.getKeyCode() == KeyEvent.VK_1)
+        {
+            setData(renderArea.query.getTripsForMonth(1));
+        } else if (e.getKeyCode() == KeyEvent.VK_2)
+        {
+            setData(renderArea.query.getTripsForMonth(2));
+        } else if (e.getKeyCode() == KeyEvent.VK_3)
+        {
+            setData(renderArea.query.getTripsForMonth(3));
+        }
     }
 }
