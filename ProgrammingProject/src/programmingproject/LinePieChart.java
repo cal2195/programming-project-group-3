@@ -88,6 +88,8 @@ public class LinePieChart {
             ArrayList<Trip> currentTrips;
             currentTrips = randomTaxi.getTrips();
             int randomTrip = (int)random(currentTrips.size());
+            timeAndPassengers[count][1] = (currentTrips.get(randomTrip).pickupTime)/86400;
+            timeAndPassengers[count][2] = currentTrips.get(randomTrip).passengers;
         }
     }
      

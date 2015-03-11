@@ -9,7 +9,7 @@ import processing.core.PApplet;
  */
 public class RenderArea extends PApplet
 {
-    int currentScreen = 0; //0: HeightMapGraph
+    int currentScreen = 1; //0: HeightMapGraph
     HeatMapGraph heightMapGraph;
     GUI gui;
     LinePieChart linePieChart;
