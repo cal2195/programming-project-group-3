@@ -2,7 +2,9 @@ package programmingproject;
 
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import static jdk.nashorn.internal.objects.NativeMath.random;
 import processing.core.PImage;
+import java.util.ArrayList;
 /**
  *
  * @author John Milsom
@@ -11,6 +13,10 @@ public class LinePieChart {
     
     RenderArea renderArea;
     PImage bg;
+    
+    //Data Visualisation
+    int sampleSize = 100;
+    long[][] timeAndPassengers = new long[100][2];
     
     //Camera rotation
     float cameraX, cameraY;
@@ -49,7 +55,8 @@ public class LinePieChart {
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
         
         renderArea.popMatrix();
-        //if (renderArea.data.dataLoaded)
+        
+        
     }  
     
     public void mousePressed(MouseEvent e)
@@ -71,6 +78,17 @@ public class LinePieChart {
     public void mouseReleased(MouseEvent e)
     {
         lastMousePosition = null;
+    }
+    
+    public void getSamples()
+    {
+        for(int count = 0; count < timeAndPassengers.length; count++ )
+        {
+            Taxi randomTaxi = renderArea.data.taxis.get((int)random(renderArea.data.taxis.size()));
+            ArrayList<Trip> currentTrips;
+            currentTrips = randomTaxi.getTrips();
+            int randomTrip = (int)random(currentTrips.size());
+        }
     }
      
     
