@@ -12,44 +12,53 @@ package programmingproject;
 public class TaxiDrawable
 {
 
+
+public class TaxiDrawable {  
     float x, y, endx, endy;
     float dx, dy;
     boolean dead;
+    short deathFrames;  
+    private final short DEATHFRAMES = 10;  
+    private final short SPEEDFACTOR = 2;
+    
+TaxiDrawable(float x0, float y0){
+            x = Data.longToXPos(x, 1000);
+            y = Data.latToYPos(y, 600);
+}
 
-    public TaxiDrawable(float x0, float y0)
-    {
-        x = Data.longToXPos(x, 1000);
-        y = Data.latToYPos(y, 600);
-    }
+TaxiDrawable(Trip trip){
+            float latitude = trip.pickupLat;
+            float longitude = trip.pickupLong;
+            x = Data.longToXPos(longitude, 1000);
+            y = Data.latToYPos(latitude, 600);
+            latitude = trip.dropoffLat;
+            longitude = trip.dropoffLong;
+            endx = Data.longToXPos(longitude, 1000);
+            endy = Data.latToYPos(latitude, 600);
+            
+            dx = SPEEDFACTOR*(endx - x) / trip.time;
+            dy = SPEEDFACTOR*(endy - y) / trip.time;
+}
 
-    public TaxiDrawable(Trip trip)
-    {
-        float latitude = trip.pickupLat;
-        float longitude = trip.pickupLong;
-        x = Data.longToXPos(longitude, 1000);
-        y = Data.latToYPos(latitude, 600);
-        latitude = trip.dropoffLat;
-        longitude = trip.dropoffLong;
-        endx = Data.longToXPos(longitude, 1000);
-        endy = Data.latToYPos(latitude, 600);
-
-        int timeScale = 10; //larger is faster!
-        dx = timeScale * (endx - x) / trip.time;
-        dy = timeScale * (endy - y) / trip.time;
-    }
-
-    public void draw(RenderArea renderArea)
-    {
-        renderArea.translate(x, y, 3);
-        if (dead)
-        {
-            renderArea.fill(0, 0, 0);
-        } else
-        {
-            renderArea.fill(255, 240, 0);
+public void draw(RenderArea renderArea){
+        renderArea.translate(x, y, 4);
+        if(dead){
+            if(deathFrames < DEATHFRAMES)
+            {
+                renderArea.fill(0, 0, 0);
+                renderArea.box(3, 3, 8);
+                deathFrames++;
+            }
+            
         }
-        renderArea.box(10, 5, 4);
-    }
+        else{
+            renderArea.stroke(0);
+            renderArea.fill(255, 240, 0);
+            renderArea.box(3, 3, 8);
+            renderArea.noStroke();
+        }
+        
+}
 
     public void moveAndCheck()
     {
