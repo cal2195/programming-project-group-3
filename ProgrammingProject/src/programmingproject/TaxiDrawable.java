@@ -16,7 +16,8 @@ public class TaxiDrawable {
     float dx, dy;
     boolean dead;
     short deathFrames;  
-    private final short DEATHFRAMES = 10;
+    private final short DEATHFRAMES = 10;  
+    private final short SPEEDFACTOR = 2;
     
 TaxiDrawable(float x0, float y0){
             x = Data.longToXPos(x, 1000);
@@ -33,9 +34,8 @@ TaxiDrawable(Trip trip){
             endx = Data.longToXPos(longitude, 1000);
             endy = Data.latToYPos(latitude, 600);
             
-            int timeScale = 10; //larger is faster!
-            dx = timeScale*(endx - x) / trip.time;
-            dy = timeScale*(endy - y) / trip.time;
+            dx = SPEEDFACTOR*(endx - x) / trip.time;
+            dy = SPEEDFACTOR*(endy - y) / trip.time;
 }
 
 public void draw(RenderArea renderArea){
