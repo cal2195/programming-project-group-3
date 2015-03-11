@@ -15,7 +15,7 @@ public class RenderArea extends PApplet
     HeatMapGraph heightMapGraph;
     GUI gui;
 
-    Data data;
+    //Data data;
     Query query;
 
     @Override
@@ -24,8 +24,8 @@ public class RenderArea extends PApplet
         size(width, height, P3D);
 
         //gui = new GUI(this);
-        data = new Data("res/taxi_data.csv", this);
-        query = new Query(data);
+        //data = new Data("res/taxi_data.csv", this);
+        query = new Query();
 
         heightMapGraph = new HeatMapGraph(this);
     }

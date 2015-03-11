@@ -31,10 +31,13 @@ public class Data
         }
     }, "Load Data Thread");
     boolean dataLoaded = false;
-    
+
     //these are no fun, anyone able to check? it wasnt a leap year!
-    public static final int[] SECONDS_TILL_MONTH_STARTS = {0,2678400,5097600,7776000, 10368000, 13046400, 15638400,
-                                                            18316800, 20995200, 23587200, 26265600, 28857600};
+    public static final int[] SECONDS_TILL_MONTH_STARTS =
+    {
+        0, 2678400, 5097600, 7776000, 10368000, 13046400, 15638400,
+        18316800, 20995200, 23587200, 26265600, 28857600
+    };
 
     //these are used so we can use our sensible names to refer to the original column names
     static final String MEDALLION = "medallion";
@@ -78,7 +81,7 @@ public class Data
     {
         hacks = renderArea.loadStrings(file);
     }
-    
+
     public void loadData(String file)
     {
         BufferedReader buff = null;
@@ -91,16 +94,35 @@ public class Data
             while ((current = buff.readLine()) != null)
             {
                 count++;
+                String[] currentLine = current.split(",");
                 if (count % 15000 == 0)
                 {
                     System.out.println("Loading Line " + count + "...");
+                    //System.out.println(DateTime.secsToDateTime(Integer.parseInt(currentLine[5])));
                 }
                 if (count == 2000000)
                 {
-                    return;
+                    /* Total number of processors or cores available to the JVM */
+                    System.out.println("Available processors (cores): "
+                            + Runtime.getRuntime().availableProcessors());
+
+                    /* Total amount of free memory available to the JVM */
+                    System.out.println("Free memory (megabytes): "
+                            + Runtime.getRuntime().freeMemory() / 1024 / 1024);
+
+                    /* This will return Long.MAX_VALUE if there is no preset limit */
+                    long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+                    /* Maximum amount of memory the JVM will attempt to use */
+                    System.out.println("Maximum memory (megabytes): "
+                            + (maxMemory == Long.MAX_VALUE ? "no limit" : maxMemory));
+
+                    /* Total memory currently available to the JVM */
+                    System.out.println("Total memory available to JVM (megabytes): "
+                            + Runtime.getRuntime().totalMemory() / 1024 / 1024);
+                    //return;
                 }
-                String[] currentLine = current.split(",");
-                if (!taxis.containsKey(currentLine[0]))
+
+                if (!taxis.containsKey(new Integer(currentLine[0])))
                 {
                     taxis.put(new Integer(currentLine[0]), new Taxi((byte) taxis.size(), currentLine[1], currentLine[2]));
                 }
@@ -115,6 +137,7 @@ public class Data
                     errorCount++;
                     //Malformed data! Ignoring! ;)
                 }
+
             }
         } catch (FileNotFoundException ex)
         {
