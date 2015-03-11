@@ -1,11 +1,13 @@
 package programmingproject;
 
+import de.fhpotsdam.unfolding.UnfoldingMap;
+import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.providers.Google;
+import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import processing.core.PImage;
 
 /**
@@ -28,6 +30,8 @@ public class HeatMapGraph
     ArrayList<Trip> queuedTrips = new ArrayList<>();
 
     PImage bg;
+    UnfoldingMap map;
+    int mapWidth = 2000, mapHeight = 1500;
     Tower[][] gridOfTowers;
     float percent = 1f;
     Random random = new Random();
@@ -43,6 +47,11 @@ public class HeatMapGraph
     {
         this.renderArea = renderArea;
         bg = renderArea.loadImage("res/newyork.png");
+
+        //Wanna try a different map?
+        //Replace the last parameter with one of these!! http://unfoldingmaps.org/javadoc/index.html?de/fhpotsdam/unfolding/providers/package-summary.html
+        map = new UnfoldingMap(renderArea, -mapWidth / 2, -mapHeight / 2, mapWidth, mapHeight, new Google.GoogleMapProvider());
+        map.zoomAndPanTo(12, new Location(40.731416f, -73.990667f));
 
         gradient = new Gradient(renderArea);
         gradient.addColor(renderArea.color(0, 0, 0));
@@ -79,11 +88,21 @@ public class HeatMapGraph
         {
             float latitude = trip.dropoffLat;
             float longitude = trip.dropoffLong;
-            int x = (int) Data.longToXPos(longitude, GRID_WIDTH);
-            int y = (int) Data.latToYPos(latitude, GRID_HEIGHT);
+            ScreenPosition pos = map.getScreenPosition(new Location(latitude, longitude));
+            int relX = (int) (pos.x);
+            int relY = (int) (pos.y);
+
+            int x = (int) RenderArea.map(relX, -mapWidth / 2, mapWidth / 2, 0, GRID_WIDTH);
+            int y = (int) RenderArea.map(relY, -mapHeight / 2, mapHeight / 2, 0, GRID_HEIGHT);
+
             if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
             {
                 gridOfTowers[x][y].height += 10;
+            } else
+            {
+                System.out.println("GRID ERROR - OUT OF BOUNDS");
+                System.out.println("relX = " + relX + " relY = " + relY);
+                System.out.println("x = " + x + " y = " + y);
             }
         }
     }
@@ -134,11 +153,12 @@ public class HeatMapGraph
         renderArea.translate(renderArea.width / 2, renderArea.height / 2, 1);
         renderArea.rotateX(cameraY);
         renderArea.rotateZ(cameraX);
-        renderArea.image(bg, -renderArea.width / 2, -renderArea.height / 2, renderArea.width, renderArea.height);
+        //renderArea.image(bg, -renderArea.width / 2, -renderArea.height / 2, renderArea.width, renderArea.height);
+        map.draw();
+        //renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
         renderArea.fill(255, 0, 0, 100f);
 
-        renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
-
+        renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
         for (int i = 0; i < GRID_WIDTH; i++)
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
@@ -146,10 +166,10 @@ public class HeatMapGraph
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     renderArea.pushMatrix();
-                    renderArea.translate((float) i * (renderArea.width / (float) GRID_WIDTH), (float) ii * (renderArea.height / (float) GRID_HEIGHT), (float) Math.log((gridOfTowers[i][ii].height)) * SCALE * percent / 2);
+                    renderArea.translate((float) i * (mapWidth / (float) GRID_WIDTH), (float) ii * (mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
                     renderArea.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
                     //renderArea.fill(255, (float) Math.log10((gridOfTowers[i][ii].height)) * 40, (float) Math.log10((gridOfTowers[i][ii].height)) * 15);
-                    renderArea.box(renderArea.width / GRID_WIDTH, renderArea.height / GRID_HEIGHT, (float) Math.log((double) (gridOfTowers[i][ii].height)) * SCALE * percent);
+                    renderArea.box(mapWidth / GRID_WIDTH, mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
                     renderArea.popMatrix();
                 }
             }
@@ -190,6 +210,9 @@ public class HeatMapGraph
         } else if (e.getKeyCode() == KeyEvent.VK_3)
         {
             setData(renderArea.query.getTripsForMonth(3));
+        } else if (e.getKeyCode() == KeyEvent.VK_4)
+        {
+            setData(renderArea.query.getTripsForMonth(4));
         }
     }
 }

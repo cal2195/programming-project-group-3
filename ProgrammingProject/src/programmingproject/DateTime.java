@@ -37,7 +37,7 @@ public class DateTime
     public static long dateTimeToSecs(String dateTime)
     {
         String[] dateTimeArr = dateTime.split(" ");
-        String[] date = dateTimeArr[0].split("/");
+        String[] date = dateTimeArr[0].split("-");
         String[] time = dateTimeArr[1].split(":");
 
         int months = Integer.parseInt(date[1]);
