@@ -9,9 +9,10 @@ import processing.core.PApplet;
  */
 public class RenderArea extends PApplet
 {
-    int currentScreen = 0; //0: HeightMapGraph
+    int currentScreen = 1; //0: HeightMapGraph
     HeatMapGraph heightMapGraph;
     GUI gui;
+    LinePieChart linePieChart;
     
     Data data;
 
@@ -24,6 +25,7 @@ public class RenderArea extends PApplet
         data = new Data("res/trip_data_small.csv", this);
 
         heightMapGraph = new HeatMapGraph(this);
+        linePieChart = new LinePieChart(this);
     }
 
     @Override
@@ -33,6 +35,9 @@ public class RenderArea extends PApplet
         {
             case 0:
                 heightMapGraph.draw();
+                break;
+            case 1:
+                linePieChart.draw();
                 break;
         }
     }
@@ -45,6 +50,9 @@ public class RenderArea extends PApplet
             case 0:
                 heightMapGraph.mousePressed(e);
                 break;
+            case 1:
+                linePieChart.mousePressed(e);
+                break;
         }
     }
     
@@ -56,6 +64,9 @@ public class RenderArea extends PApplet
             case 0:
                 heightMapGraph.mouseDragged(e);
                 break;
+            case 1:
+                linePieChart.mouseDragged(e);
+                break;
         }
     }
 
@@ -66,6 +77,9 @@ public class RenderArea extends PApplet
         {
             case 0:
                 heightMapGraph.mouseReleased(e);
+                break;
+            case 1:
+                linePieChart.mouseReleased(e);
                 break;
         }
     }
