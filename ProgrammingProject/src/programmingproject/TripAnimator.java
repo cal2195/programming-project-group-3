@@ -68,7 +68,7 @@ public class TripAnimator
         renderArea.noStroke();
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
         
-
+        
         for(TaxiDrawable car : cars){
             renderArea.pushMatrix();
             car.draw(renderArea);
