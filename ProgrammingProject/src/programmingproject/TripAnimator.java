@@ -68,16 +68,16 @@ public class TripAnimator
         renderArea.noStroke();
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
         
-        renderArea.pushMatrix();
+
         for(TaxiDrawable car : cars){
+            renderArea.pushMatrix();
             car.draw(renderArea);
             car.moveAndCheck();
+            renderArea.popMatrix();
         }
-        renderArea.popMatrix();
+
         
-        //easy trigger for when to draw taxies, query works, lots of taxis loaded
-        //and (i think) correctly converted to drawables... so why only one shows?
-        //do I just not understand translate? <--- my suspicion
+        //easy trigger for when to draw taxies
         frames++;
         if(frames == 100){
             setData(renderArea.query.getTripsForMonth(1));
