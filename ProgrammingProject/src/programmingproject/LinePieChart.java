@@ -2,7 +2,7 @@ package programmingproject;
 
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
-import static jdk.nashorn.internal.objects.NativeMath.random;
+import java.util.Random;
 import processing.core.PImage;
 import java.util.ArrayList;
 /**
@@ -13,10 +13,12 @@ public class LinePieChart {
     
     RenderArea renderArea;
     PImage bg;
-    
+    int[][] timeAndPassengers; 
+    int[][] positions; 
+            
     //Data Visualisation
-    int sampleSize = 100;
-    long[][] timeAndPassengers = new long[100][2];
+    int sampleSize = 500; 
+    public static final int SECONDS_PER_DAY = 86400;
     
     //Camera rotation
     float cameraX, cameraY;
@@ -28,7 +30,11 @@ public class LinePieChart {
     {
         this.renderArea = renderArea;
         bg = renderArea.loadImage("res/pieBase.png");
-
+        timeAndPassengers = new int[sampleSize][2];
+        positions = new int[sampleSize][3];
+        getSamples();
+        getPositions();
+        
     }
     
     public void draw()
@@ -53,6 +59,8 @@ public class LinePieChart {
         renderArea.noStroke();
 
         renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
+        
+        plotPoints();
         
         renderArea.popMatrix();
         
@@ -84,12 +92,40 @@ public class LinePieChart {
     {
         for(int count = 0; count < timeAndPassengers.length; count++ )
         {
-            Taxi randomTaxi = renderArea.data.taxis.get((int)random(renderArea.data.taxis.size()));
+            Taxi randomTaxi = renderArea.data.taxis.get((int)renderArea.random(renderArea.data.taxis.size()));
             ArrayList<Trip> currentTrips;
             currentTrips = randomTaxi.getTrips();
-            int randomTrip = (int)random(currentTrips.size());
-            timeAndPassengers[count][1] = (currentTrips.get(randomTrip).pickupTime)/86400;
-            timeAndPassengers[count][2] = currentTrips.get(randomTrip).passengers;
+            int randomTrip = (int)renderArea.random(currentTrips.size());
+            timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime);
+            timeAndPassengers[count][1] = currentTrips.get(randomTrip).passengers;
+        }
+    }
+    
+    public void getPositions()
+    {
+        for (int count = 0; count < positions.length; count++)
+        {
+            
+            int angle =  timeAndPassengers[count][0] *360;
+            System.out.println(timeAndPassengers[count][0] + "----------------" + angle);
+            int xPosition = (int)(250*Math.sin(angle))+675;
+            int yPosition = (int)(250*Math.cos(angle))+350;
+            positions[count][0] = xPosition;
+            positions[count][1] = yPosition;
+            positions[count][2] = (timeAndPassengers[count][1])*10+20;
+            System.out.println(positions[count][0]+ "  " + positions[count][1] + "  " +positions[count][2]);
+        }
+    }
+    
+    public void plotPoints()
+    {
+        for(int count = 0; count < positions.length ; count++)
+        {
+            renderArea.pushMatrix();
+            renderArea.fill(0,0,255);
+            renderArea.translate(positions[count][0],positions[count][1],positions[count][2]);
+            renderArea.box(2);
+            renderArea.popMatrix();
         }
     }
      
