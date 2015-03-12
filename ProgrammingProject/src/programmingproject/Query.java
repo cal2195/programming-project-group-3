@@ -13,7 +13,6 @@ import java.util.logging.Logger;
  */
 public class Query
 {
-
     TaxiDatabase taxiDatabase;
     Data data;
 
