@@ -13,6 +13,7 @@ public class RenderArea extends PApplet
 
     int currentScreen = 0; //0: HeightMapGraph
     HeatMapGraph heightMapGraph;
+    LocationVisualization locationVis;
     GUI gui;
 
     //Data data;
@@ -26,7 +27,7 @@ public class RenderArea extends PApplet
         //gui = new GUI(this);
         //data = new Data("res/taxi_data.csv", this);
         query = new Query();
-
+        locationVis = new LocationVisualization(this);
         heightMapGraph = new HeatMapGraph(this);
     }
 
@@ -36,7 +37,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.draw();
+                locationVis.draw();
                 break;
         }
     }
@@ -47,7 +48,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.mousePressed(e);
+                locationVis.mousePressed(e);
                 break;
         }
     }
@@ -58,7 +59,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.mouseDragged(e);
+                locationVis.mouseDragged(e);
                 break;
         }
     }
@@ -69,7 +70,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.mouseReleased(e);
+                locationVis.mouseReleased(e);
                 break;
         }
     }
@@ -80,7 +81,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.keyPressed(e);
+                locationVis.keyPressed(e);
                 break;
         }
     }
