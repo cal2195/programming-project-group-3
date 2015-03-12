@@ -31,7 +31,7 @@ public class HeatMapGraph
 
     PImage bg;
     UnfoldingMap map;
-    int mapWidth = 2000, mapHeight = 1500;
+    int mapWidth = 2000, mapHeight = 1000;
     Tower[][] gridOfTowers;
     float percent = 1f;
     Random random = new Random();
@@ -52,6 +52,9 @@ public class HeatMapGraph
         //Replace the last parameter with one of these!! http://unfoldingmaps.org/javadoc/index.html?de/fhpotsdam/unfolding/providers/package-summary.html
         map = new UnfoldingMap(renderArea, -mapWidth / 2, -mapHeight / 2, mapWidth, mapHeight, new Google.GoogleMapProvider());
         map.zoomAndPanTo(12, new Location(40.731416f, -73.990667f));
+        map.zoomToLevel(12);
+        map.panTo(new Location(40.731416f, -73.990667f));
+        
 
         gradient = new Gradient(renderArea);
         gradient.addColor(renderArea.color(0, 0, 0));
@@ -213,6 +216,12 @@ public class HeatMapGraph
         } else if (e.getKeyCode() == KeyEvent.VK_4)
         {
             setData(renderArea.query.getTripsForMonth(4));
+        } else if (e.getKeyCode() == KeyEvent.VK_EQUALS)
+        {
+            map.zoomLevelIn();
+        } else if (e.getKeyCode() == KeyEvent.VK_MINUS)
+        {
+            map.zoomLevelOut();
         }
     }
 }
