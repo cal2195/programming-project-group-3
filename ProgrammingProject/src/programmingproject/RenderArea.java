@@ -13,7 +13,9 @@ public class RenderArea extends PApplet
 
     int currentScreen = 1; //0: HeightMapGraph; 1: Visualisation1
     HeatMapGraph heightMapGraph;
-    VendorVisual vendorVisual;
+    VendorVisual vis1;
+    TripAnimator tripAnimator;
+    
     GUI gui;
 
     //Data data;
@@ -29,7 +31,8 @@ public class RenderArea extends PApplet
         query = new Query();
 
         heightMapGraph = new HeatMapGraph(this);
-        vendorVisual = new VendorVisual(this);
+        vis1 = new VendorVisual(this);
+        tripAnimator = new TripAnimator(this);
     }
 
     @Override
@@ -41,7 +44,10 @@ public class RenderArea extends PApplet
                 heightMapGraph.draw();
                 break;
             case 1:
-                vendorVisual.draw();
+                vis1.draw();
+                break;
+            case 2:
+                tripAnimator.draw();
                 break;
         }
     }
@@ -55,7 +61,10 @@ public class RenderArea extends PApplet
                 heightMapGraph.mousePressed(e);
                 break;
             case 1:
-                vendorVisual.mousePressed(e);
+                vis1.mousePressed(e);
+                break;
+            case 2:
+                tripAnimator.mousePressed(e);
                 break;
         }
     }
@@ -69,7 +78,10 @@ public class RenderArea extends PApplet
                 heightMapGraph.mouseDragged(e);
                 break;
             case 1:
-                vendorVisual.mouseDragged(e);
+                vis1.mouseDragged(e);
+                break;
+            case 2:
+                tripAnimator.mouseDragged(e);
                 break;
         }
     }
@@ -83,7 +95,10 @@ public class RenderArea extends PApplet
                 heightMapGraph.mouseReleased(e);
                 break;
             case 1:
-                vendorVisual.mouseReleased(e);
+                vis1.mouseReleased(e);
+                break;
+            case 2:
+                tripAnimator.mouseReleased(e);
                 break;
         }
     }
@@ -91,13 +106,24 @@ public class RenderArea extends PApplet
     @Override
     public void keyPressed(KeyEvent e)
     {
+        if (e.getKeyCode()== KeyEvent.VK_ENTER)
+        {
+            currentScreen++;
+            if(currentScreen > 2)
+            {
+                currentScreen = 0;
+            }
+        }
         switch (currentScreen)
         {
             case 0:
                 heightMapGraph.keyPressed(e);
                 break;
             case 1:
-                vendorVisual.keyPressed(e);
+                vis1.keyPressed(e);
+                break;
+            case 2:
+                tripAnimator.keyPressed(e);
                 break;
         }
     }
