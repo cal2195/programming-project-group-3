@@ -14,6 +14,8 @@ public class RenderArea extends PApplet
     int currentScreen = 1; //0: HeightMapGraph; 1: Visualisation1
     HeatMapGraph heightMapGraph;
     VendorVisual vis1;
+    TripAnimator tripAnimator;
+    
     GUI gui;
 
     //Data data;
@@ -30,6 +32,7 @@ public class RenderArea extends PApplet
 
         heightMapGraph = new HeatMapGraph(this);
         vis1 = new VendorVisual(this);
+        tripAnimator = new TripAnimator(this);
     }
 
     @Override
@@ -42,6 +45,9 @@ public class RenderArea extends PApplet
                 break;
             case 1:
                 vis1.draw();
+                break;
+            case 2:
+                tripAnimator.draw();
                 break;
         }
     }
@@ -57,6 +63,9 @@ public class RenderArea extends PApplet
             case 1:
                 vis1.mousePressed(e);
                 break;
+            case 2:
+                tripAnimator.mousePressed(e);
+                break;
         }
     }
 
@@ -70,6 +79,9 @@ public class RenderArea extends PApplet
                 break;
             case 1:
                 vis1.mouseDragged(e);
+                break;
+            case 2:
+                tripAnimator.mouseDragged(e);
                 break;
         }
     }
@@ -85,12 +97,23 @@ public class RenderArea extends PApplet
             case 1:
                 vis1.mouseReleased(e);
                 break;
+            case 2:
+                tripAnimator.mouseReleased(e);
+                break;
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
+        if (e.getKeyCode()== KeyEvent.VK_ENTER)
+        {
+            currentScreen++;
+            if(currentScreen > 2)
+            {
+                currentScreen = 0;
+            }
+        }
         switch (currentScreen)
         {
             case 0:
@@ -98,6 +121,9 @@ public class RenderArea extends PApplet
                 break;
             case 1:
                 vis1.keyPressed(e);
+                break;
+            case 2:
+                tripAnimator.keyPressed(e);
                 break;
         }
     }
