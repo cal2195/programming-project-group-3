@@ -11,8 +11,9 @@ import processing.core.PApplet;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 0; //0: HeightMapGraph
+    int currentScreen = 1; //0: HeightMapGraph; 1: Visualisation1
     HeatMapGraph heightMapGraph;
+    Visualisation1 vis1;
     GUI gui;
 
     //Data data;
@@ -28,6 +29,7 @@ public class RenderArea extends PApplet
         query = new Query();
 
         heightMapGraph = new HeatMapGraph(this);
+        vis1 = new Visualisation1(this);
     }
 
     @Override
@@ -37,6 +39,9 @@ public class RenderArea extends PApplet
         {
             case 0:
                 heightMapGraph.draw();
+                break;
+            case 1:
+                vis1.draw();
                 break;
         }
     }
@@ -60,6 +65,9 @@ public class RenderArea extends PApplet
             case 0:
                 heightMapGraph.mouseDragged(e);
                 break;
+            case 1:
+                vis1.mouseDragged(e);
+                break;
         }
     }
 
@@ -70,6 +78,9 @@ public class RenderArea extends PApplet
         {
             case 0:
                 heightMapGraph.mouseReleased(e);
+                break;
+            case 1:
+                vis1.mouseReleased(e);
                 break;
         }
     }
