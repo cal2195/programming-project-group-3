@@ -1,5 +1,6 @@
 package programmingproject;
 
+import com.sun.prism.paint.Color;
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.providers.Google;
@@ -168,9 +169,9 @@ public class VendorVisual
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     renderArea.pushMatrix();
-                    float boxHeight = (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f;
+                    float boxHeight = (float) Math.abs(((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 10f);
                     renderArea.translate((float) i * (mapWidth / (float) GRID_WIDTH), (float) ii * (mapHeight / (float) GRID_HEIGHT), boxHeight / 2);
-                    renderArea.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
+                    renderArea.fill(gridOfTowers[i][ii].height > 0 ? renderArea.color(255, 0, 0) : renderArea.color(0, 0, 255));
                     renderArea.box(mapWidth / GRID_WIDTH, mapHeight / GRID_HEIGHT, boxHeight);
                     renderArea.popMatrix();
                 }
