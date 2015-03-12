@@ -28,9 +28,9 @@ public class Query
         return getTrips("SELECT * FROM taxi_data WHERE medallion = " + medallion + " LIMIT 0,1000");
     }
 
-    public ArrayList<Trip> getTripsForMonth(int month)
+    public ArrayList<Trip> getTripsForMonth(int month, int limit)
     {
-        return getTrips("SELECT * FROM taxi_data WHERE pickup_datetime > " + DateTime.SECONDS_TILL_MONTH_STARTS[month - 1] + " AND pickup_datetime < " + DateTime.SECONDS_TILL_MONTH_STARTS[month] + " LIMIT 0,50000");
+        return getTrips("SELECT * FROM taxi_data WHERE pickup_datetime > " + DateTime.SECONDS_TILL_MONTH_STARTS[month - 1] + " AND pickup_datetime < " + DateTime.SECONDS_TILL_MONTH_STARTS[month] + " LIMIT 0," + limit);
     }
     
     public ArrayList<Trip> GIVEME500LATENIGHTTAXISPLEASE(boolean withACherryOnTop)
