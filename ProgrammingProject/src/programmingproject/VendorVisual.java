@@ -14,7 +14,7 @@ import processing.core.PImage;
  *
  * @author cal
  * 
- * Adapting upon HeatMapGraph.java 2015-03-12
+ * Adapting HeatMapGraph.java 2015-03-12
  */
 public class VendorVisual
 {
@@ -99,7 +99,7 @@ public class VendorVisual
 
             if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
             {
-                gridOfTowers[x][y].height += 10;
+                gridOfTowers[x][y].height += trip.vendorID ? 1 : -1;    // 'CMT' add 1, 'VTS' subtract 1
             } else
             {
                 System.out.println("GRID ERROR - OUT OF BOUNDS");
@@ -168,10 +168,10 @@ public class VendorVisual
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     renderArea.pushMatrix();
-                    renderArea.translate((float) i * (mapWidth / (float) GRID_WIDTH), (float) ii * (mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
+                    float boxHeight = (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f;
+                    renderArea.translate((float) i * (mapWidth / (float) GRID_WIDTH), (float) ii * (mapHeight / (float) GRID_HEIGHT), boxHeight / 2);
                     renderArea.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
-                    //renderArea.fill(255, (float) Math.log10((gridOfTowers[i][ii].height)) * 40, (float) Math.log10((gridOfTowers[i][ii].height)) * 15);
-                    renderArea.box(mapWidth / GRID_WIDTH, mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
+                    renderArea.box(mapWidth / GRID_WIDTH, mapHeight / GRID_HEIGHT, boxHeight);
                     renderArea.popMatrix();
                 }
             }

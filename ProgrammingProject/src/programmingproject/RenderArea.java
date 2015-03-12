@@ -13,7 +13,7 @@ public class RenderArea extends PApplet
 
     int currentScreen = 1; //0: HeightMapGraph; 1: Visualisation1
     HeatMapGraph heightMapGraph;
-    VendorVisual vis1;
+    VendorVisual vendorVisual;
     GUI gui;
 
     //Data data;
@@ -29,7 +29,7 @@ public class RenderArea extends PApplet
         query = new Query();
 
         heightMapGraph = new HeatMapGraph(this);
-        vis1 = new VendorVisual(this);
+        vendorVisual = new VendorVisual(this);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.draw();
                 break;
             case 1:
-                vis1.draw();
+                vendorVisual.draw();
                 break;
         }
     }
@@ -55,7 +55,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.mousePressed(e);
                 break;
             case 1:
-                vis1.mousePressed(e);
+                vendorVisual.mousePressed(e);
                 break;
         }
     }
@@ -69,7 +69,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.mouseDragged(e);
                 break;
             case 1:
-                vis1.mouseDragged(e);
+                vendorVisual.mouseDragged(e);
                 break;
         }
     }
@@ -83,7 +83,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.mouseReleased(e);
                 break;
             case 1:
-                vis1.mouseReleased(e);
+                vendorVisual.mouseReleased(e);
                 break;
         }
     }
@@ -97,7 +97,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.keyPressed(e);
                 break;
             case 1:
-                vis1.keyPressed(e);
+                vendorVisual.keyPressed(e);
                 break;
         }
     }
