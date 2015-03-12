@@ -40,7 +40,7 @@ public class TripAnimator
         this.renderArea = renderArea;
         bg = renderArea.loadImage("res/newyork.png");
         // sample trip from small csv
-        trip = new Trip(1, "N", 100, 3, 600, (float) 10.5, (float) -73.978165, (float) 40.757977, (float) -73.989838, (float) 40.751171);
+        // trip = new Trip(1, "N", 100, 3, 600, (float) 10.5, (float) -73.978165, (float) 40.757977, (float) -73.989838, (float) 40.751171); // sample data
         testTaxi = new TaxiDrawable(trip);
         
         int count = 0;

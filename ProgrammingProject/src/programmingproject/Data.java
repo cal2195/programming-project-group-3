@@ -54,6 +54,10 @@ public class Data
     static final String PICKUPLAT = "pickup_latitude";
     static final String DROPOFFLONG = "dropoff_longitude";
     static final String DROPOFFLAT = "dropoff_latitude";
+    
+    // vendorID string in file
+    public static final String VENDOR_CMT = "CMT";  // Trip.vendorID = True
+    public static final String VENDOR_VTS = "VTS";  // Trip.vendorID = False
 
     int numberOfRecords;
     int errorCount = 0;
@@ -129,7 +133,7 @@ public class Data
                 Taxi temp = taxis.get(new Integer(currentLine[0]));
                 try
                 {
-                    temp.addTrip(new Trip(Integer.parseInt(currentLine[3]), currentLine[4], Integer.parseInt(currentLine[5]), Integer.parseInt(currentLine[6]), Integer.parseInt(currentLine[7]), Float.parseFloat(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12])));
+                    temp.addTrip(new Trip(currentLine[2].equals("CMT"), Integer.parseInt(currentLine[3]), currentLine[4], Integer.parseInt(currentLine[5]), Integer.parseInt(currentLine[6]), Integer.parseInt(currentLine[7]), Float.parseFloat(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12])));
                 } catch (ArrayIndexOutOfBoundsException exception)
                 {
                     //exception.printStackTrace();

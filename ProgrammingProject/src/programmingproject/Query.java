@@ -61,7 +61,7 @@ public class Query
             
             while (results.next())
             {
-                trips.add(new Trip(results.getInt("rate_code"), results.getString("store_and_fwd_flag"), results.getInt("pickup_datetime"), results.getInt("passenger_count"), results.getInt("trip_time"), results.getFloat("trip_distance"), results.getFloat("pickup_long"), results.getFloat("pickup_lat"), results.getFloat("dropoff_long"), results.getFloat("dropoff_lat")));
+                trips.add(new Trip(results.getString("vendor_id").equals(Data.VENDOR_CMT) ,results.getInt("rate_code"), results.getString("store_and_fwd_flag"), results.getInt("pickup_datetime"), results.getInt("passenger_count"), results.getInt("trip_time"), results.getFloat("trip_distance"), results.getFloat("pickup_long"), results.getFloat("pickup_lat"), results.getFloat("dropoff_long"), results.getFloat("dropoff_lat")));
             }
         } catch (SQLException ex)
         {
