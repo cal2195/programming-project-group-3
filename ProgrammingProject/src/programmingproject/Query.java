@@ -35,7 +35,7 @@ public class Query
     
     public ArrayList<Trip> GIVEME500LATENIGHTTAXISPLEASE()
     {
-        return getTrips("SELECT * FROM taxi_data WHERE (pickup_datetime % 86400) > 75600 LIMIT 0,100");
+        return getTrips("SELECT * FROM taxi_data WHERE (pickup_datetime % 86400) > 75600 LIMIT 0,500");
     }
 
     public ArrayList<Trip> getAllTrips()
