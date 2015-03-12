@@ -7,14 +7,16 @@ package programmingproject;
 public class Trip
 {
     int pickupTime;
+    boolean vendorID;   // 'CMT' corresponds to True; 'VTS' corresponds to False
     boolean[] flags = new boolean[1]; //flags is currently[storeAndFwdFlag], but we can use this to store useful data like evening/etc
     int rateCode, passengers, time;
     float distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
 
-    public Trip(int rateCode, String storeAndFwdFlag, int pickupTime, int passengers, 
+    public Trip(boolean vendorID, int rateCode, String storeAndFwdFlag, int pickupTime, int passengers, 
             int time, float distance, float pickupLong, float pickupLat, float dropoffLong, float dropoffLat)
     {
         this.pickupTime = pickupTime;
+        this.vendorID = vendorID;
         this.flags[0] = storeAndFwdFlag.equals("Y");
         this.rateCode = rateCode;
         this.passengers = passengers;
