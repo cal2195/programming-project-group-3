@@ -40,8 +40,8 @@ public class TripAnimator
         this.renderArea = renderArea;
         bg = renderArea.loadImage("res/newyork.png");
         // sample trip from small csv
-        // trip = new Trip(1, "N", 100, 3, 600, (float) 10.5, (float) -73.978165, (float) 40.757977, (float) -73.989838, (float) 40.751171); // sample data
-        testTaxi = new TaxiDrawable(trip);
+        //trip = new Trip(1, "N", 100, 3, 600, (float) 10.5, (float) -73.978165, (float) 40.757977, (float) -73.989838, (float) 40.751171);
+        //testTaxi = new TaxiDrawable(trip);
         
         int count = 0;
 
@@ -76,19 +76,6 @@ public class TripAnimator
             renderArea.popMatrix();
         }
 
-        
-        //easy trigger for when to draw taxies
-        frames++;
-        if(frames == 100){
-            setData(renderArea.query.getTripsForMonth(1));
-            switchData();
-        }
-        
-        testTaxi.draw(renderArea);
-        testTaxi.moveAndCheck();
-        
-        System.out.println(frames);
-//      System.out.println("frame drawn");
     }
 
     public void switchData(ArrayList<Trip> data)
@@ -126,6 +113,11 @@ public class TripAnimator
         queuedTrips = data;
     }
 
+    public void reset()
+    {
+        minimize = true;
+        cars.clear();
+    }
     public void switchData()
     {
         trips = queuedTrips;
@@ -140,14 +132,20 @@ public class TripAnimator
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
-            setData(renderArea.query.getTripsForMonth(1));
+            setData(renderArea.query.getTripsForMonth(1, 1000));
+            reset();
+            switchData();
 
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
-            setData(renderArea.query.getTripsForMonth(2));
+            setData(renderArea.query.getTripsForMonth(2, 1000));
+            reset();
+            switchData();
         } else if (e.getKeyCode() == KeyEvent.VK_3)
         {
-            setData(renderArea.query.getTripsForMonth(3));
+            setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
+            reset();
+            switchData();
         }
     }
 }
