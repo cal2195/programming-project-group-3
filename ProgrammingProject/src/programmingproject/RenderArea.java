@@ -13,7 +13,7 @@ public class RenderArea extends PApplet
 
     int currentScreen = 1; //0: HeightMapGraph; 1: Visualisation1
     HeatMapGraph heightMapGraph;
-    Visualisation1 vis1;
+    VendorVisual vis1;
     GUI gui;
 
     //Data data;
@@ -29,7 +29,7 @@ public class RenderArea extends PApplet
         query = new Query();
 
         heightMapGraph = new HeatMapGraph(this);
-        vis1 = new Visualisation1(this);
+        vis1 = new VendorVisual(this);
     }
 
     @Override
@@ -53,6 +53,9 @@ public class RenderArea extends PApplet
         {
             case 0:
                 heightMapGraph.mousePressed(e);
+                break;
+            case 1:
+                vis1.mousePressed(e);
                 break;
         }
     }
@@ -92,6 +95,9 @@ public class RenderArea extends PApplet
         {
             case 0:
                 heightMapGraph.keyPressed(e);
+                break;
+            case 1:
+                vis1.keyPressed(e);
                 break;
         }
     }
