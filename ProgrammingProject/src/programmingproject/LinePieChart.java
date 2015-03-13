@@ -96,7 +96,7 @@ public class LinePieChart {
             ArrayList<Trip> currentTrips;
             currentTrips = randomTaxi.getTrips();
             int randomTrip = (int)renderArea.random(currentTrips.size());
-            timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime);
+            timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime)%SECONDS_PER_DAY;
             timeAndPassengers[count][1] = currentTrips.get(randomTrip).passengers;
             System.out.println("----------" + timeAndPassengers[count][0]);
         }
@@ -108,8 +108,8 @@ public class LinePieChart {
         {
             
             int angle =  timeAndPassengers[count][0] *360;
-            int xPosition = (int)(264*Math.sin(angle))+683;
-            int yPosition = (int)(264*Math.cos(angle))+352;
+            int xPosition = (int)(264*Math.sin(angle))+renderArea.width/2;
+            int yPosition = (int)(264*Math.cos(angle))+renderArea.height/2;
             positions[count][0] = xPosition;
             positions[count][1] = yPosition;
             positions[count][2] = (timeAndPassengers[count][1])*8+20;
@@ -120,12 +120,26 @@ public class LinePieChart {
     {
         for(int count = 0; count < positions.length ; count++)
         {
+            renderArea.fill(0,120,255);
+            
+            for(int zPos = 0; zPos <= positions[count][2] ; zPos++){
+                renderArea.pushMatrix();
+                renderArea.translate(positions[count][0],positions[count][1],zPos);
+                renderArea.box(1);
+                renderArea.popMatrix();
+            } 
             renderArea.pushMatrix();
-            renderArea.fill(0,0,255);
-            renderArea.translate(positions[count][0],positions[count][1],positions[count][2]);
-            renderArea.box(1);
+            renderArea.line(positions[count][0], positions[count][1], positions[count][2], renderArea.width/2, renderArea.height/2, positions[count][2]);
             renderArea.popMatrix();
         }
+       
+        for(int zPos = 0 ; zPos <= 52; zPos++){
+            renderArea.pushMatrix();
+            renderArea.translate(renderArea.width/2,renderArea.height/2,zPos);
+            renderArea.box(5);
+            renderArea.popMatrix();
+        }
+        
     }
      
     
