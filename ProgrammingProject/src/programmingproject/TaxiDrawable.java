@@ -5,6 +5,10 @@
  */
 package programmingproject;
 
+import de.fhpotsdam.unfolding.UnfoldingMap;
+import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.utils.ScreenPosition;
+
 /**
  *
  * @author Dan
@@ -19,22 +23,19 @@ public class TaxiDrawable
     private final short DEATHFRAMES = 10;
     private final short SPEEDFACTOR = 2;
 
-    TaxiDrawable(float x0, float y0)
-    {
-        x = Data.longToXPos(x, 1000);
-        y = Data.latToYPos(y, 600);
-    }
-
-    TaxiDrawable(Trip trip)
+    TaxiDrawable(Trip trip, UnfoldingMap map)
     {
         float latitude = trip.pickupLat;
         float longitude = trip.pickupLong;
-        x = Data.longToXPos(longitude, 1000);
-        y = Data.latToYPos(latitude, 600);
+        ScreenPosition screenPosition = map.getScreenPosition(new Location(latitude, longitude));
+        x = screenPosition.x;
+        y = screenPosition.y;
+        
         latitude = trip.dropoffLat;
         longitude = trip.dropoffLong;
-        endx = Data.longToXPos(longitude, 1000);
-        endy = Data.latToYPos(latitude, 600);
+        screenPosition = map.getScreenPosition(new Location(latitude, longitude));
+        endx = screenPosition.x;
+        endy = screenPosition.y;
 
         dx = SPEEDFACTOR * (endx - x) / trip.time;
         dy = SPEEDFACTOR * (endy - y) / trip.time;
