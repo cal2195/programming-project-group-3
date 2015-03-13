@@ -105,6 +105,8 @@ public class HeatMapGraph
 
     public void draw()
     {
+        renderArea.pushStyle();
+        renderArea.pushMatrix();
         
         if (minimize)
         {
@@ -122,6 +124,8 @@ public class HeatMapGraph
             percent += 0.05;
         }
         
+        renderArea.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
+       
         renderArea.fill(255, 0, 0, 100f);
 
         for (int i = 0; i < GRID_WIDTH; i++)
@@ -138,6 +142,9 @@ public class HeatMapGraph
                 }
             }
         }
+        
+        renderArea.popMatrix();
+        renderArea.popStyle();
     }
 
     public void keyPressed(KeyEvent e)
