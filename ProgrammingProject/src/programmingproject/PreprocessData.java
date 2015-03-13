@@ -16,15 +16,13 @@ import java.util.logging.Logger;
 public class PreprocessData
 {
 
-    String dataFile = "";
     ArrayList<String> medallions = new ArrayList<>();
     ArrayList<String> hacks = new ArrayList<>();
     PrintWriter out;
     PrintWriter meds, hack;
 
-    public PreprocessData(String file)
+    public PreprocessData(String file, String file2)
     {
-        dataFile = file;
         try
         {
             out = new PrintWriter("taxi_data.csv");
@@ -34,11 +32,12 @@ public class PreprocessData
         {
             Logger.getLogger(PreprocessData.class.getName()).log(Level.SEVERE, null, ex);
         }
-        processData();
+        processData(file);
+        processData(file2);
         //writeAuxDataFiles();
     }
 
-    public void processData()
+    public void processData(String dataFile)
     {
         BufferedReader buff = null;
         try
@@ -103,18 +102,6 @@ public class PreprocessData
         } catch (IOException ex)
         {
             Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-        } finally
-        {
-            try
-            {
-                buff.close();
-                out.close();
-                meds.close();
-                hack.close();
-            } catch (IOException ex)
-            {
-                Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
 

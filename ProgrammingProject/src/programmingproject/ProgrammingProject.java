@@ -36,7 +36,8 @@ public class ProgrammingProject extends PApplet
     
     public static void main(String[] args)
     {
-        new ProgrammingProject();
-        //new PreprocessData("M:\\cal\\googledrive\\Git\\programming-project-group-3\\ProgrammingProject\\res\\trip_data_1.csv");
+        //new ProgrammingProject();
+        new PreprocessData("/home/cal/NetBeansProjects/programming-project-group-3/ProgrammingProject/res/trip_data_1.csv",
+                           "/home/cal/NetBeansProjects/programming-project-group-3/ProgrammingProject/res/trip_data_2.csv");
     }
 }
