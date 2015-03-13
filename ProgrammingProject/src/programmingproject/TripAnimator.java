@@ -49,6 +49,7 @@ public class TripAnimator
 
     public void draw()
     {
+        renderArea.pushStyle();
         renderArea.background(179, 209, 255);
 
         if (demoMode)
@@ -75,7 +76,7 @@ public class TripAnimator
             car.moveAndCheck();
             renderArea.popMatrix();
         }
-
+        renderArea.popStyle();
     }
 
     public void switchData(ArrayList<Trip> data)
