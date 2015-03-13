@@ -98,6 +98,7 @@ public class LinePieChart {
             int randomTrip = (int)renderArea.random(currentTrips.size());
             timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime);
             timeAndPassengers[count][1] = currentTrips.get(randomTrip).passengers;
+            System.out.println("----------" + timeAndPassengers[count][0]);
         }
     }
     
@@ -107,13 +108,11 @@ public class LinePieChart {
         {
             
             int angle =  timeAndPassengers[count][0] *360;
-            System.out.println(timeAndPassengers[count][0] + "----------------" + angle);
-            int xPosition = (int)(250*Math.sin(angle))+675;
-            int yPosition = (int)(250*Math.cos(angle))+350;
+            int xPosition = (int)(264*Math.sin(angle))+683;
+            int yPosition = (int)(264*Math.cos(angle))+352;
             positions[count][0] = xPosition;
             positions[count][1] = yPosition;
-            positions[count][2] = (timeAndPassengers[count][1])*10+20;
-            System.out.println(positions[count][0]+ "  " + positions[count][1] + "  " +positions[count][2]);
+            positions[count][2] = (timeAndPassengers[count][1])*8+20;
         }
     }
     
@@ -124,7 +123,7 @@ public class LinePieChart {
             renderArea.pushMatrix();
             renderArea.fill(0,0,255);
             renderArea.translate(positions[count][0],positions[count][1],positions[count][2]);
-            renderArea.box(2);
+            renderArea.box(1);
             renderArea.popMatrix();
         }
     }
