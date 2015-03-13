@@ -13,7 +13,7 @@ public class RenderArea extends PApplet
 
     int currentScreen = 1; //0: HeightMapGraph; 1: Visualisation1
     HeatMapGraph heightMapGraph;
-    VendorVisual vis1;
+    VendorVisual vendorVisual;
     TripAnimator tripAnimator;
     
     GUI gui;
@@ -31,7 +31,7 @@ public class RenderArea extends PApplet
         query = new Query();
 
         heightMapGraph = new HeatMapGraph(this);
-        vis1 = new VendorVisual(this);
+        vendorVisual = new VendorVisual(this);
         tripAnimator = new TripAnimator(this);
     }
 
@@ -44,7 +44,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.draw();
                 break;
             case 1:
-                vis1.draw();
+                vendorVisual.draw();
                 break;
             case 2:
                 tripAnimator.draw();
@@ -61,7 +61,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.mousePressed(e);
                 break;
             case 1:
-                vis1.mousePressed(e);
+                vendorVisual.mousePressed(e);
                 break;
             case 2:
                 tripAnimator.mousePressed(e);
@@ -78,7 +78,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.mouseDragged(e);
                 break;
             case 1:
-                vis1.mouseDragged(e);
+                vendorVisual.mouseDragged(e);
                 break;
             case 2:
                 tripAnimator.mouseDragged(e);
@@ -95,7 +95,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.mouseReleased(e);
                 break;
             case 1:
-                vis1.mouseReleased(e);
+                vendorVisual.mouseReleased(e);
                 break;
             case 2:
                 tripAnimator.mouseReleased(e);
@@ -120,7 +120,7 @@ public class RenderArea extends PApplet
                 heightMapGraph.keyPressed(e);
                 break;
             case 1:
-                vis1.keyPressed(e);
+                vendorVisual.keyPressed(e);
                 break;
             case 2:
                 tripAnimator.keyPressed(e);
