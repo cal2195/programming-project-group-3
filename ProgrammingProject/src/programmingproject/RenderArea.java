@@ -11,14 +11,14 @@ import processing.core.PApplet;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 1; //0: HeightMapGraph; 1: Visualisation1
+    int currentScreen = 0; //0: HeightMapGraph; 1: Visualisation1
     HeatMapGraph heightMapGraph;
     VendorVisual vis1;
     TripAnimator tripAnimator;
+    MapGraphs mapGraphs;
     
     GUI gui;
 
-    //Data data;
     Query query;
 
     @Override
@@ -30,9 +30,10 @@ public class RenderArea extends PApplet
         //data = new Data("res/taxi_data.csv", this);
         query = new Query();
 
-        heightMapGraph = new HeatMapGraph(this);
-        vis1 = new VendorVisual(this);
-        tripAnimator = new TripAnimator(this);
+        mapGraphs = new MapGraphs(this);
+        //heightMapGraph = new HeatMapGraph(this);
+        //vis1 = new VendorVisual(this);
+        //tripAnimator = new TripAnimator(this);
     }
 
     @Override
@@ -41,13 +42,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.draw();
-                break;
-            case 1:
-                vis1.draw();
-                break;
-            case 2:
-                tripAnimator.draw();
+                mapGraphs.draw();
                 break;
         }
     }
@@ -58,13 +53,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.mousePressed(e);
-                break;
-            case 1:
-                vis1.mousePressed(e);
-                break;
-            case 2:
-                tripAnimator.mousePressed(e);
+                mapGraphs.mousePressed(e);
                 break;
         }
     }
@@ -75,13 +64,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.mouseDragged(e);
-                break;
-            case 1:
-                vis1.mouseDragged(e);
-                break;
-            case 2:
-                tripAnimator.mouseDragged(e);
+                mapGraphs.mouseDragged(e);
                 break;
         }
     }
@@ -92,13 +75,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.mouseReleased(e);
-                break;
-            case 1:
-                vis1.mouseReleased(e);
-                break;
-            case 2:
-                tripAnimator.mouseReleased(e);
+                mapGraphs.mouseReleased(e);
                 break;
         }
     }
@@ -117,13 +94,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.keyPressed(e);
-                break;
-            case 1:
-                vis1.keyPressed(e);
-                break;
-            case 2:
-                tripAnimator.keyPressed(e);
+                mapGraphs.keyPressed(e);
                 break;
         }
     }
