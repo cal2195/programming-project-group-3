@@ -24,8 +24,9 @@ public class MapGraphs
     boolean demoMode = true;
     
     //Graphs
-    int currentGraph = 0; //0: heatMapGraph
+    int currentGraph = 1; //0: heatMapGraph; 1: TripAnimator
     HeatMapGraph heatMapGraph;
+    TripAnimator tripAnimator;
 
     public MapGraphs(RenderArea renderArea)
     {
@@ -39,6 +40,7 @@ public class MapGraphs
         map.panTo(new Location(40.731416f, -73.990667f));
         
         heatMapGraph = new HeatMapGraph(renderArea, this);
+        tripAnimator = new TripAnimator(renderArea, this);
     }
 
     public void draw()
@@ -61,14 +63,17 @@ public class MapGraphs
         renderArea.rotateZ(cameraX);
         map.draw();
         //renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
-
-        renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
+        
+        //renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
         
         //Draw whichever visualisation is active
         switch (currentGraph)
         {
             case 0:
                 heatMapGraph.draw();
+                break;
+            case 1:
+                tripAnimator.draw();
                 break;
         }
         
@@ -103,6 +108,9 @@ public class MapGraphs
         {
             case 0:
                 heatMapGraph.keyPressed(e);
+                break;
+            case 1:
+                tripAnimator.keyPressed(e);
                 break;
         }
     }
