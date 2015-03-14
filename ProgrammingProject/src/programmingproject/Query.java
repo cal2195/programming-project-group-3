@@ -13,7 +13,6 @@ import java.util.logging.Logger;
  */
 public class Query
 {
-
     TaxiDatabase taxiDatabase;
     Data data;
 
@@ -28,9 +27,19 @@ public class Query
         return getTrips("SELECT * FROM taxi_data WHERE medallion = " + medallion + " LIMIT 0,1000");
     }
 
+    public ArrayList<Trip> getTripsForMonth(int month, int limit)
+    {
+        return getTrips("SELECT * FROM taxi_data WHERE pickup_datetime > " + DateTime.SECONDS_TILL_MONTH_STARTS[month - 1] + " AND pickup_datetime < " + DateTime.SECONDS_TILL_MONTH_STARTS[month] + " LIMIT 0," + limit);
+    }
+    
     public ArrayList<Trip> getTripsForMonth(int month)
     {
         return getTrips("SELECT * FROM taxi_data WHERE pickup_datetime > " + DateTime.SECONDS_TILL_MONTH_STARTS[month - 1] + " AND pickup_datetime < " + DateTime.SECONDS_TILL_MONTH_STARTS[month] + " LIMIT 0,5000");
+    }
+    
+    public ArrayList<Trip> GIVEME500LATENIGHTTAXISPLEASE(boolean withACherryOnTop)
+    {
+        return getTrips("SELECT * FROM taxi_data WHERE (pickup_datetime % 86400) > 75600 LIMIT 0,500");
     }
 
     public ArrayList<Trip> getAllTrips()
@@ -61,7 +70,7 @@ public class Query
             
             while (results.next())
             {
-                trips.add(new Trip(results.getInt("rate_code"), results.getString("store_and_fwd_flag"), results.getInt("pickup_datetime"), results.getInt("passenger_count"), results.getInt("trip_time"), results.getFloat("trip_distance"), results.getFloat("pickup_long"), results.getFloat("pickup_lat"), results.getFloat("dropoff_long"), results.getFloat("dropoff_lat")));
+                trips.add(new Trip(results.getString("vendor_id").equals(Data.VENDOR_CMT), results.getInt("rate_code"), results.getString("store_and_fwd_flag"), results.getInt("pickup_datetime"), results.getInt("passenger_count"), results.getInt("trip_time"), results.getFloat("trip_distance"), results.getFloat("pickup_long"), results.getFloat("pickup_lat"), results.getFloat("dropoff_long"), results.getFloat("dropoff_lat")));
             }
         } catch (SQLException ex)
         {

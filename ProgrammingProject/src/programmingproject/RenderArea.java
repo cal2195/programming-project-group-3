@@ -11,12 +11,14 @@ import processing.core.PApplet;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 0; //0: HeightMapGraph
+    int currentScreen = 0; //0: HeightMapGraph; 1: Visualisation1
     HeatMapGraph heightMapGraph;
-    LocationVisualization locationVis;
+    VendorVisual vis1;
+    TripAnimator tripAnimator;
+    MapGraphs mapGraphs;
+    
     GUI gui;
 
-    //Data data;
     Query query;
 
     @Override
@@ -27,8 +29,11 @@ public class RenderArea extends PApplet
         //gui = new GUI(this);
         //data = new Data("res/taxi_data.csv", this);
         query = new Query();
-        locationVis = new LocationVisualization(this);
-        heightMapGraph = new HeatMapGraph(this);
+
+        mapGraphs = new MapGraphs(this);
+        //heightMapGraph = new HeatMapGraph(this);
+        //vis1 = new VendorVisual(this);
+        //tripAnimator = new TripAnimator(this);
     }
 
     @Override
@@ -37,7 +42,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                locationVis.draw();
+                mapGraphs.draw();
                 break;
         }
     }
@@ -48,7 +53,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                locationVis.mousePressed(e);
+                mapGraphs.mousePressed(e);
                 break;
         }
     }
@@ -59,7 +64,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                locationVis.mouseDragged(e);
+                mapGraphs.mouseDragged(e);
                 break;
         }
     }
@@ -70,7 +75,7 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                locationVis.mouseReleased(e);
+                mapGraphs.mouseReleased(e);
                 break;
         }
     }
@@ -78,10 +83,18 @@ public class RenderArea extends PApplet
     @Override
     public void keyPressed(KeyEvent e)
     {
+        if (e.getKeyCode()== KeyEvent.VK_ENTER)
+        {
+            currentScreen++;
+            if(currentScreen > 2)
+            {
+                currentScreen = 0;
+            }
+        }
         switch (currentScreen)
         {
             case 0:
-                locationVis.keyPressed(e);
+                mapGraphs.keyPressed(e);
                 break;
         }
     }

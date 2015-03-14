@@ -2,7 +2,6 @@ package programmingproject;
 
 import controlP5.ControlP5;
 import controlP5.ListBox;
-import controlP5.ListBoxItem;
 
 /**
  *
