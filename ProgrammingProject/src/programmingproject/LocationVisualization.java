@@ -55,5 +55,33 @@ public class LocationVisualization
         renderArea.popStyle();
     } 
     
-
+    public void reset()
+    {
+        for(LocationDrawable l : locations)
+            l.visitors = 0;
+    }
+    
+    public void setData(ArrayList<Trip> trips)
+    {
+        for(LocationDrawable l : locations)
+            l.setData(trips);
+    }
+    
+    
+     public void keyPressed(KeyEvent e)
+    {
+        if (e.getKeyCode() == KeyEvent.VK_1)
+        {
+            reset();
+            setData(renderArea.query.getTripsForMonth(1, 1000));
+        } else if (e.getKeyCode() == KeyEvent.VK_2)
+        {
+            reset();
+            setData(renderArea.query.getTripsForMonth(2, 1000)); 
+        } else if (e.getKeyCode() == KeyEvent.VK_3)
+        {
+            reset();
+            setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
+        }
+    }
 }    
