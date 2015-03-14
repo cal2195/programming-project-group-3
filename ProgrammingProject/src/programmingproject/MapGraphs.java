@@ -117,6 +117,8 @@ public class MapGraphs
             case 1:
                 tripAnimator.keyPressed(e);
                 break;
+            case 2:
+                location.keyPressed(e);
         }
     }
 }
