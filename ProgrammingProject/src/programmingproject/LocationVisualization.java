@@ -22,17 +22,7 @@ public class LocationVisualization
     ArrayList<LocationDrawable> locations;
      RenderArea renderArea;
       MapGraphs mapGraphs;
-
-    //Constants
-    int mapWidth = 2000, mapHeight = 1500;
     LocationDrawable test;
-
-    //Camera Rotation
-    float cameraX, cameraY;
-    MouseEvent lastMousePosition;
-    float MOUSE_SENSITIVITY = 300f;
-    boolean demoMode = true;
-    boolean minimize = false;
     int frames = 0;
     
     public LocationVisualization(RenderArea area, MapGraphs mapGraphs){
