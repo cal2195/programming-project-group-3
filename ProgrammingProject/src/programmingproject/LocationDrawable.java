@@ -7,6 +7,7 @@ package programmingproject;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import static processing.core.PConstants.TRIANGLE_FAN;
 
@@ -20,6 +21,7 @@ public class LocationDrawable {
     float x;
     float y;
     String name;
+    SimplePointMarker marker;
     
     
     public LocationDrawable(float lat, float lon, String name, UnfoldingMap map)
@@ -30,16 +32,18 @@ public class LocationDrawable {
         ScreenPosition screenPosition = map.getScreenPosition(new Location(lat, lon));
         x = screenPosition.x;
         y = screenPosition.y;
+        marker = new SimplePointMarker(new Location(lat,lon));
     }
     
     public void draw(RenderArea renderArea)
     {
-        renderArea.translate(x, y, 4);
-        renderArea.stroke(0);
-        renderArea.fill(255, 240, 0);
-        renderArea.box(3, 3, 8);
-        renderArea.noStroke();
-        //drawPyramid(x,y,10,area);
+       renderArea.translate(x, y, 4);
+       renderArea.stroke(0);
+       renderArea.fill(255, 240, 0);
+       renderArea.box(3, 3, 8);
+       renderArea.noStroke();
+       renderArea.fill(0);
+       renderArea.text(name,0,0);
     }
 
 }
