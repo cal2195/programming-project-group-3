@@ -31,9 +31,9 @@ public class RenderArea extends PApplet
         query = new Query();
 
         mapGraphs = new MapGraphs(this);
-        //heightMapGraph = new HeatMapGraph(this);
+        //heightMapGraph = new HeatMapGraph(this, mapGraphs);
         //vis1 = new VendorVisual(this);
-        //tripAnimator = new TripAnimator(this);
+       // tripAnimator = new TripAnimator(this, mapGraphs);
     }
 
     @Override
@@ -43,6 +43,7 @@ public class RenderArea extends PApplet
         {
             case 0:
                 mapGraphs.draw();
+
                 break;
         }
     }
@@ -95,6 +96,7 @@ public class RenderArea extends PApplet
         {
             case 0:
                 mapGraphs.keyPressed(e);
+
                 break;
         }
     }
