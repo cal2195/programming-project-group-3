@@ -72,29 +72,5 @@ public class LocationVisualization
 
     } 
     
-    public void mousePressed(MouseEvent e)
-    {
-        demoMode = false;
-    }
 
-    public void mouseDragged(MouseEvent e)
-    {
-        if (lastMousePosition == null)
-        {
-            lastMousePosition = e;
-        }
-        cameraX -= (e.getXOnScreen() - lastMousePosition.getXOnScreen()) / MOUSE_SENSITIVITY;
-        cameraY -= (e.getYOnScreen() - lastMousePosition.getYOnScreen()) / MOUSE_SENSITIVITY;
-        lastMousePosition = e;
-    }
-
-    public void mouseReleased(MouseEvent e)
-    {
-        lastMousePosition = null;
-    }
-    
-    public void keyPressed(KeyEvent e)
-    {
-        
-    }
 }    
