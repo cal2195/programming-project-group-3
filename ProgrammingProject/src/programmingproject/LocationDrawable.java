@@ -8,7 +8,7 @@ package programmingproject;
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.utils.ScreenPosition;
-
+import static processing.core.PConstants.TRIANGLE_FAN;
 
 /**
  *
