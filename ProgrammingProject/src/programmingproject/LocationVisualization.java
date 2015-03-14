@@ -26,7 +26,6 @@ public class LocationVisualization
     //Constants
     int mapWidth = 2000, mapHeight = 1500;
     LocationDrawable test;
-    PImage bg;
 
     //Camera Rotation
     float cameraX, cameraY;
@@ -38,6 +37,7 @@ public class LocationVisualization
     
     public LocationVisualization(RenderArea area, MapGraphs mapGraphs){
         this.mapGraphs = mapGraphs;
+        this.renderArea = area;
         locations = new ArrayList<LocationDrawable>();
         locations.add(new LocationDrawable((float)40.7484,(float)73.9857,"Empire State Building", mapGraphs.map)); //Empire State building
         locations.add(new LocationDrawable((float)40.7116,(float)74.0123, "Ground Zero", mapGraphs.map)); //ground zero
@@ -47,9 +47,6 @@ public class LocationVisualization
         locations.add(new LocationDrawable((float)40.7833,(float)73.9667, "Central Park", mapGraphs.map)); //Central park
         locations.add(new LocationDrawable((float)40.7494,(float)73.9681,"UN HQ", mapGraphs.map)); //UN HQ
         test = new LocationDrawable((float)40.7455, (float)73.7777, "test", mapGraphs.map);
-        this.renderArea = area;
-        bg = renderArea.loadImage("res/newyork.png");
-        
     }
     
     public void draw()

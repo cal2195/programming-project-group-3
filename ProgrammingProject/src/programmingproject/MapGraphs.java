@@ -24,9 +24,10 @@ public class MapGraphs
     boolean demoMode = true;
     
     //Graphs
-    int currentGraph = 1; //0: heatMapGraph; 1: TripAnimator
+    int currentGraph = 2; //0: heatMapGraph; 1: TripAnimator
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
+    LocationVisualization location;
 
     public MapGraphs(RenderArea renderArea)
     {
@@ -41,6 +42,7 @@ public class MapGraphs
         
         heatMapGraph = new HeatMapGraph(renderArea, this);
         tripAnimator = new TripAnimator(renderArea, this);
+        location = new LocationVisualization(renderArea, this);
     }
 
     public void draw()
@@ -74,6 +76,9 @@ public class MapGraphs
                 break;
             case 1:
                 tripAnimator.draw();
+                break;
+            case 2:
+                location.draw();
                 break;
         }
         
