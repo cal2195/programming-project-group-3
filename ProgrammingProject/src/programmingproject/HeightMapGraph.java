@@ -1,7 +1,6 @@
 package programmingproject;
 
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
 import java.util.Random;
 import processing.core.PImage;
 

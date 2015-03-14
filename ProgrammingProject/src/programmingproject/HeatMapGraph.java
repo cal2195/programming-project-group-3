@@ -1,23 +1,19 @@
 package programmingproject;
 
-import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
-import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
-import processing.core.PImage;
 
 /**
- *
+ * 
  * @author cal
  */
 public class HeatMapGraph
 {
-
     RenderArea renderArea;
+    MapGraphs mapGraphs;
 
     //Constants
     final int GRID_WIDTH = 135;
@@ -28,30 +24,16 @@ public class HeatMapGraph
 
     ArrayList<Trip> trips = new ArrayList<>();
     ArrayList<Trip> queuedTrips = new ArrayList<>();
-
-    PImage bg;
-    UnfoldingMap map;
-    int mapWidth = 2000, mapHeight = 1500;
+    
     Tower[][] gridOfTowers;
     float percent = 1f;
     Random random = new Random();
-
-    //Camera Rotation
-    float cameraX, cameraY;
-    MouseEvent lastMousePosition;
-    float MOUSE_SENSITIVITY = 300f;
-    boolean demoMode = true;
     boolean minimize = false;
 
-    public HeatMapGraph(RenderArea renderArea)
+    public HeatMapGraph(RenderArea renderArea, MapGraphs mapGraphs)
     {
-        this.renderArea = renderArea;
-        bg = renderArea.loadImage("res/newyork.png");
-
-        //Wanna try a different map?
-        //Replace the last parameter with one of these!! http://unfoldingmaps.org/javadoc/index.html?de/fhpotsdam/unfolding/providers/package-summary.html
-        map = new UnfoldingMap(renderArea, -mapWidth / 2, -mapHeight / 2, mapWidth, mapHeight, new Google.GoogleMapProvider());
-        map.zoomAndPanTo(12, new Location(40.731416f, -73.990667f));
+        this.renderArea = renderArea;   
+        this.mapGraphs = mapGraphs;
 
         gradient = new Gradient(renderArea);
         gradient.addColor(renderArea.color(0, 0, 0));
@@ -88,12 +70,12 @@ public class HeatMapGraph
         {
             float latitude = trip.dropoffLat;
             float longitude = trip.dropoffLong;
-            ScreenPosition pos = map.getScreenPosition(new Location(latitude, longitude));
+            ScreenPosition pos = mapGraphs.map.getScreenPosition(new Location(latitude, longitude));
             int relX = (int) (pos.x);
             int relY = (int) (pos.y);
 
-            int x = (int) RenderArea.map(relX, -mapWidth / 2, mapWidth / 2, 0, GRID_WIDTH);
-            int y = (int) RenderArea.map(relY, -mapHeight / 2, mapHeight / 2, 0, GRID_HEIGHT);
+            int x = (int) RenderArea.map(relX, -mapGraphs.mapWidth / 2, mapGraphs.mapWidth / 2, 0, GRID_WIDTH);
+            int y = (int) RenderArea.map(relY, -mapGraphs.mapHeight / 2, mapGraphs.mapHeight / 2, 0, GRID_HEIGHT);
 
             if (x < GRID_WIDTH && x > 0 && y < GRID_HEIGHT && y > 0)
             {
@@ -123,8 +105,9 @@ public class HeatMapGraph
 
     public void draw()
     {
+        renderArea.pushStyle();
         renderArea.pushMatrix();
-        renderArea.background(179, 209, 255);//renderArea.background(0);
+        
         if (minimize)
         {
             if (percent > 0f)
@@ -140,25 +123,11 @@ public class HeatMapGraph
         {
             percent += 0.05;
         }
-
-        if (demoMode)
-        {
-            if (cameraY < 1)
-            {
-                cameraY += 0.005f;
-            }
-            cameraX += 0.001f;
-        }
-
-        renderArea.translate(renderArea.width / 2, renderArea.height / 2, 1);
-        renderArea.rotateX(cameraY);
-        renderArea.rotateZ(cameraX);
-        //renderArea.image(bg, -renderArea.width / 2, -renderArea.height / 2, renderArea.width, renderArea.height);
-        map.draw();
-        //renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
+        
+        renderArea.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
+       
         renderArea.fill(255, 0, 0, 100f);
 
-        renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
         for (int i = 0; i < GRID_WIDTH; i++)
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
@@ -166,37 +135,16 @@ public class HeatMapGraph
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     renderArea.pushMatrix();
-                    renderArea.translate((float) i * (mapWidth / (float) GRID_WIDTH), (float) ii * (mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
+                    renderArea.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
                     renderArea.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
-                    //renderArea.fill(255, (float) Math.log10((gridOfTowers[i][ii].height)) * 40, (float) Math.log10((gridOfTowers[i][ii].height)) * 15);
-                    renderArea.box(mapWidth / GRID_WIDTH, mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
+                    renderArea.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
                     renderArea.popMatrix();
                 }
             }
         }
-
+        
         renderArea.popMatrix();
-    }
-
-    public void mousePressed(MouseEvent e)
-    {
-        demoMode = false;
-    }
-
-    public void mouseDragged(MouseEvent e)
-    {
-        if (lastMousePosition == null)
-        {
-            lastMousePosition = e;
-        }
-        cameraX -= (e.getXOnScreen() - lastMousePosition.getXOnScreen()) / MOUSE_SENSITIVITY;
-        cameraY -= (e.getYOnScreen() - lastMousePosition.getYOnScreen()) / MOUSE_SENSITIVITY;
-        lastMousePosition = e;
-    }
-
-    public void mouseReleased(MouseEvent e)
-    {
-        lastMousePosition = null;
+        renderArea.popStyle();
     }
 
     public void keyPressed(KeyEvent e)
