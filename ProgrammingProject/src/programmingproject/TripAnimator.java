@@ -37,7 +37,6 @@ public class TripAnimator
         renderArea.pushMatrix();
 
         //renderArea.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
-
         for (TaxiDrawable car : cars)
         {
             renderArea.pushMatrix();
@@ -58,6 +57,8 @@ public class TripAnimator
     public void setData(ArrayList<Trip> data)
     {
         queuedTrips = data;
+        reset();
+        switchData();
     }
 
     public void reset()
@@ -81,19 +82,12 @@ public class TripAnimator
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
             setData(renderArea.query.getTripsForMonth(1, 1000));
-            reset();
-            switchData();
-
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
             setData(renderArea.query.getTripsForMonth(2, 1000));
-            reset();
-            switchData();
         } else if (e.getKeyCode() == KeyEvent.VK_3)
         {
             setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
-            reset();
-            switchData();
         }
     }
 }
