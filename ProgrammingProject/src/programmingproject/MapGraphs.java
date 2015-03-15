@@ -31,6 +31,7 @@ public class MapGraphs
     int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
+    AreaMapGraph areaMapGraph;
 
     public MapGraphs(RenderArea renderArea)
     {
@@ -45,6 +46,7 @@ public class MapGraphs
 
         heatMapGraph = new HeatMapGraph(renderArea, this);
         tripAnimator = new TripAnimator(renderArea, this);
+        areaMapGraph = new AreaMapGraph(renderArea, this);
     }
 
     public void draw()
@@ -81,6 +83,9 @@ public class MapGraphs
                 break;
             case 1:
                 tripAnimator.draw();
+                break;
+            case 2:
+                areaMapGraph.draw();
                 break;
         }
 
@@ -134,6 +139,9 @@ public class MapGraphs
                 break;
             case 1:
                 tripAnimator.keyPressed(e);
+                break;
+            case 2:
+                areaMapGraph.keyPressed(e);
                 break;
         }
     }

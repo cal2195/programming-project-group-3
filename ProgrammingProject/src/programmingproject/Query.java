@@ -47,6 +47,16 @@ public class Query
     {
         return getTrips("SELECT * FROM taxi_data WHERE pickup_datetime > " + DateTime.SECONDS_TILL_MONTH_STARTS[month - 1] + " AND pickup_datetime < " + DateTime.SECONDS_TILL_MONTH_STARTS[month] + " LIMIT 0,5000");
     }
+    
+    public ArrayList<Trip> getTaxisAtHour(int hour)
+    {
+        return getTrips("SELECT * FROM taxi_data WHERE pickup_datetime % " + DateTime.SECONDS_PER_DAY + " > " + DateTime.SECONDS_PER_HOUR * hour + " AND pickup_datetime % " + DateTime.SECONDS_PER_DAY+ " < " + DateTime.SECONDS_PER_HOUR * (hour + 1) + " LIMIT 0,5000");
+    }
+    
+    public ArrayList<Trip> getTaxisAtHour(int hour, int limit)
+    {
+        return getTrips("SELECT * FROM taxi_data WHERE pickup_datetime % " + DateTime.SECONDS_PER_DAY + " > " + DateTime.SECONDS_PER_HOUR * hour + " AND pickup_datetime % " + DateTime.SECONDS_PER_DAY+ " < " + DateTime.SECONDS_PER_HOUR * (hour + 1) + " LIMIT 0," + limit);
+    }
 
     public ArrayList<Trip> GIVEME500LATENIGHTTAXISPLEASE(boolean withACherryOnTop)
     {

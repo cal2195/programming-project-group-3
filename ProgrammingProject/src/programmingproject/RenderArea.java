@@ -29,13 +29,9 @@ public class RenderArea extends PApplet
         size(width, height, P3D);
 
         gui = new GUI(this);
-        //data = new Data("res/taxi_data.csv", this);
         query = new Query();
 
         mapGraphs = new MapGraphs(this);
-        //heightMapGraph = new HeatMapGraph(this);
-        //vis1 = new VendorVisual(this);
-        //tripAnimator = new TripAnimator(this);
     }
 
     @Override
@@ -133,11 +129,15 @@ public class RenderArea extends PApplet
         if (theEvent.getController().getLabel().equals("Heat Map"))
         {
             mapGraphs.currentGraph = 0;
-            mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1));
+            mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 500000));
         } else if (theEvent.getController().getLabel().equals("Taxi Animator"))
         {
             mapGraphs.currentGraph = 1;
-            mapGraphs.tripAnimator.setData(query.getTripsForMonth(1));
+            mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 500000));
+        } else if (theEvent.getController().getLabel().equals("Area Map Graph"))
+        {
+            mapGraphs.currentGraph = 2;
+            mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 500000));
         }
     }
 }
