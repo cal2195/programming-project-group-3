@@ -11,7 +11,7 @@ import processing.core.PApplet;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 0; //0: HeightMapGraph; 1: Visualisation1
+    int currentScreen = 0;
     HeatMapGraph heightMapGraph;
     VendorVisual vis1;
     TripAnimator tripAnimator;
