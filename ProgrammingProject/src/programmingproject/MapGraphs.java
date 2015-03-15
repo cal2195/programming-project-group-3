@@ -5,6 +5,7 @@ import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.providers.Google;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  *
@@ -21,6 +22,7 @@ public class MapGraphs
     //Camera Rotation
     float cameraX, cameraY;
     float cameraTransX, cameraTransY;
+    float zoom;
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
@@ -60,7 +62,7 @@ public class MapGraphs
             cameraX += 0.001f;
         }
 
-        renderArea.translate(renderArea.width / 2, renderArea.height / 2, 1);
+        renderArea.translate(renderArea.width / 2, renderArea.height / 2, zoom);
         
         renderArea.rotateX(cameraY);
         renderArea.rotateZ(cameraX);
@@ -98,8 +100,6 @@ public class MapGraphs
             lastMousePosition = e;
         }
         
-        System.out.println(Math.cos(cameraX));
-        
         if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK)
         {
             cameraTransX += Math.cos(cameraX) * (e.getXOnScreen() - lastMousePosition.getXOnScreen()); //THIS
@@ -118,6 +118,11 @@ public class MapGraphs
     public void mouseReleased(MouseEvent e)
     {
         lastMousePosition = null;
+    }
+    
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        zoom -= e.getWheelRotation() * 20;
     }
 
     public void keyPressed(KeyEvent e)

@@ -2,6 +2,7 @@ package programmingproject;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import processing.core.PApplet;
 
 /**
@@ -80,6 +81,17 @@ public class RenderArea extends PApplet
         }
     }
 
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        switch (currentScreen)
+        {
+            case 0:
+                mapGraphs.mouseWheelMoved(e);
+                break;
+        }
+    }
+    
     @Override
     public void keyPressed(KeyEvent e)
     {
