@@ -1,7 +1,9 @@
 package programmingproject;
 
+import controlP5.ControlEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import processing.core.PApplet;
 
 /**
@@ -11,12 +13,12 @@ import processing.core.PApplet;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 0; //0: HeightMapGraph; 1: Visualisation1
+    int currentScreen = 0;
     HeatMapGraph heightMapGraph;
     VendorVisual vis1;
     TripAnimator tripAnimator;
     MapGraphs mapGraphs;
-    
+
     GUI gui;
 
     Query query;
@@ -26,8 +28,7 @@ public class RenderArea extends PApplet
     {
         size(width, height, P3D);
 
-        //gui = new GUI(this);
-        //data = new Data("res/taxi_data.csv", this);
+        gui = new GUI(this);
         query = new Query();
 
         mapGraphs = new MapGraphs(this);
@@ -51,43 +52,70 @@ public class RenderArea extends PApplet
     @Override
     public void mousePressed(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mousePressed(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                mapGraphs.mousePressed(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mousePressed(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mouseDragged(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                mapGraphs.mouseDragged(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseDragged(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mouseReleased(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                mapGraphs.mouseReleased(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseReleased(e);
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        super.mouseWheelMoved(e);
+        if (!gui.cp5.isMouseOver())
+        {
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseWheelMoved(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode()== KeyEvent.VK_ENTER)
+        if (e.getKeyCode() == KeyEvent.VK_ENTER)
         {
             currentScreen++;
-            if(currentScreen > 2)
+            if (currentScreen > 2)
             {
                 currentScreen = 0;
             }
@@ -101,4 +129,30 @@ public class RenderArea extends PApplet
         }
     }
 
+    public void controlEvent(ControlEvent theEvent)
+    {
+        if (theEvent.getController().getLabel().equals("Heat Map"))
+        {
+            mapGraphs.currentGraph = 0;
+            mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 50000));
+        } else if (theEvent.getController().getLabel().equals("Taxi Animator"))
+        {
+            mapGraphs.currentGraph = 1;
+            mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 500000));
+        } else if (theEvent.getController().getLabel().equals("Area Map Graph"))
+        {
+            mapGraphs.currentGraph = 2;
+            mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 500000));
+        }
+    }
+
+    @Override
+    protected void resizeRenderer(int newWidth, int newHeight)
+    {
+        super.resizeRenderer(newWidth, newHeight); //To change body of generated methods, choose Tools | Templates.
+        if (mapGraphs != null)
+        {
+            mapGraphs.heatMapGraph.buffer = createGraphics(newWidth, newHeight, RenderArea.P3D);
+        }
+    }
 }

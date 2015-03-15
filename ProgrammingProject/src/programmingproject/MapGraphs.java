@@ -5,26 +5,30 @@ import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.providers.Google;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
- * 
+ *
  * @author cal
  */
 public class MapGraphs
 {
+
     RenderArea renderArea;
 
     UnfoldingMap map;
-    int mapWidth = 2000, mapHeight = 1000;
+    int mapWidth = 2500, mapHeight = 2500;
 
     //Camera Rotation
     float cameraX, cameraY;
+    float cameraTransX, cameraTransY;
+    float zoom;
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
-    
+
     //Graphs
-    int currentGraph = 2; //0: heatMapGraph; 1: TripAnimator
+    int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
     LocationVisualization location;
@@ -39,7 +43,7 @@ public class MapGraphs
         map.zoomAndPanTo(12, new Location(40.731416f, -73.990667f));
         map.zoomToLevel(12);
         map.panTo(new Location(40.731416f, -73.990667f));
-        
+
         heatMapGraph = new HeatMapGraph(renderArea, this);
         tripAnimator = new TripAnimator(renderArea, this);
         location = new LocationVisualization(renderArea, this);
@@ -60,14 +64,17 @@ public class MapGraphs
             cameraX += 0.001f;
         }
 
-        renderArea.translate(renderArea.width / 2, renderArea.height / 2, 1);
+        renderArea.translate(renderArea.width / 2, renderArea.height / 2, zoom);
+        
         renderArea.rotateX(cameraY);
         renderArea.rotateZ(cameraX);
+        
+        renderArea.translate(cameraTransX, cameraTransY, 0);
+        
         map.draw();
         //renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
-        
+
         //renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
-        
         //Draw whichever visualisation is active
         switch (currentGraph)
         {
@@ -80,10 +87,14 @@ public class MapGraphs
             case 2:
                 location.draw();
                 break;
+            case 2:
+                areaMapGraph.draw();
+                break;
         }
-        
+
         renderArea.popMatrix();
         renderArea.popStyle();
+        //renderArea.image(heatMapGraph.buffer, 0, 0);
     }
 
     public void mousePressed(MouseEvent e)
@@ -97,14 +108,30 @@ public class MapGraphs
         {
             lastMousePosition = e;
         }
-        cameraX -= (e.getXOnScreen() - lastMousePosition.getXOnScreen()) / MOUSE_SENSITIVITY;
-        cameraY -= (e.getYOnScreen() - lastMousePosition.getYOnScreen()) / MOUSE_SENSITIVITY;
+        
+        if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK)
+        {
+            cameraTransX += Math.cos(cameraX) * (e.getXOnScreen() - lastMousePosition.getXOnScreen()); //THIS
+            cameraTransY += Math.cos(cameraX) * (e.getYOnScreen() - lastMousePosition.getYOnScreen()); //TOOK
+            cameraTransX += Math.sin(cameraX) * (e.getYOnScreen() - lastMousePosition.getYOnScreen()); //ME
+            cameraTransY -= Math.sin(cameraX) * (e.getXOnScreen() - lastMousePosition.getXOnScreen()); //FOREVER!
+        } else if (e.getModifiersEx() == MouseEvent.BUTTON3_DOWN_MASK)
+        {
+            cameraX -= (e.getXOnScreen() - lastMousePosition.getXOnScreen()) / MOUSE_SENSITIVITY;
+            cameraY -= (e.getYOnScreen() - lastMousePosition.getYOnScreen()) / MOUSE_SENSITIVITY;
+        }
+        
         lastMousePosition = e;
     }
 
     public void mouseReleased(MouseEvent e)
     {
         lastMousePosition = null;
+    }
+    
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        zoom -= e.getWheelRotation() * 20;
     }
 
     public void keyPressed(KeyEvent e)
@@ -118,7 +145,7 @@ public class MapGraphs
                 tripAnimator.keyPressed(e);
                 break;
             case 2:
-                location.keyPressed(e);
+                areaMapGraph.keyPressed(e);
+                break;
         }
     }
-}
