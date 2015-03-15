@@ -34,7 +34,7 @@ public class PreprocessData
         }
         processData(file);
         processData(file2);
-        //writeAuxDataFiles();
+        writeAuxDataFiles();
     }
 
     public void processData(String dataFile)
@@ -109,16 +109,18 @@ public class PreprocessData
     {
         try
         {
-            PrintWriter newData = new PrintWriter("meds.txt");
+            PrintWriter newData = new PrintWriter("meds2.txt");
             for (String med : medallions)
             {
                 newData.println(med);
+                newData.flush();
             }
             newData.close();
-            newData = new PrintWriter("hacks.txt");
+            newData = new PrintWriter("hacks2.txt");
             for (String hack : hacks)
             {
                 newData.println(hack);
+                newData.flush();
             }
             newData.close();
         } catch (FileNotFoundException ex)
@@ -130,11 +132,13 @@ public class PreprocessData
     public void writeMed(String med)
     {
         meds.println(med);
+        meds.flush();
     }
     
     public void writeHack(String med)
     {
         hack.println(med);
+        hack.flush();
     }
 
     public void appendData(String[] data)
@@ -148,5 +152,6 @@ public class PreprocessData
             }
         }
         out.println(line);
+        out.flush();
     }
 }
