@@ -91,6 +91,7 @@ public class MapGraphs
 
         renderArea.popMatrix();
         renderArea.popStyle();
+        //renderArea.image(heatMapGraph.buffer, 0, 0);
     }
 
     public void mousePressed(MouseEvent e)
