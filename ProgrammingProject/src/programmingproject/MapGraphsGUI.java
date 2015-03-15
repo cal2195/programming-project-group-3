@@ -33,7 +33,7 @@ public class MapGraphsGUI
                 .setPosition(240, 10)
                 .setSize(200, 19);
 
-        cp5.addButton("Vis1")
+        cp5.addButton("Area Map Graph")
                 .setPosition(460, 10)
                 .setSize(200, 19);
     }
