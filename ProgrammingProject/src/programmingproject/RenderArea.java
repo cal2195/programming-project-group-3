@@ -1,5 +1,6 @@
 package programmingproject;
 
+import controlP5.ControlEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -17,7 +18,7 @@ public class RenderArea extends PApplet
     VendorVisual vis1;
     TripAnimator tripAnimator;
     MapGraphs mapGraphs;
-    
+
     GUI gui;
 
     Query query;
@@ -27,7 +28,7 @@ public class RenderArea extends PApplet
     {
         size(width, height, P3D);
 
-        //gui = new GUI(this);
+        gui = new GUI(this);
         //data = new Data("res/taxi_data.csv", this);
         query = new Query();
 
@@ -51,54 +52,70 @@ public class RenderArea extends PApplet
     @Override
     public void mousePressed(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mousePressed(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                mapGraphs.mousePressed(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mousePressed(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mouseDragged(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                mapGraphs.mouseDragged(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseDragged(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mouseReleased(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                mapGraphs.mouseReleased(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseReleased(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e)
     {
-        switch (currentScreen)
+        super.mouseWheelMoved(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                mapGraphs.mouseWheelMoved(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseWheelMoved(e);
+                    break;
+            }
         }
     }
-    
+
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode()== KeyEvent.VK_ENTER)
+        if (e.getKeyCode() == KeyEvent.VK_ENTER)
         {
             currentScreen++;
-            if(currentScreen > 2)
+            if (currentScreen > 2)
             {
                 currentScreen = 0;
             }
@@ -111,4 +128,16 @@ public class RenderArea extends PApplet
         }
     }
 
+    public void controlEvent(ControlEvent theEvent)
+    {
+        if (theEvent.getController().getLabel().equals("Heat Map"))
+        {
+            mapGraphs.currentGraph = 0;
+            mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1));
+        } else if (theEvent.getController().getLabel().equals("Taxi Animator"))
+        {
+            mapGraphs.currentGraph = 1;
+            mapGraphs.tripAnimator.setData(query.getTripsForMonth(1));
+        }
+    }
 }
