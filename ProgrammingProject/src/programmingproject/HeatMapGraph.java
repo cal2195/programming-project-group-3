@@ -16,8 +16,8 @@ public class HeatMapGraph
     MapGraphs mapGraphs;
 
     //Constants
-    final int GRID_WIDTH = 135;
-    final int GRID_HEIGHT = 100;
+    final int GRID_WIDTH = 300;
+    final int GRID_HEIGHT = 300;
     final int SCALE = 10;
 
     Gradient gradient;
