@@ -129,7 +129,7 @@ public class RenderArea extends PApplet
         if (theEvent.getController().getLabel().equals("Heat Map"))
         {
             mapGraphs.currentGraph = 0;
-            mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 500000));
+            mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 50000));
         } else if (theEvent.getController().getLabel().equals("Taxi Animator"))
         {
             mapGraphs.currentGraph = 1;
@@ -138,6 +138,16 @@ public class RenderArea extends PApplet
         {
             mapGraphs.currentGraph = 2;
             mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 500000));
+        }
+    }
+
+    @Override
+    protected void resizeRenderer(int newWidth, int newHeight)
+    {
+        super.resizeRenderer(newWidth, newHeight); //To change body of generated methods, choose Tools | Templates.
+        if (mapGraphs != null)
+        {
+            mapGraphs.heatMapGraph.buffer = createGraphics(newWidth, newHeight, RenderArea.P3D);
         }
     }
 }
