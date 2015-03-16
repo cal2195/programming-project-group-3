@@ -17,7 +17,7 @@ public class MapGraphs
     RenderArea renderArea;
 
     UnfoldingMap map;
-    int mapWidth = 1000, mapHeight = 1000;
+    int mapWidth = 2000, mapHeight = 2000;
 
     //Camera Rotation
     float cameraX, cameraY;
@@ -110,6 +110,7 @@ public class MapGraphs
         
         if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK)
         {
+            //excellent comments ahead, praise the sun!
             cameraTransX += Math.cos(cameraX) * (e.getXOnScreen() - lastMousePosition.getXOnScreen()); //THIS
             cameraTransY += Math.cos(cameraX) * (e.getYOnScreen() - lastMousePosition.getYOnScreen()); //TOOK
             cameraTransX += Math.sin(cameraX) * (e.getYOnScreen() - lastMousePosition.getYOnScreen()); //ME
