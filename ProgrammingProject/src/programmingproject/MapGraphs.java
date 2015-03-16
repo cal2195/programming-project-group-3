@@ -17,7 +17,7 @@ public class MapGraphs
     RenderArea renderArea;
 
     UnfoldingMap map;
-    int mapWidth = 2500, mapHeight = 2500;
+    int mapWidth = 1000, mapHeight = 1000;
 
     //Camera Rotation
     float cameraX, cameraY;
@@ -25,7 +25,7 @@ public class MapGraphs
     float zoom;
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
-    boolean demoMode = true;
+    boolean demoMode = false;
 
     //Graphs
     int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
