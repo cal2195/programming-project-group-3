@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 /**
  *
@@ -27,7 +28,7 @@ public class RenderArea extends PApplet
     public void setup()
     {
         size(width, height, P3D);
-
+        
         gui = new GUI(this);
         query = new Query();
 
@@ -126,25 +127,27 @@ public class RenderArea extends PApplet
 
     public void controlEvent(ControlEvent theEvent)
     {
-        if (theEvent.getController().getLabel().equals("Heat Map"))
+        switch (theEvent.getController().getLabel())
         {
-            mapGraphs.currentGraph = 0;
-            mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 50000));
-        } else if (theEvent.getController().getLabel().equals("Taxi Animator"))
-        {
-            mapGraphs.currentGraph = 1;
-            mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 500000));
-        } else if (theEvent.getController().getLabel().equals("Area Map Graph"))
-        {
-            mapGraphs.currentGraph = 2;
-            mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 500000));
+            case "Heat Map":
+                mapGraphs.currentGraph = 0;
+                mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 5000));
+                break;
+            case "Taxi Animator":
+                mapGraphs.currentGraph = 1;
+                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 250000));
+                break;
+            case "Area Map Graph":
+                mapGraphs.currentGraph = 2;
+                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 250000));
+                break;
         }
     }
 
     @Override
     protected void resizeRenderer(int newWidth, int newHeight)
     {
-        super.resizeRenderer(newWidth, newHeight); //To change body of generated methods, choose Tools | Templates.
+        super.resizeRenderer(newWidth, newHeight);
         if (mapGraphs != null)
         {
             mapGraphs.heatMapGraph.buffer = createGraphics(newWidth, newHeight, RenderArea.P3D);

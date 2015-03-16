@@ -70,24 +70,6 @@ public class Query
         }
     }
 
-    public ArrayList<Trip> getAllTrips()
-    {
-        ArrayList<Trip> result = new ArrayList<>();
-
-        //System.out.println("Taxis: " + data.taxis.entrySet().size());
-        for (HashMap.Entry key : data.taxis.entrySet())
-        {
-            Taxi taxi = (Taxi) key.getValue();
-            //System.out.println("Trips: " + taxi.getTrips().size());
-            for (Trip trip : taxi.getTrips())
-            {
-                result.add(trip);
-            }
-        }
-
-        return result;
-    }
-
     public ArrayList<Trip> getTrips(String query)
     {
         ArrayList<Trip> trips = null;
