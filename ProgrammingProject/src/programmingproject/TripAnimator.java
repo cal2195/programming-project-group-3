@@ -10,7 +10,9 @@ import java.util.ArrayList;
 public class TripAnimator
 {
 
-    public static final short SPEEDFACTOR = 20;
+    //have tried to keep this fairly accurate but still works best with speed factors < 100, 
+    //80 seems to be the highest factor with no obvious issues
+    public static final short SPEEDFACTOR = 50;
     RenderArea renderArea;
     MapGraphs mapGraphs;
 
