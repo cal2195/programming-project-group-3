@@ -169,4 +169,33 @@ public class DateTime
 		return dateTime;
 	}
 
+        
+	public static String secsToHourAndMinute(long secs){
+
+                String timeOfDay = "";
+		//finds hours
+		int i = 0;
+		while(i*SECONDS_PER_HOUR <=  secs)
+		{
+			i++;
+		}
+		secs -= SECONDS_PER_HOUR*(i-1);
+		timeOfDay += String.format("%02d", i-1);
+		timeOfDay += ":";
+
+		//finds minutes
+		i = 0;
+		while(i*60 <=  secs)
+		{
+			i++;
+		}
+		secs -= 60*(i-1);
+		timeOfDay += String.format("%02d", i-1);
+		timeOfDay += ":";
+
+		timeOfDay += String.format("%02d", secs);
+
+		return timeOfDay;
+	}
+        
 }

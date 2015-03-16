@@ -16,12 +16,12 @@ import de.fhpotsdam.unfolding.utils.ScreenPosition;
 public class TaxiDrawable
 {
 
-    float x, y, endx, endy;
+    float x, y, endx, endy, startx, starty;
     float dx, dy;
     boolean dead;
     short deathFrames;
+    int startTime;
     private final short DEATHFRAMES = 10;
-    private final short SPEEDFACTOR = 2;
 
     TaxiDrawable(Trip trip, UnfoldingMap map)
     {
@@ -29,7 +29,10 @@ public class TaxiDrawable
         float longitude = trip.pickupLong;
         ScreenPosition screenPosition = map.getScreenPosition(new Location(latitude, longitude));
         x = screenPosition.x;
+        startx = x;
         y = screenPosition.y;
+        starty = y;
+        startTime = trip.pickupTime % DateTime.SECONDS_PER_DAY;
         
         latitude = trip.dropoffLat;
         longitude = trip.dropoffLong;
@@ -37,41 +40,48 @@ public class TaxiDrawable
         endx = screenPosition.x;
         endy = screenPosition.y;
 
-        dx = SPEEDFACTOR * (endx - x) / trip.time;
-        dy = SPEEDFACTOR * (endy - y) / trip.time;
+        dx = TripAnimator.SPEEDFACTOR * (endx - x) / trip.time;
+        dy = TripAnimator.SPEEDFACTOR * (endy - y) / trip.time;
     }
 
-    public void draw(RenderArea renderArea)
+    public void draw(RenderArea renderArea, int time)
     {
         renderArea.translate(x, y, 4);
         if (dead)
         {
-            if (deathFrames < DEATHFRAMES)
+            if (time > startTime && deathFrames < DEATHFRAMES)
             {
                 renderArea.fill(0, 0, 0);
                 renderArea.box(3, 3, 8);
-                deathFrames++;
+                deathFrames += TripAnimator.SPEEDFACTOR;
+            }
+            if(time <= TripAnimator.SPEEDFACTOR + 1)
+            {
+                dead = false;
+                dx = startx;
+                dy = starty;
             }
 
-        } else
+        } else if (time > startTime)
         {
-            renderArea.stroke(0);
             renderArea.fill(255, 240, 0);
             renderArea.box(3, 3, 8);
-            renderArea.noStroke();
         }
 
     }
 
-    public void moveAndCheck()
+    public void moveAndCheck(int time)
     {
-        x += dx;
-        y += dy;
-        if (endx - x < 5 && endx - x > -5)
+        if (time > startTime)
         {
-            dx = 0;
-            dy = 0;
-            dead = true;
+            x += dx;
+            y += dy;
+            if (endx - x < 5 && endx - x > -5)
+                {
+                    dx = 0;
+                    dy = 0;
+                    dead = true;
+                }
         }
 
     }
