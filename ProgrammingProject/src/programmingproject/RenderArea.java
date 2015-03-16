@@ -18,6 +18,7 @@ public class RenderArea extends PApplet
     VendorVisual vis1;
     TripAnimator tripAnimator;
     MapGraphs mapGraphs;
+    
 
     GUI gui;
 

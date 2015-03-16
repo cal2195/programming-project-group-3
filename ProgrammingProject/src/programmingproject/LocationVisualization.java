@@ -28,6 +28,7 @@ public class LocationVisualization
     public LocationVisualization(RenderArea area, MapGraphs mapGraphs){
         this.mapGraphs = mapGraphs;
         this.renderArea = area;
+        //initializes several locations
         locations = new ArrayList<LocationDrawable>();
         locations.add(new LocationDrawable((float)40.7484,(float)-73.9857,"Empire State Building", mapGraphs.map)); //Empire State building
         locations.add(new LocationDrawable((float)40.7116,(float)-74.0123, "Ground Zero", mapGraphs.map)); //ground zero
@@ -39,6 +40,9 @@ public class LocationVisualization
         test = new LocationDrawable((float)40.7455, (float)73.7777, "test", mapGraphs.map);
     }
     
+    
+    //draws each location as a box (for now) with text above with the name
+    //and number of visitors for the current querey
     public void draw()
     {
         renderArea.pushStyle();
@@ -55,20 +59,23 @@ public class LocationVisualization
         renderArea.popStyle();
     } 
     
+    //sets number of visitors for each location to zero
     public void reset()
     {
         for(LocationDrawable l : locations)
             l.visitors = 0;
     }
     
+    //sets the number of visitors for each location for the trips returned
+    //from a given query
     public void setData(ArrayList<Trip> trips)
     {
         for(LocationDrawable l : locations)
             l.setData(trips);
     }
     
-    
-     public void keyPressed(KeyEvent e)
+    //gets particular queries
+    public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
         {

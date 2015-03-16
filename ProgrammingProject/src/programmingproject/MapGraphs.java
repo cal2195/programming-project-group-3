@@ -26,7 +26,7 @@ public class MapGraphs
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
-
+    AreaMapGraph areaMapGraph;
     //Graphs
     int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
     HeatMapGraph heatMapGraph;
@@ -47,6 +47,7 @@ public class MapGraphs
         heatMapGraph = new HeatMapGraph(renderArea, this);
         tripAnimator = new TripAnimator(renderArea, this);
         location = new LocationVisualization(renderArea, this);
+        areaMapGraph = new AreaMapGraph(renderArea, this);
     }
 
     public void draw()
@@ -87,9 +88,7 @@ public class MapGraphs
             case 2:
                 location.draw();
                 break;
-            case 2:
-                areaMapGraph.draw();
-                break;
+            
         }
 
         renderArea.popMatrix();
@@ -145,7 +144,8 @@ public class MapGraphs
                 tripAnimator.keyPressed(e);
                 break;
             case 2:
-                areaMapGraph.keyPressed(e);
+                location.keyPressed(e);
                 break;
         }
     }
+}
