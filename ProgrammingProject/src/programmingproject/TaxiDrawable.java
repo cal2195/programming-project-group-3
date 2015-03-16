@@ -20,7 +20,7 @@ public class TaxiDrawable
     float dx, dy;
     boolean dead;
     short deathFrames;
-    int startTime;
+    int startTime, tripTime;
     private final short DEATHFRAMES = 10;
 
     TaxiDrawable(Trip trip, UnfoldingMap map)
@@ -39,6 +39,8 @@ public class TaxiDrawable
         screenPosition = map.getScreenPosition(new Location(latitude, longitude));
         endx = screenPosition.x;
         endy = screenPosition.y;
+        
+        tripTime = trip.time;
 
         dx = TripAnimator.SPEEDFACTOR * (endx - x) / trip.time;
         dy = TripAnimator.SPEEDFACTOR * (endy - y) / trip.time;
@@ -58,8 +60,10 @@ public class TaxiDrawable
             if(time <= TripAnimator.SPEEDFACTOR + 1)
             {
                 dead = false;
-                dx = startx;
-                dy = starty;
+                x = startx;
+                y = starty;
+                dx = TripAnimator.SPEEDFACTOR * (endx - x) / tripTime;
+                dy = TripAnimator.SPEEDFACTOR * (endy - y) / tripTime;
             }
 
         } else if (time > startTime)
@@ -76,7 +80,7 @@ public class TaxiDrawable
         {
             x += dx;
             y += dy;
-            if (endx - x < 5 && endx - x > -5)
+            if (endx - x < TripAnimator.SPEEDFACTOR/2 && endx - x > -1*(TripAnimator.SPEEDFACTOR/2))
                 {
                     dx = 0;
                     dy = 0;
