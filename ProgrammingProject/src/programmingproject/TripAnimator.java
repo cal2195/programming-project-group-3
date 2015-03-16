@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class TripAnimator
 {
 
+    public static final short SPEEDFACTOR = 20;
     RenderArea renderArea;
     MapGraphs mapGraphs;
 
@@ -35,17 +36,29 @@ public class TripAnimator
     {
         renderArea.pushStyle();
         renderArea.pushMatrix();
-
+        renderArea.stroke(0);
         //renderArea.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
         for (TaxiDrawable car : cars)
         {
             renderArea.pushMatrix();
-            car.draw(renderArea);
-            car.moveAndCheck();
+            car.draw(renderArea, frames*SPEEDFACTOR);
+            car.moveAndCheck(frames*SPEEDFACTOR);
             renderArea.popMatrix();
         }
         renderArea.popMatrix();
         renderArea.popStyle();
+        frames++;
+
+        renderArea.pushStyle();
+        renderArea.pushMatrix();
+        renderArea.translate(0, 0, 0);
+        renderArea.fill(0);
+        renderArea.textSize(50);
+        renderArea.text(DateTime.secsToHourAndMinute(frames*SPEEDFACTOR), -300f, 10f, 3f);
+        renderArea.popMatrix();
+        renderArea.popStyle();
+        if(frames*SPEEDFACTOR >= DateTime.SECONDS_PER_DAY)
+            frames = 0;
     }
 
     public void switchData(ArrayList<Trip> data)
@@ -64,6 +77,7 @@ public class TripAnimator
     public void reset()
     {
         cars.clear();
+        frames = 0;
     }
 
     public void switchData()
