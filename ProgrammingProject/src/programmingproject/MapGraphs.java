@@ -17,7 +17,7 @@ public class MapGraphs
     RenderArea renderArea;
 
     UnfoldingMap map;
-    int mapWidth = 2500, mapHeight = 2500;
+    int mapWidth = 1000, mapHeight = 1000;
 
     //Camera Rotation
     float cameraX, cameraY;
