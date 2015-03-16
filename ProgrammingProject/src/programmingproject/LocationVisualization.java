@@ -51,6 +51,16 @@ public class LocationVisualization
         {
             renderArea.pushMatrix();
             l.draw(renderArea);
+            renderArea.rotateZ(-mapGraphs.cameraX);
+            renderArea.rotateX(-mapGraphs.cameraY);
+            renderArea.pushMatrix();
+            renderArea.noStroke();
+            renderArea.fill(0);
+            renderArea.textFont(renderArea.createFont("Calibri", 15, false));
+            renderArea.textSize(15);
+            renderArea.text(l.name + " visitors " + l.visitors, -2, -2);
+            renderArea.popMatrix();
+            renderArea.stroke(0);
             renderArea.popMatrix();
         }    
         test.draw(renderArea);
