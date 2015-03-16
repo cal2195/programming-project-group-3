@@ -45,7 +45,7 @@ public class LocationDrawable {
        renderArea.box(3, 3, 8);
        renderArea.noStroke();
        renderArea.fill(0);
-       renderArea.text(name + " visitors: " + visitors,0,0, 20);
+      
     }
     
     
