@@ -37,9 +37,4 @@ public class MapGraphsGUI
                 .setPosition(460, 10)
                 .setSize(200, 19);
     }
-
-    public void controlEvent(ControlEvent theEvent)
-    {
-        System.out.println(theEvent.getController().getName());
-    }
 }
