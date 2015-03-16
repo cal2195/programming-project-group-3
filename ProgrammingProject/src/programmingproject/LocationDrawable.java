@@ -48,6 +48,9 @@ public class LocationDrawable {
        renderArea.text(name + " visitors: " + visitors,0,0, 20);
     }
     
+    
+    //for all trips  checksif the drop off point is withn +- .01 lat and long
+    //and if so, increments the visitor counter 
     public void setData(ArrayList<Trip> trips)
     {
         for(Trip t : trips)
