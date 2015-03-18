@@ -18,7 +18,7 @@ public class LinePieChart {
     
             
     //Data Visualisation
-    int sampleSize = 500; 
+    int sampleSize = 300; 
     public static final int SECONDS_PER_DAY = 86400;
     
     //Camera rotation
