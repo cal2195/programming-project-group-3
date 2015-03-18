@@ -145,7 +145,7 @@ public class RenderArea extends PApplet
                 break;
             case "Area Map Graph":
                 mapGraphs.currentGraph = 2;
-                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 250000));
+                
                 break;
         }
     }
