@@ -15,6 +15,7 @@ public class LinePieChart {
     PImage bg;
     int[][] timeAndPassengers; 
     int[][] positions; 
+    
             
     //Data Visualisation
     int sampleSize = 500; 
@@ -98,7 +99,7 @@ public class LinePieChart {
             int randomTrip = (int)renderArea.random(currentTrips.size());
             timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime)%SECONDS_PER_DAY;
             timeAndPassengers[count][1] = currentTrips.get(randomTrip).passengers;
-            System.out.println("----------" + timeAndPassengers[count][0]);
+            
         }
     }
     
@@ -106,14 +107,15 @@ public class LinePieChart {
     {
         for (int count = 0; count < positions.length; count++)
         {
-            
-            int angle =  timeAndPassengers[count][0] *360;
-            int xPosition = (int)(264*Math.sin(angle))+renderArea.width/2;
-            int yPosition = (int)(264*Math.cos(angle))+renderArea.height/2;
+            double angle =  ((double)timeAndPassengers[count][0])/3600/24*360 - 90;
+            System.out.println("----------------------   " + timeAndPassengers[count][0] + "   --------   " + angle);
+            int xPosition = (int)(264*Math.cos(angle*Math.PI/180))+renderArea.width/2;
+            int yPosition = (int)(264*Math.sin(angle*Math.PI/180))+renderArea.height/2;
             positions[count][0] = xPosition;
             positions[count][1] = yPosition;
             positions[count][2] = (timeAndPassengers[count][1])*8+20;
         }
+        
     }
     
     public void plotPoints()
@@ -129,18 +131,10 @@ public class LinePieChart {
                 renderArea.popMatrix();
             } 
             renderArea.pushMatrix();
-            renderArea.line(positions[count][0], positions[count][1], positions[count][2], renderArea.width/2, renderArea.height/2, positions[count][2]);
+            renderArea.fill(0,120,255);
+            renderArea.line(0, 0, 100,100);
             renderArea.popMatrix();
-        }
-       
-        for(int zPos = 0 ; zPos <= 52; zPos++){
-            renderArea.pushMatrix();
-            renderArea.translate(renderArea.width/2,renderArea.height/2,zPos);
-            renderArea.box(5);
-            renderArea.popMatrix();
-        }
-        
+            
+        }   
     }
-     
-    
 }
