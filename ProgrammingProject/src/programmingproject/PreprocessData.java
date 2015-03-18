@@ -16,15 +16,13 @@ import java.util.logging.Logger;
 public class PreprocessData
 {
 
-    String dataFile = "";
     ArrayList<String> medallions = new ArrayList<>();
     ArrayList<String> hacks = new ArrayList<>();
     PrintWriter out;
     PrintWriter meds, hack;
 
-    public PreprocessData(String file)
+    public PreprocessData(String file, String file2)
     {
-        dataFile = file;
         try
         {
             out = new PrintWriter("taxi_data.csv");
@@ -34,11 +32,12 @@ public class PreprocessData
         {
             Logger.getLogger(PreprocessData.class.getName()).log(Level.SEVERE, null, ex);
         }
-        processData();
-        //writeAuxDataFiles();
+        processData(file);
+        processData(file2);
+        writeAuxDataFiles();
     }
 
-    public void processData()
+    public void processData(String dataFile)
     {
         BufferedReader buff = null;
         try
@@ -103,18 +102,6 @@ public class PreprocessData
         } catch (IOException ex)
         {
             Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-        } finally
-        {
-            try
-            {
-                buff.close();
-                out.close();
-                meds.close();
-                hack.close();
-            } catch (IOException ex)
-            {
-                Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
 
@@ -122,16 +109,18 @@ public class PreprocessData
     {
         try
         {
-            PrintWriter newData = new PrintWriter("meds.txt");
+            PrintWriter newData = new PrintWriter("meds2.txt");
             for (String med : medallions)
             {
                 newData.println(med);
+                newData.flush();
             }
             newData.close();
-            newData = new PrintWriter("hacks.txt");
+            newData = new PrintWriter("hacks2.txt");
             for (String hack : hacks)
             {
                 newData.println(hack);
+                newData.flush();
             }
             newData.close();
         } catch (FileNotFoundException ex)
@@ -143,11 +132,13 @@ public class PreprocessData
     public void writeMed(String med)
     {
         meds.println(med);
+        meds.flush();
     }
     
     public void writeHack(String med)
     {
         hack.println(med);
+        hack.flush();
     }
 
     public void appendData(String[] data)
@@ -161,5 +152,6 @@ public class PreprocessData
             }
         }
         out.println(line);
+        out.flush();
     }
 }
