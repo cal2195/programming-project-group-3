@@ -1,8 +1,11 @@
 package programmingproject;
 
+import controlP5.ControlEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 /**
  *
@@ -11,28 +14,29 @@ import processing.core.PApplet;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 1; //0: HeightMapGraph; 1: Visualisation1
+    int currentScreen = 0;
     HeatMapGraph heightMapGraph;
-    VendorVisual vendorVisual;
+    VendorVisual vis1;
     TripAnimator tripAnimator;
+    MapGraphs mapGraphs;
     
+
     GUI gui;
 
-    //Data data;
     Query query;
 
     @Override
     public void setup()
     {
         size(width, height, P3D);
-
-        //gui = new GUI(this);
-        //data = new Data("res/taxi_data.csv", this);
+        
+        gui = new GUI(this);
         query = new Query();
 
-        heightMapGraph = new HeatMapGraph(this);
-        vendorVisual = new VendorVisual(this);
-        tripAnimator = new TripAnimator(this);
+        mapGraphs = new MapGraphs(this);
+        //heightMapGraph = new HeatMapGraph(this, mapGraphs);
+        //vis1 = new VendorVisual(this);
+       // tripAnimator = new TripAnimator(this, mapGraphs);
     }
 
     @Override
@@ -41,13 +45,8 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.draw();
-                break;
-            case 1:
-                vendorVisual.draw();
-                break;
-            case 2:
-                tripAnimator.draw();
+                mapGraphs.draw();
+
                 break;
         }
     }
@@ -55,61 +54,70 @@ public class RenderArea extends PApplet
     @Override
     public void mousePressed(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mousePressed(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                heightMapGraph.mousePressed(e);
-                break;
-            case 1:
-                vendorVisual.mousePressed(e);
-                break;
-            case 2:
-                tripAnimator.mousePressed(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mousePressed(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mouseDragged(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                heightMapGraph.mouseDragged(e);
-                break;
-            case 1:
-                vendorVisual.mouseDragged(e);
-                break;
-            case 2:
-                tripAnimator.mouseDragged(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseDragged(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        switch (currentScreen)
+        super.mouseReleased(e);
+        if (!gui.cp5.isMouseOver())
         {
-            case 0:
-                heightMapGraph.mouseReleased(e);
-                break;
-            case 1:
-                vendorVisual.mouseReleased(e);
-                break;
-            case 2:
-                tripAnimator.mouseReleased(e);
-                break;
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseReleased(e);
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e)
+    {
+        super.mouseWheelMoved(e);
+        if (!gui.cp5.isMouseOver())
+        {
+            switch (currentScreen)
+            {
+                case 0:
+                    mapGraphs.mouseWheelMoved(e);
+                    break;
+            }
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode()== KeyEvent.VK_ENTER)
+        if (e.getKeyCode() == KeyEvent.VK_ENTER)
         {
             currentScreen++;
-            if(currentScreen > 2)
+            if (currentScreen > 2)
             {
                 currentScreen = 0;
             }
@@ -117,15 +125,42 @@ public class RenderArea extends PApplet
         switch (currentScreen)
         {
             case 0:
-                heightMapGraph.keyPressed(e);
-                break;
-            case 1:
-                vendorVisual.keyPressed(e);
-                break;
-            case 2:
-                tripAnimator.keyPressed(e);
+                mapGraphs.keyPressed(e);
+
                 break;
         }
     }
 
+    public void controlEvent(ControlEvent theEvent)
+    {
+        switch (theEvent.getController().getLabel())
+        {
+            case "Heat Map":
+                mapGraphs.currentGraph = 0;
+                mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 5000));
+                break;
+            case "Taxi Animator":
+                mapGraphs.currentGraph = 1;
+                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 250000));
+                break;
+            case "Area Map Graph":
+                mapGraphs.currentGraph = 2;
+                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 250000));
+                break;
+            case "Vendor comparison":
+                mapGraphs.currentGraph = 3;
+                mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000));
+                break;
+        }
+    }
+
+    @Override
+    protected void resizeRenderer(int newWidth, int newHeight)
+    {
+        super.resizeRenderer(newWidth, newHeight);
+        if (mapGraphs != null)
+        {
+            mapGraphs.heatMapGraph.buffer = createGraphics(newWidth, newHeight, RenderArea.P3D);
+        }
+    }
 }

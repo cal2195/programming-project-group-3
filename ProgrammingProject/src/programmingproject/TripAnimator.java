@@ -1,11 +1,7 @@
 package programmingproject;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import processing.core.PImage;
 
 /**
  *
@@ -13,69 +9,63 @@ import processing.core.PImage;
  */
 public class TripAnimator
 {
-
+    public static final short MAX_SPEEDFACTOR = 60;
+    public static final short MIN_SPEEDFACTOR = 5;
+    public static final short SPEEDSTEP = 2;
+    
+    //have tried to keep this fairly accurate but still works best with speed factors < 100, 
+    public static short speedFactor = 20;
     RenderArea renderArea;
+    MapGraphs mapGraphs;
 
     int MODE = 0;
 
-    PImage bg;
     Trip trip;
     //this taxi for test porpoises!
     TaxiDrawable testTaxi;
-    
+
     ArrayList<Trip> trips = new ArrayList<>();
     ArrayList<Trip> queuedTrips = new ArrayList<>();
     ArrayList<TaxiDrawable> cars = new ArrayList<>();
-    
-    //Camera Rotation
-    float cameraX, cameraY;
-    MouseEvent lastMousePosition;
-    float MOUSE_SENSITIVITY = 300f;
-    boolean demoMode = true;
-    boolean minimize = false;
-    int frames = 0;
 
-    public TripAnimator(RenderArea renderArea)
+    int timeOfDay = 0;
+
+    public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
         this.renderArea = renderArea;
-        bg = renderArea.loadImage("res/newyork.png");
-        // sample trip from small csv
-        //trip = new Trip(1, "N", 100, 3, 600, (float) 10.5, (float) -73.978165, (float) 40.757977, (float) -73.989838, (float) 40.751171);
-        //testTaxi = new TaxiDrawable(trip);
-        
-        int count = 0;
-
+        this.mapGraphs = mapGraphs;
     }
 
     public void draw()
     {
-        renderArea.background(179, 209, 255);
-
-        if (demoMode)
+        renderArea.pushStyle();
+        renderArea.pushMatrix();
+        renderArea.stroke(0);
+        //renderArea.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
+        for (TaxiDrawable car : cars)
         {
-            if (cameraY < 1)
-            {
-                cameraY += 0.005f;
-            }
-            cameraX += 0.001f;
-        }
-
-        renderArea.translate(renderArea.width / 2, renderArea.height / 2, 1);
-        renderArea.rotateX(cameraY);
-        renderArea.rotateZ(cameraX);
-        renderArea.image(bg, -renderArea.width / 2, -renderArea.height / 2, renderArea.width, renderArea.height);
-        renderArea.fill(0);
-        renderArea.noStroke();
-        renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
-        
-
-        for(TaxiDrawable car : cars){
             renderArea.pushMatrix();
-            car.draw(renderArea);
-            car.moveAndCheck();
+            car.draw(renderArea, timeOfDay);
+            car.moveAndCheck(timeOfDay);
             renderArea.popMatrix();
         }
+        renderArea.popMatrix();
+        renderArea.popStyle();
+        timeOfDay+= speedFactor;
 
+        renderArea.pushStyle();
+        renderArea.pushMatrix();
+        renderArea.translate(0, 0, 0);
+        renderArea.fill(0);
+        renderArea.textSize(50);
+        renderArea.text(DateTime.secsToHourAndMinute(timeOfDay), -300f, 10f, 3f);
+        renderArea.textSize(25);
+        String percentString = String.format("%.2f", (float)speedFactor/(float)MAX_SPEEDFACTOR * 100);
+        renderArea.text(percentString + "% speed", -300f, 50f, 3f);
+        renderArea.popMatrix();
+        renderArea.popStyle();
+        if(timeOfDay >= DateTime.SECONDS_PER_DAY)
+            timeOfDay = 0;
     }
 
     public void switchData(ArrayList<Trip> data)
@@ -83,69 +73,63 @@ public class TripAnimator
         trips = data;
         System.out.println("TRIP SIZE: " + trips.size());
     }
-    
-    
-    public void mousePressed(MouseEvent e)
-    {
-        demoMode = false;
-    }
 
-    public void mouseDragged(MouseEvent e)
+    public void setData(ArrayList<Trip> data)
     {
-        if (lastMousePosition == null)
-        {
-            lastMousePosition = e;
-        }
-        cameraX -= (e.getXOnScreen() - lastMousePosition.getXOnScreen()) / MOUSE_SENSITIVITY;
-        cameraY -= (e.getYOnScreen() - lastMousePosition.getYOnScreen()) / MOUSE_SENSITIVITY;
-        lastMousePosition = e;
-    }
-
-    public void mouseReleased(MouseEvent e)
-    {
-        lastMousePosition = null;
-    }
-    
-
-        public void setData(ArrayList<Trip> data)
-    {
-        minimize = true;
         queuedTrips = data;
+        reset();
+        switchData();
     }
 
     public void reset()
     {
-        minimize = true;
         cars.clear();
+        timeOfDay = 0;
     }
+
     public void switchData()
     {
         trips = queuedTrips;
-        for(Trip trip : trips){
-        TaxiDrawable tempCar = new TaxiDrawable(trip);
-        cars.add(tempCar);
+        for (Trip trip : trips)
+        {
+            TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map);
+            cars.add(tempCar);
         }
         System.out.println("TRIP SIZE: " + trips.size());
     }
-    
-        public void keyPressed(KeyEvent e)
+
+    public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
             setData(renderArea.query.getTripsForMonth(1, 1000));
-            reset();
-            switchData();
-
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
             setData(renderArea.query.getTripsForMonth(2, 1000));
-            reset();
-            switchData();
         } else if (e.getKeyCode() == KeyEvent.VK_3)
         {
             setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
-            reset();
-            switchData();
+        } else if (e.getKeyCode() == KeyEvent.VK_UP)
+        {
+            timeOfDay += DateTime.SECONDS_PER_HOUR;
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+        {
+            if(timeOfDay > DateTime.SECONDS_PER_HOUR)
+            {
+                timeOfDay -= DateTime.SECONDS_PER_HOUR;
+                        for (TaxiDrawable car : cars)
+                {
+                    car.resetTaxi();
+                }
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+        {
+            if(speedFactor < MAX_SPEEDFACTOR)
+                speedFactor += SPEEDSTEP;
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT)
+        {
+            if(speedFactor > MIN_SPEEDFACTOR)
+                speedFactor -= SPEEDSTEP;
         }
     }
 }
