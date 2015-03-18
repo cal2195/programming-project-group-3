@@ -23,7 +23,7 @@ public class VendorVisual
     //Constants
     final int GRID_WIDTH = 300;
     final int GRID_HEIGHT = 300;
-    final int SCALE = 10;
+    final int SCALE = 100;
 
     Gradient gradient;
 
@@ -150,17 +150,21 @@ public class VendorVisual
                     renderArea.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height1)) * SCALE * percent / 2 / 500f);
                     if (currentID == id)
                     {
-                        renderArea.fill(255, 0, 0);
+                        renderArea.fill(255);   // color of mouse over tower
                     } else
                     {
                         renderArea.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height1)) * 1.8f));
                     }
+                    // towers:
+                    renderArea.fill(63, 63, 255);
                     renderArea.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height1)) * SCALE * percent / 500f);
+                    renderArea.fill(255, 63, 63);
+                    renderArea.box(mapGraphs.mapWidth / GRID_WIDTH * 0.5f, mapGraphs.mapHeight / GRID_HEIGHT * 0.5f, (float) ((double) (gridOfTowers[i][ii].height1)) * SCALE * percent / 500f * 2);
                     if (currentID == id)
                     {
                         renderArea.translate(0, 0, (float) ((double) (gridOfTowers[i][ii].height1)) * SCALE * percent / 500f / 2);
                         renderArea.fill(0);
-                        
+                        // mouse over info text:
                         renderArea.rotateZ(-mapGraphs.cameraX);
                         renderArea.rotateX(-mapGraphs.cameraY);
                         renderArea.pushMatrix();
@@ -185,7 +189,7 @@ public class VendorVisual
         renderArea.popStyle();
     }
 
-    public int drawBuffer()
+    public int drawBuffer() //to detect mouse over
     {
         buffer.beginDraw();
         buffer.pushStyle();
