@@ -9,14 +9,19 @@ import java.util.ArrayList;
  */
 public class TripAnimator
 {
-    public static final short MAX_SPEEDFACTOR = 60;
-    public static final short MIN_SPEEDFACTOR = 5;
+
+    public static final short MAX_SPEEDFACTOR = 100;
+    public static final short MIN_SPEEDFACTOR = 1;
     public static final short SPEEDSTEP = 2;
-    
+
     //have tried to keep this fairly accurate but still works best with speed factors < 100, 
     public static short speedFactor = 20;
     RenderArea renderArea;
     MapGraphs mapGraphs;
+
+    long lastTime = 0;
+    static double delta;
+    
 
     int MODE = 0;
 
@@ -29,6 +34,7 @@ public class TripAnimator
     ArrayList<TaxiDrawable> cars = new ArrayList<>();
 
     int timeOfDay = 0;
+    
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
@@ -40,6 +46,18 @@ public class TripAnimator
     {
         renderArea.pushStyle();
         renderArea.pushMatrix();
+
+        delta = 1;
+        if (lastTime == 0)
+        {
+            lastTime = System.currentTimeMillis();
+        }
+        else
+        {
+            delta = (System.currentTimeMillis() - lastTime) / 1000;
+        }
+        
+
         renderArea.stroke(0);
         //renderArea.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
         for (TaxiDrawable car : cars)
@@ -51,7 +69,7 @@ public class TripAnimator
         }
         renderArea.popMatrix();
         renderArea.popStyle();
-        timeOfDay+= speedFactor;
+        timeOfDay += speedFactor;
 
         renderArea.pushStyle();
         renderArea.pushMatrix();
@@ -60,12 +78,14 @@ public class TripAnimator
         renderArea.textSize(50);
         renderArea.text(DateTime.secsToHourAndMinute(timeOfDay), -300f, 10f, 3f);
         renderArea.textSize(25);
-        String percentString = String.format("%.2f", (float)speedFactor/(float)MAX_SPEEDFACTOR * 100);
+        String percentString = String.format("%.2f", (float) speedFactor / (float) MAX_SPEEDFACTOR * 100);
         renderArea.text(percentString + "% speed", -300f, 50f, 3f);
         renderArea.popMatrix();
         renderArea.popStyle();
-        if(timeOfDay >= DateTime.SECONDS_PER_DAY)
+        if (timeOfDay >= DateTime.SECONDS_PER_DAY)
+        {
             timeOfDay = 0;
+        }
     }
 
     public void switchData(ArrayList<Trip> data)
@@ -114,22 +134,26 @@ public class TripAnimator
             timeOfDay += DateTime.SECONDS_PER_HOUR;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN)
         {
-            if(timeOfDay > DateTime.SECONDS_PER_HOUR)
+            if (timeOfDay > DateTime.SECONDS_PER_HOUR)
             {
                 timeOfDay -= DateTime.SECONDS_PER_HOUR;
-                        for (TaxiDrawable car : cars)
+                for (TaxiDrawable car : cars)
                 {
                     car.resetTaxi();
                 }
             }
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
         {
-            if(speedFactor < MAX_SPEEDFACTOR)
+            if (speedFactor < MAX_SPEEDFACTOR)
+            {
                 speedFactor += SPEEDSTEP;
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT)
         {
-            if(speedFactor > MIN_SPEEDFACTOR)
+            if (speedFactor > MIN_SPEEDFACTOR)
+            {
                 speedFactor -= SPEEDSTEP;
+            }
         }
     }
 }
