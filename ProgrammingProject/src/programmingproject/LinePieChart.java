@@ -16,6 +16,10 @@ public class LinePieChart {
     int[][] timeAndPassengers; 
     int[][] positions; 
     
+    //In-case window is re-sized:
+    int oldRenderHeight;
+    int oldRenderWidth;
+    
             
     //Data Visualisation
     int sampleSize = 500; 
@@ -35,6 +39,8 @@ public class LinePieChart {
         positions = new int[sampleSize][3];
         getSamples();
         getPositions();
+        oldRenderHeight = renderArea.height;
+        oldRenderWidth = renderArea.width;
         
     }
     
@@ -65,6 +71,13 @@ public class LinePieChart {
         
         renderArea.popMatrix();
         
+        //in-case window is resized
+        if (oldRenderHeight != renderArea.height || oldRenderWidth != renderArea.width)
+        {
+            getPositions();
+        }
+        oldRenderHeight = renderArea.height;
+        oldRenderWidth = renderArea.width;
         
     }  
     
@@ -106,7 +119,6 @@ public class LinePieChart {
         for (int count = 0; count < positions.length; count++)
         {
             double angle =  ((double)timeAndPassengers[count][0])/3600/24*360 - 90;
-            System.out.println("----------------------   " + timeAndPassengers[count][0] + "   --------   " + angle);
             int xPosition = (int)((renderArea.height/2*450/600)*Math.cos(angle*Math.PI/180))+renderArea.width/2;
             int yPosition = (int)((renderArea.height/2*450/600)*Math.sin(angle*Math.PI/180))+renderArea.height/2;
             positions[count][0] = xPosition;
