@@ -28,13 +28,17 @@ public class MapGraphsGUI
                 .setPosition(20, 10)
                 .setSize(200, 19);
 
-        // and add another 2 buttons
+        // and add another 3 buttons
         cp5.addButton("Taxi Animator")
                 .setPosition(240, 10)
                 .setSize(200, 19);
 
         cp5.addButton("Area Map Graph")
                 .setPosition(460, 10)
+                .setSize(200, 19);
+
+        cp5.addButton("Vendor comparison")
+                .setPosition(680, 10)
                 .setSize(200, 19);
     }
 }

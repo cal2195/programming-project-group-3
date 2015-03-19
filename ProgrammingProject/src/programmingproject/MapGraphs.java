@@ -32,6 +32,7 @@ public class MapGraphs
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
     LocationVisualization location;
+    VendorVisual vendorVisual;
 
     public MapGraphs(RenderArea renderArea)
     {
@@ -47,6 +48,7 @@ public class MapGraphs
         heatMapGraph = new HeatMapGraph(renderArea, this);
         tripAnimator = new TripAnimator(renderArea, this);
         location = new LocationVisualization(renderArea, this);
+        vendorVisual = new VendorVisual(renderArea, this);
         areaMapGraph = new AreaMapGraph(renderArea, this);
     }
 
@@ -88,7 +90,9 @@ public class MapGraphs
             case 2:
                 location.draw();
                 break;
-            
+            case 3:
+                vendorVisual.draw();
+                break;
         }
 
         renderArea.popMatrix();
@@ -146,6 +150,9 @@ public class MapGraphs
                 break;
             case 2:
                 location.keyPressed(e);
+                break;
+            case 3:
+                vendorVisual.keyPressed(e);
                 break;
         }
     }
