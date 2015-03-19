@@ -22,7 +22,7 @@ public class LinePieChart {
     
             
     //Data Visualisation
-    int sampleSize = 500; 
+    int sampleSize = 500;
     
     //Camera rotation
     float cameraX, cameraY;
@@ -30,6 +30,13 @@ public class LinePieChart {
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
     
+    /**
+     * method poo
+     * produces poo
+     * @param renderArea
+     * area to produce poo into
+     * @author poo
+     */
     public LinePieChart(RenderArea renderArea)
     {
         this.renderArea = renderArea;
