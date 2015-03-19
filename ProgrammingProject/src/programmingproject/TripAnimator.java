@@ -15,7 +15,7 @@ public class TripAnimator
     public static final short SPEEDSTEP = 1;
 
     //have tried to keep this fairly accurate but still works best with speed factors < 100, 
-    public static short speedFactor = 20;
+    public static short speedFactor = 1;
     RenderArea renderArea;
     MapGraphs mapGraphs;
 
@@ -56,7 +56,7 @@ public class TripAnimator
         {
             delta = (System.currentTimeMillis() - lastTime) / 1000f;
             lastTime = System.currentTimeMillis();
-            System.out.println(delta);
+            //System.out.println(delta);
         }
         
 
@@ -99,6 +99,10 @@ public class TripAnimator
     public void setData(ArrayList<Trip> data)
     {
         queuedTrips = data;
+        for (Trip trip : data)
+        {
+            System.out.println(DateTime.secsToDateTime(trip.pickupTime));
+        }
         reset();
         switchData();
     }

@@ -113,7 +113,7 @@ public class DateTime
 		int minutes =  Integer.parseInt(time[1]);
 		int seconds =  Integer.parseInt(time[2]);
 
-		long secondsTillMonth = SECONDS_TILL_MONTH_STARTS[months - 1] ;
+		long secondsTillMonth = SECONDS_TILL_MONTH_STARTS[months - 1];
 		long secondsOfDays =  (days-1)*SECONDS_PER_DAY;
 		long secondsSince2013 = secondsTillMonth + secondsOfDays + hours*SECONDS_PER_HOUR + minutes*60 + seconds;
 
