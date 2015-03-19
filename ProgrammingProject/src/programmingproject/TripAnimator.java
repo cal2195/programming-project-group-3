@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class TripAnimator
 {
 
-    public static final short MAX_SPEEDFACTOR = 100;
+    public static final short MAX_SPEEDFACTOR = 500;
     public static final short MIN_SPEEDFACTOR = 1;
     public static final short SPEEDSTEP = 1;
 
@@ -34,6 +34,7 @@ public class TripAnimator
     ArrayList<TaxiDrawable> cars = new ArrayList<>();
 
     double timeOfDay = 0;
+ 
     
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
@@ -81,7 +82,7 @@ public class TripAnimator
         renderArea.text(DateTime.secsToHourAndMinute((int)timeOfDay), -300f, 10f, 3f);
         renderArea.textSize(25);
         String percentString = String.format("%.2f", (float) speedFactor / (float) MAX_SPEEDFACTOR * 100);
-        renderArea.text(percentString + "% speed", -300f, 50f, 3f);
+        renderArea.text(speedFactor + "x realtime", -300f, 50f, 3f);
         renderArea.popMatrix();
         renderArea.popStyle();
         if (timeOfDay >= DateTime.SECONDS_PER_DAY)
