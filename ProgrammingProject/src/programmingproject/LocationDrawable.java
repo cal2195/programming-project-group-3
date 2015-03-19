@@ -10,7 +10,6 @@ import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.util.ArrayList;
-import static processing.core.PConstants.TRIANGLE_FAN;
 
 /**
  *
@@ -35,17 +34,12 @@ public class LocationDrawable {
         x = screenPosition.x;
         y = screenPosition.y;
         marker = new SimplePointMarker(new Location(lat,lon));
+        map.addMarker(marker);
     }
     
     public void draw(RenderArea renderArea)
     {
        renderArea.translate(x, y, 4);
-       renderArea.stroke(0);
-       renderArea.fill(255, 240, 0);
-       renderArea.box(3, 3, 8);
-       renderArea.noStroke();
-       renderArea.fill(0);
-      
     }
     
     
