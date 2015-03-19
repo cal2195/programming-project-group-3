@@ -14,7 +14,7 @@ import processing.core.PGraphics;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 0;
+    int currentScreen = 1;
     HeatMapGraph heightMapGraph;
     VendorVisual vis1;
     TripAnimator tripAnimator;
@@ -104,6 +104,9 @@ public class RenderArea extends PApplet
             {
                 case 0:
                     mapGraphs.mouseReleased(e);
+                    break;
+                case 1:
+                    linePieChart.mouseReleased(e);
                     break;
             }
         }
