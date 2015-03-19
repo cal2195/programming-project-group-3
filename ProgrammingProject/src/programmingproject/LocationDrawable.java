@@ -40,8 +40,6 @@ public class LocationDrawable {
     public void draw(RenderArea renderArea)
     {
        renderArea.translate(x, y, 4);
-       
-       renderArea.fill(0); 
     }
     
     
