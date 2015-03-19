@@ -14,7 +14,7 @@ import processing.core.PGraphics;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 1;
+    int currentScreen = 0;
     HeatMapGraph heightMapGraph;
     VendorVisual vis1;
     TripAnimator tripAnimator;
@@ -153,11 +153,11 @@ public class RenderArea extends PApplet
         {
             case "Heat Map":
                 mapGraphs.currentGraph = 0;
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 100000));
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 50000));
                 break;
             case "Taxi Animator":
                 mapGraphs.currentGraph = 1;
-                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 100000));
+                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
                 break;
             case "Area Map Graph":
                 mapGraphs.currentGraph = 2;

@@ -74,8 +74,8 @@ public class TaxiDrawable
     {
         if (time > startTime)
         {
-            x += TripAnimator.speedFactor * dx ;
-            y += TripAnimator.speedFactor * dy;
+            x += TripAnimator.speedFactor * dx * TripAnimator.delta;
+            y += TripAnimator.speedFactor * dy * TripAnimator.delta;
             if (endx - x < TripAnimator.speedFactor/4 && endx - x > -1*(TripAnimator.speedFactor/4))
                 {
                     dx = 0;
