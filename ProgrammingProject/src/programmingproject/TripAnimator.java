@@ -12,7 +12,7 @@ public class TripAnimator
 
     public static final short MAX_SPEEDFACTOR = 100;
     public static final short MIN_SPEEDFACTOR = 1;
-    public static final short SPEEDSTEP = 2;
+    public static final short SPEEDSTEP = 1;
 
     //have tried to keep this fairly accurate but still works best with speed factors < 100, 
     public static short speedFactor = 20;
@@ -33,7 +33,7 @@ public class TripAnimator
     ArrayList<Trip> queuedTrips = new ArrayList<>();
     ArrayList<TaxiDrawable> cars = new ArrayList<>();
 
-    int timeOfDay = 0;
+    double timeOfDay = 0;
     
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
@@ -54,7 +54,9 @@ public class TripAnimator
         }
         else
         {
-            delta = (System.currentTimeMillis() - lastTime) / 1000;
+            delta = (System.currentTimeMillis() - lastTime) / 1000f;
+            lastTime = System.currentTimeMillis();
+            System.out.println(delta);
         }
         
 
@@ -63,20 +65,20 @@ public class TripAnimator
         for (TaxiDrawable car : cars)
         {
             renderArea.pushMatrix();
-            car.draw(renderArea, timeOfDay);
-            car.moveAndCheck(timeOfDay);
+            car.draw(renderArea, (int)timeOfDay);
+            car.moveAndCheck((int)timeOfDay);
             renderArea.popMatrix();
         }
         renderArea.popMatrix();
         renderArea.popStyle();
-        timeOfDay += speedFactor;
+        timeOfDay += speedFactor * delta;
 
         renderArea.pushStyle();
         renderArea.pushMatrix();
         renderArea.translate(0, 0, 0);
         renderArea.fill(0);
         renderArea.textSize(50);
-        renderArea.text(DateTime.secsToHourAndMinute(timeOfDay), -300f, 10f, 3f);
+        renderArea.text(DateTime.secsToHourAndMinute((int)timeOfDay), -300f, 10f, 3f);
         renderArea.textSize(25);
         String percentString = String.format("%.2f", (float) speedFactor / (float) MAX_SPEEDFACTOR * 100);
         renderArea.text(percentString + "% speed", -300f, 50f, 3f);
