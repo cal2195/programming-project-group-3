@@ -93,9 +93,7 @@ public class LinePieChart {
     {
         for(int count = 0; count < timeAndPassengers.length; count++ )
         {
-            //Taxi randomTaxi = renderArea.data.taxis.get((int)renderArea.random(renderArea.data.taxis.size()));
             ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
-            //currentTrips = randomTaxi.getTrips();
             int randomTrip = (int)renderArea.random(currentTrips.size());
             timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime)%SECONDS_PER_DAY;
             timeAndPassengers[count][1] = currentTrips.get(randomTrip).passengers;
@@ -124,7 +122,8 @@ public class LinePieChart {
         {
             renderArea.fill(0,120,255);
             
-            for(int zPos = 0; zPos <= positions[count][2] ; zPos++){
+            for(int zPos = 0; zPos <= positions[count][2] ; zPos++)
+            {
                 renderArea.pushMatrix();
                 renderArea.translate(positions[count][0],positions[count][1],zPos);
                 renderArea.box(1);
