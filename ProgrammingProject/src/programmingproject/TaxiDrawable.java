@@ -22,6 +22,7 @@ public class TaxiDrawable
     short deathFrames;
     int startTime, tripTime;
     private final short DEATHFRAMES = 10;
+    int dataSet;
 
     TaxiDrawable(Trip trip, UnfoldingMap map)
     {
@@ -44,6 +45,16 @@ public class TaxiDrawable
 
         dx = (endx - x) / trip.time;
         dy = (endy - y) / trip.time;
+        
+        if(trip.passengers > 3){
+            //draws DataSet1 as RED taxis, eg, all taxis carrying more than 3 passengers
+            dataSet = 1;
+        }
+        else
+        {
+            //default yellow taxis
+            dataSet = 0;
+        }
     }
 
     public void draw(RenderArea renderArea, int time)
@@ -64,8 +75,16 @@ public class TaxiDrawable
 
         } else if (time > startTime && time < startTime + tripTime)
         {
+            
+            if(dataSet == 0){
             renderArea.fill(255, 240, 0);
             renderArea.box(3, 3, 8);
+                    }
+            else if(dataSet == 1){
+                
+            renderArea.fill(255, 0, 0);
+            renderArea.box(3, 3, 8);
+            }
         }
 
     }
@@ -76,7 +95,7 @@ public class TaxiDrawable
         {
             x += TripAnimator.speedFactor * dx * TripAnimator.delta;
             y += TripAnimator.speedFactor * dy * TripAnimator.delta;
-            if (endx - x < TripAnimator.speedFactor/4 && endx - x > -1*(TripAnimator.speedFactor/4))
+            if (endx - x < TripAnimator.speedFactor/16 && endx - x > -1*(TripAnimator.speedFactor/16))
                 {
                     dx = 0;
                     dy = 0;
