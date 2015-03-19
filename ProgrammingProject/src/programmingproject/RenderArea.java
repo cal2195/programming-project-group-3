@@ -16,8 +16,6 @@ public class RenderArea extends PApplet
 
     int currentScreen = 0;
     HeatMapGraph heightMapGraph;
-    VendorVisual vis1;
-    TripAnimator tripAnimator;
     MapGraphs mapGraphs;
     Data data;
     LinePieChart linePieChart;
@@ -35,10 +33,7 @@ public class RenderArea extends PApplet
         query = new Query();
 
         mapGraphs = new MapGraphs(this);
-        //heightMapGraph = new HeatMapGraph(this, mapGraphs);
-        //vis1 = new VendorVisual(this);
-       // tripAnimator = new TripAnimator(this, mapGraphs);
-        linePieChart = new LinePieChart(this);
+        //linePieChart = new LinePieChart(this);
     }
 
     @Override
@@ -153,7 +148,7 @@ public class RenderArea extends PApplet
         {
             case "Heat Map":
                 mapGraphs.currentGraph = 0;
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 100000));
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 100));
                 break;
             case "Taxi Animator":
                 mapGraphs.currentGraph = 1;
@@ -165,7 +160,7 @@ public class RenderArea extends PApplet
                 break;
             case "Vendor comparison":
                 mapGraphs.currentGraph = 3;
-                mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
+                mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 500), query.getTaxisAtHour(3, 500));
                 break;
         }
     }

@@ -166,7 +166,7 @@ public class HeatMapGraph
                         renderArea.noStroke();
                         renderArea.rect(-5, -15, 60, 18);
                         renderArea.fill(0);
-                        renderArea.textFont(renderArea.createFont("Calibri", 15, false));
+                        renderArea.textFont(renderArea.createFont("Calibri", 30, false));
                         renderArea.textSize(15);
                         
                         renderArea.text((int) (gridOfTowers[i][ii].height / 10) + " taxis", -2, -2);
