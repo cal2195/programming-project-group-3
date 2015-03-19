@@ -22,6 +22,7 @@ public class TaxiDrawable
     short deathFrames;
     int startTime, tripTime;
     private final short DEATHFRAMES = 10;
+    int dataSet;
 
     TaxiDrawable(Trip trip, UnfoldingMap map)
     {
@@ -42,8 +43,18 @@ public class TaxiDrawable
         
         tripTime = trip.time;
 
-        dx = TripAnimator.SPEEDFACTOR * (endx - x) / trip.time;
-        dy = TripAnimator.SPEEDFACTOR * (endy - y) / trip.time;
+        dx = (endx - x) / trip.time;
+        dy = (endy - y) / trip.time;
+        
+        if(trip.passengers > 3){
+            //draws DataSet1 as RED taxis, eg, all taxis carrying more than 3 passengers
+            dataSet = 1;
+        }
+        else
+        {
+            //default yellow taxis
+            dataSet = 0;
+        }
     }
 
     public void draw(RenderArea renderArea, int time)
@@ -51,25 +62,29 @@ public class TaxiDrawable
         renderArea.translate(x, y, 4);
         if (dead)
         {
-            if (time > startTime && deathFrames < DEATHFRAMES)
+            if (time > startTime && deathFrames < DEATHFRAMES && time < startTime + tripTime)
             {
                 renderArea.fill(0, 0, 0);
                 renderArea.box(3, 3, 8);
-                deathFrames += TripAnimator.SPEEDFACTOR;
+                deathFrames += TripAnimator.speedFactor;
             }
-            if(time <= TripAnimator.SPEEDFACTOR + 1)
+            if(time <= TripAnimator.speedFactor + 1)
             {
-                dead = false;
-                x = startx;
-                y = starty;
-                dx = TripAnimator.SPEEDFACTOR * (endx - x) / tripTime;
-                dy = TripAnimator.SPEEDFACTOR * (endy - y) / tripTime;
+                this.resetTaxi();
             }
 
-        } else if (time > startTime)
+        } else if (time > startTime && time < startTime + tripTime)
         {
+            
+            if(dataSet == 0){
             renderArea.fill(255, 240, 0);
             renderArea.box(3, 3, 8);
+                    }
+            else if(dataSet == 1){
+                
+            renderArea.fill(255, 0, 0);
+            renderArea.box(3, 3, 8);
+            }
         }
 
     }
@@ -78,9 +93,9 @@ public class TaxiDrawable
     {
         if (time > startTime)
         {
-            x += dx;
-            y += dy;
-            if (endx - x < TripAnimator.SPEEDFACTOR/2 && endx - x > -1*(TripAnimator.SPEEDFACTOR/2))
+            x += TripAnimator.speedFactor * dx * TripAnimator.delta;
+            y += TripAnimator.speedFactor * dy * TripAnimator.delta;
+            if (endx - x < TripAnimator.speedFactor/16 && endx - x > -1*(TripAnimator.speedFactor/16))
                 {
                     dx = 0;
                     dy = 0;
@@ -88,5 +103,13 @@ public class TaxiDrawable
                 }
         }
 
+    }
+    
+    public void resetTaxi(){
+                dead = false;
+                x = startx;
+                y = starty;
+                dx = (endx - x) / tripTime;
+                dy = (endy - y) / tripTime;
     }
 }
