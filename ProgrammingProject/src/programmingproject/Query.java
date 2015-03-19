@@ -69,6 +69,10 @@ public class Query
             return null;
         }
     }
+    public ArrayList<Trip> getRandomTrips(int sampleSize)
+    {
+        return getTrips("SELECT * FROM taxi_data LIMIT 0," + sampleSize);
+    }
 
     public ArrayList<Trip> getTrips(String query)
     {
@@ -86,6 +90,7 @@ public class Query
         {
             Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return trips;
+        return trips;  
+        
     }
 }

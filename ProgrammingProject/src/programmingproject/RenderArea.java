@@ -19,7 +19,8 @@ public class RenderArea extends PApplet
     VendorVisual vis1;
     TripAnimator tripAnimator;
     MapGraphs mapGraphs;
-    
+    Data data;
+    LinePieChart linePieChart;
 
     GUI gui;
 
@@ -37,6 +38,7 @@ public class RenderArea extends PApplet
         //heightMapGraph = new HeatMapGraph(this, mapGraphs);
         //vis1 = new VendorVisual(this);
        // tripAnimator = new TripAnimator(this, mapGraphs);
+        linePieChart = new LinePieChart(this);
     }
 
     @Override
@@ -47,6 +49,10 @@ public class RenderArea extends PApplet
             case 0:
                 mapGraphs.draw();
 
+                break;
+                
+            case 1:
+                linePieChart.draw();
                 break;
         }
     }
@@ -61,6 +67,10 @@ public class RenderArea extends PApplet
             {
                 case 0:
                     mapGraphs.mousePressed(e);
+                    break;
+                
+                case 1:
+                    linePieChart.mousePressed(e);
                     break;
             }
         }
@@ -77,6 +87,9 @@ public class RenderArea extends PApplet
                 case 0:
                     mapGraphs.mouseDragged(e);
                     break;
+                case 1:
+                    linePieChart.mouseDragged(e);
+                    break;
             }
         }
     }
@@ -91,6 +104,9 @@ public class RenderArea extends PApplet
             {
                 case 0:
                     mapGraphs.mouseReleased(e);
+                    break;
+                case 1:
+                    linePieChart.mouseReleased(e);
                     break;
             }
         }
@@ -117,7 +133,7 @@ public class RenderArea extends PApplet
         if (e.getKeyCode() == KeyEvent.VK_ENTER)
         {
             currentScreen++;
-            if (currentScreen > 2)
+            if (currentScreen >= 2)
             {
                 currentScreen = 0;
             }
@@ -137,15 +153,15 @@ public class RenderArea extends PApplet
         {
             case "Heat Map":
                 mapGraphs.currentGraph = 0;
-                mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 5000));
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 100000));
                 break;
             case "Taxi Animator":
                 mapGraphs.currentGraph = 1;
-                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 250000));
+                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 100000));
                 break;
             case "Area Map Graph":
                 mapGraphs.currentGraph = 2;
-                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 250000));
+                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 500));
                 break;
             case "Vendor comparison":
                 mapGraphs.currentGraph = 3;
