@@ -38,7 +38,7 @@ public class RenderArea extends PApplet
         //heightMapGraph = new HeatMapGraph(this, mapGraphs);
         //vis1 = new VendorVisual(this);
        // tripAnimator = new TripAnimator(this, mapGraphs);
-        linePieChart = new LinePieChart(this);
+        //linePieChart = new LinePieChart(this);
     }
 
     @Override
