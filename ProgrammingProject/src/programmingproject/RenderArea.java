@@ -133,7 +133,7 @@ public class RenderArea extends PApplet
         if (e.getKeyCode() == KeyEvent.VK_ENTER)
         {
             currentScreen++;
-            if (currentScreen > 2)
+            if (currentScreen >= 2)
             {
                 currentScreen = 0;
             }
