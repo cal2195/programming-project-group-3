@@ -23,7 +23,6 @@ public class LinePieChart {
             
     //Data Visualisation
     int sampleSize = 500; 
-    public static final int SECONDS_PER_DAY = 86400;
     
     //Camera rotation
     float cameraX, cameraY;
@@ -108,7 +107,7 @@ public class LinePieChart {
         {
             ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
             int randomTrip = (int)renderArea.random(currentTrips.size());
-            timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime)%SECONDS_PER_DAY;
+            timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime)%DateTime.SECONDS_PER_DAY;
             timeAndPassengers[count][1] = currentTrips.get(randomTrip).passengers;
             
         }
