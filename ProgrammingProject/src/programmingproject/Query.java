@@ -71,7 +71,9 @@ public class Query
     }
     public ArrayList<Trip> getRandomTrips(int sampleSize)
     {
-        return getTrips("SELECT * FROM taxi_data LIMIT 0," + sampleSize);
+        //return getTrips("SELECT * FROM taxi_data ORDER BY RAND() LIMIT " + sampleSize);
+        
+        return getTrips("SELECT t.* FROM taxi_data AS t, (SELECT ROUND(RAND() * (SELECT MAX(id) FROM taxi_data)) AS id) AS x WHERE t.id >= x.id LIMIT " + sampleSize);
     }
 
     public ArrayList<Trip> getTrips(String query)
