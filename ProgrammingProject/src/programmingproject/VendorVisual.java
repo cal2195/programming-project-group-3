@@ -91,11 +91,13 @@ public class VendorVisual
     {
         minimize = true;
         queuedTrips1 = data1;
+        queuedTrips2 = data2;
     }
 
     public void switchData()
     {
         trips1 = queuedTrips1;
+        trips2 = queuedTrips2;
         resetTowers(gridOfTowers1);
         resetTowers(gridOfTowers2);
         calculateTowers(trips1, gridOfTowers1);
@@ -136,19 +138,21 @@ public class VendorVisual
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
             {
-                Tower towerMax;
-                Tower towerMin;
-                if (gridOfTowers1[i][ii].height >  gridOfTowers2[i][ii].height)
+                if (gridOfTowers1[i][ii].height ==  gridOfTowers2[i][ii].height)
                 {
-                    towerMax = gridOfTowers1[i][ii];
-                    towerMin = gridOfTowers2[i][ii];
+                    drawTower(gridOfTowers1[i][ii], i, ii, 255, 63, 255, 0.75f);
                 } else
                 {
-                    towerMin = gridOfTowers1[i][ii];
-                    towerMax = gridOfTowers2[i][ii];
+                    if (gridOfTowers1[i][ii].height >  gridOfTowers2[i][ii].height)
+                    {
+                        drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 0.5f);
+                        drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63, 1f);
+                    } else
+                    {
+                        drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 1f);
+                        drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63, 0.5f);
+                    }
                 }
-                drawTower(towerMax, i, ii, 63, 63, 255, 0.5f);
-                drawTower(towerMin, i, ii, 255, 63, 63, 1f);
             }
         }
 
