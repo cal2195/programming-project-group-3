@@ -153,15 +153,15 @@ public class RenderArea extends PApplet
         {
             case "Heat Map":
                 mapGraphs.currentGraph = 0;
-                mapGraphs.heatMapGraph.setData(query.getTaxisAtHour(9, 5000));
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 100000));
                 break;
             case "Taxi Animator":
                 mapGraphs.currentGraph = 1;
-                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 250000));
+                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 100000));
                 break;
             case "Area Map Graph":
                 mapGraphs.currentGraph = 2;
-                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 250000));
+                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 500));
                 break;
         }
     }
