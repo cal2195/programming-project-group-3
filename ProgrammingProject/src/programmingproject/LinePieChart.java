@@ -119,12 +119,14 @@ public class LinePieChart {
     
     public void getSamples()
     {
+        System.out.println("\n Starting \n");
+        ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
+        System.out.println("\n Done. \n");
         for(int count = 0; count < timeAndPassengers.length; count++ )
         {
-            ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
-            int randomTrip = (int)renderArea.random(currentTrips.size());
-            timeAndPassengers[count][0] = (int)(currentTrips.get(randomTrip).pickupTime)%DateTime.SECONDS_PER_DAY;
-            timeAndPassengers[count][1] = currentTrips.get(randomTrip).passengers;
+            timeAndPassengers[count][0] = (int)(currentTrips.get(count).pickupTime)%DateTime.SECONDS_PER_DAY;
+            timeAndPassengers[count][1] = currentTrips.get(count).passengers;
+            System.out.println(count);
             
         }
     }
