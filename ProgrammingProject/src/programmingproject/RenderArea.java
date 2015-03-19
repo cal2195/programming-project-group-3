@@ -20,6 +20,8 @@ public class RenderArea extends PApplet
     Data data;
     LinePieChart linePieChart;
 
+    PGraphics flatBuffer;
+    
     GUI gui;
 
     Query query;
@@ -29,11 +31,13 @@ public class RenderArea extends PApplet
     {
         size(width, height, P3D);
         
+        flatBuffer = createGraphics(width, height, P2D);
+        
         gui = new GUI(this);
         query = new Query();
 
         mapGraphs = new MapGraphs(this);
-        //linePieChart = new LinePieChart(this);
+        linePieChart = new LinePieChart(this);
     }
 
     @Override
@@ -43,13 +47,13 @@ public class RenderArea extends PApplet
         {
             case 0:
                 mapGraphs.draw();
-
                 break;
                 
             case 1:
                 linePieChart.draw();
                 break;
         }
+        image(flatBuffer, 0, 0);
     }
 
     @Override
