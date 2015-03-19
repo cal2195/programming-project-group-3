@@ -11,7 +11,7 @@ public class TripAnimator
 {
 
     public static final short MAX_SPEEDFACTOR = 500;
-    public static final short MIN_SPEEDFACTOR = 1;
+    public static final short MIN_SPEEDFACTOR = -500;
     public static final short SPEEDSTEP = 1;
 
     //have tried to keep this fairly accurate but still works best with speed factors < 100, 
@@ -78,6 +78,7 @@ public class TripAnimator
         renderArea.pushMatrix();
         renderArea.translate(0, 0, 0);
         renderArea.fill(0);
+        renderArea.textFont(renderArea.createFont("Calibri", 50, false));
         renderArea.textSize(50);
         renderArea.text(DateTime.secsToHourAndMinute((int)timeOfDay), -300f, 10f, 3f);
         renderArea.textSize(25);

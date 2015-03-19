@@ -46,7 +46,7 @@ public class TaxiDrawable
         dx = (endx - x) / trip.time;
         dy = (endy - y) / trip.time;
         
-        if(trip.passengers > 3){
+        if(trip.vendorID){
             //draws DataSet1 as RED taxis, eg, all taxis carrying more than 3 passengers
             dataSet = 1;
         }
