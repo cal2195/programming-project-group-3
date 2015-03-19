@@ -15,6 +15,7 @@ public class LinePieChart {
     PImage bg;
     int[][] timeAndPassengers; 
     int[][] positions; 
+    boolean doneFirstSetup;
     
     //In-case window is re-sized:
     int oldRenderHeight;
@@ -31,27 +32,35 @@ public class LinePieChart {
     boolean demoMode = true;
     
     /**
-     * method poo
-     * produces poo
-     * @param renderArea
-     * area to produce poo into
-     * @author poo
+     *
+     * @author john
      */
+    
     public LinePieChart(RenderArea renderArea)
     {
         this.renderArea = renderArea;
         bg = renderArea.loadImage("res/pieBase.png");
         timeAndPassengers = new int[sampleSize][2];
         positions = new int[sampleSize][3];
-        getSamples();
-        getPositions();
+        doneFirstSetup =false;
         oldRenderHeight = renderArea.height;
         oldRenderWidth = renderArea.width;
         
     }
+    public void setup()
+    {
+        getSamples();
+        getPositions();
+    }
     
     public void draw()
     {
+        renderArea.pushStyle();
+        if(!doneFirstSetup)
+        {
+            setup();
+            doneFirstSetup = true;
+        }
         renderArea.pushMatrix();
         renderArea.background(0);
         
@@ -84,7 +93,7 @@ public class LinePieChart {
         }
         oldRenderHeight = renderArea.height;
         oldRenderWidth = renderArea.width;
-        
+        renderArea.popStyle();
     }  
     
     public void mousePressed(MouseEvent e)
