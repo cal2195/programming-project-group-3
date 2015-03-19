@@ -58,14 +58,14 @@ public class LocationVisualization
             renderArea.fill(0);
             renderArea.textFont(renderArea.createFont("Calibri", 15, false));
             renderArea.textSize(15);
-            renderArea.text(l.name + " visitors: " + l.visitors, -25, -25);
+            renderArea.text(l.name + " visitors: " + l.visitors, -50, -25);
             renderArea.fill(150);
             renderArea.triangle(0, 0, -10, -20, 10, -20);
             renderArea.popMatrix();
             renderArea.stroke(0);
             renderArea.popMatrix();
         }    
-        test.draw(renderArea);
+        //test.draw(renderArea);
         frames++;
         renderArea.popMatrix();
         renderArea.popStyle();
