@@ -164,7 +164,7 @@ public class RenderArea extends PApplet
                 break;
             case "Vendor comparison":
                 mapGraphs.currentGraph = 3;
-                mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 500), query.getTaxisAtHour(3, 500));
+                mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
                 break;
         }
     }
