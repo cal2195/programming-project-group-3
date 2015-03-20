@@ -25,6 +25,9 @@ public class VendorVisual
     final int GRID_HEIGHT = 300;
     final int SCALE = 1000;
 
+    // 0 = telescope,   1 = side by side
+    int visualStyle = 1;
+    
     ArrayList<Trip> trips1 = new ArrayList<>();
     ArrayList<Trip> trips2 = new ArrayList<>();
     ArrayList<Trip> queuedTrips1 = new ArrayList<>();
@@ -138,20 +141,28 @@ public class VendorVisual
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
             {
-                if (gridOfTowers1[i][ii].height ==  gridOfTowers2[i][ii].height)
-                {
-                    drawTower(gridOfTowers1[i][ii], i, ii, 255, 63, 255, 0.75f);
-                } else
-                {
-                    if (gridOfTowers1[i][ii].height >  gridOfTowers2[i][ii].height)
-                    {
-                        drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 0.5f);
-                        drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63, 1f);
-                    } else
-                    {
-                        drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 1f);
-                        drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63, 0.5f);
-                    }
+                switch (visualStyle) {
+                    case 0:
+                        if (gridOfTowers1[i][ii].height ==  gridOfTowers2[i][ii].height)
+                        {
+                            drawTower(gridOfTowers1[i][ii], i, ii, 255, 63, 255, 0.75f, 0.75f, 0);
+                        } else
+                        {
+                            if (gridOfTowers1[i][ii].height >  gridOfTowers2[i][ii].height)
+                            {
+                                drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 0.5f, 0.5f, 0f);
+                                drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63, 1f, 1f, 0f);
+                            } else
+                            {
+                                drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 1f, 1f, 0f);
+                                drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63, 0.5f, 0.5f, 0f);
+                            }
+                        }
+                        break;
+                    case 1:
+                        drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 0.4f, 0.8f, -0.2f);
+                        drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63,  0.4f, 0.8f, 0.2f);
+                        break;
                 }
             }
         }
@@ -160,18 +171,18 @@ public class VendorVisual
         renderArea.popStyle();
     }
 
-    public void drawTower(Tower tower, int x, int y, int red, int green, int blue, float baseScale)
+    public void drawTower(Tower tower, int x, int y, int red, int green, int blue, float baseX, float baseY, float baseOffset)
     {
         if (tower.height == 0) return;
         renderArea.pushMatrix();
-        renderArea.translate((float) x * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) y * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((tower.height)) * SCALE * percent / 2 / 500f);
+        renderArea.translate((float) (x + baseOffset) * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) y * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((tower.height)) * SCALE * percent / 2 / 500f);
 /*        if (currentID == id)
         {
             renderArea.fill(255);   // color of mouse over tower
         }*/
         // towers:
         renderArea.fill(red, green, blue);
-        renderArea.box(mapGraphs.mapWidth / GRID_WIDTH * baseScale, mapGraphs.mapHeight / GRID_HEIGHT * baseScale, (float) ((double) (tower.height)) * SCALE * percent / 500f);
+        renderArea.box(mapGraphs.mapWidth / GRID_WIDTH * baseX, mapGraphs.mapHeight / GRID_HEIGHT * baseY, (float) ((double) (tower.height)) * SCALE * percent / 500f);
 /*        if (currentID == id)
         {
             renderArea.translate(0, 0, (float) ((double) (tower.height)) * SCALE * percent / 500f / 2);
@@ -238,11 +249,13 @@ public class VendorVisual
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
-            setData(renderArea.query.getTripsForMonth(1), renderArea.query.getTripsForMonth(2));
-        }/* else if (e.getKeyCode() == KeyEvent.VK_2)
+            visualStyle = 0;
+//            setData(renderArea.query.getTripsForMonth(1), renderArea.query.getTripsForMonth(2));
+        } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
-            setData(renderArea.query.getTripsForMonth(2), renderArea.query.getTripsForMonth(3));
-        } else if (e.getKeyCode() == KeyEvent.VK_3)
+            visualStyle = 1;
+//            setData(renderArea.query.getTripsForMonth(2), renderArea.query.getTripsForMonth(3));
+        }/* else if (e.getKeyCode() == KeyEvent.VK_3)
         {
             setData(renderArea.query.getTripsForMonth(3));
         } else if (e.getKeyCode() == KeyEvent.VK_4)
