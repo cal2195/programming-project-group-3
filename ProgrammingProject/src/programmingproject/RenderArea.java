@@ -32,6 +32,7 @@ public class RenderArea extends PApplet
         size(width, height, P2D);
 
         buffer = (PGraphics3D) createGraphics(width, height, P3D);
+        buffer.textFont(createFont("Calibri", 30, false));
 
         gui = new GUI(this);
         query = new Query();
@@ -44,7 +45,7 @@ public class RenderArea extends PApplet
     public void draw()
     {
         buffer.beginDraw();
-//        flatBuffer.clear(); // clear the PGraphics
+
         switch (currentScreen)
         {
             case 0:
@@ -55,12 +56,33 @@ public class RenderArea extends PApplet
                 linePieChart.draw(buffer);
                 break;
         }
-        
-//        beginRecord(flatBuffer);
-        
-//        endRecord();
+
         buffer.endDraw();
-        image(buffer, 0, 0);
+        image(buffer, 0, 0); //Draw 3D offscreen buffer onto 2D onscreen buffer!
+
+        draw2DGUI();
+    }
+
+    public void draw2DGUI()
+    {
+        if (mapGraphs.heatMapGraph.labelX != -1)
+        {
+            pushStyle();
+            pushMatrix();
+            translate(mapGraphs.heatMapGraph.labelX, mapGraphs.heatMapGraph.labelY);
+            fill(0, 255, 0);
+            rect(0, 0, 100, 50);
+            
+            int desiredID = mapGraphs.heatMapGraph.currentID - 1;
+            int row = (desiredID / mapGraphs.heatMapGraph.GRID_WIDTH);
+            int column = desiredID - (row * mapGraphs.heatMapGraph.GRID_WIDTH);
+            
+            fill(0);
+            text((int) (mapGraphs.heatMapGraph.gridOfTowers[row][column].height / 10) + " taxis", 5, 20);
+            
+            popMatrix();
+            popStyle();
+        }
     }
 
     @Override
@@ -177,7 +199,7 @@ public class RenderArea extends PApplet
     }
 
     @Override
-    protected void resizeRenderer(int newWidth, int newHeight)
+    protected void resizeRenderer(int newWidth, int newHeight) //When the window is resized, adjust all buffers accordingly!
     {
         super.resizeRenderer(newWidth, newHeight);
         if (mapGraphs != null)

@@ -22,7 +22,6 @@ public class TripAnimator
 
     long lastTime = 0;
     static double delta;
-    
 
     int MODE = 0;
 
@@ -35,8 +34,6 @@ public class TripAnimator
     ArrayList<TaxiDrawable> cars = new ArrayList<>();
 
     double timeOfDay = 0;
- 
-    
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
@@ -53,22 +50,20 @@ public class TripAnimator
         if (lastTime == 0)
         {
             lastTime = System.currentTimeMillis();
-        }
-        else
+        } else
         {
             delta = (System.currentTimeMillis() - lastTime) / 1000f;
             lastTime = System.currentTimeMillis();
-         //   System.out.println(delta);
+            //   System.out.println(delta);
         }
-        
 
         buffer.stroke(0);
 //        buffer.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
         for (TaxiDrawable car : cars)
         {
             buffer.pushMatrix();
-            car.draw(buffer, (int)timeOfDay);
-            car.moveAndCheck((int)timeOfDay);
+            car.draw(buffer, (int) timeOfDay);
+            car.moveAndCheck((int) timeOfDay);
             buffer.popMatrix();
         }
         timeOfDay += speedFactor * delta;
@@ -76,7 +71,7 @@ public class TripAnimator
         buffer.fill(0);
         buffer.textFont(this.renderArea.createFont("Calibri", 50, false));
         buffer.textSize(50);
-        buffer.text(DateTime.secsToHourAndMinute((int)timeOfDay), -300f, 10f, 3f);
+        buffer.text(DateTime.secsToHourAndMinute((int) timeOfDay), -300f, 10f, 3f);
         buffer.textSize(25);
         String percentString = String.format("%.2f", (float) speedFactor / (float) MAX_SPEEDFACTOR * 100);
         buffer.text(speedFactor + "x realtime", -300f, 50f, 3f);
@@ -144,13 +139,27 @@ public class TripAnimator
             }
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
         {
-            if (speedFactor < MAX_SPEEDFACTOR)
+            if (e.isShiftDown())
+            {
+                if (speedFactor < MAX_SPEEDFACTOR)
+                {
+                    speedFactor += SPEEDSTEP * 10;
+                }
+            }
+            else if (speedFactor < MAX_SPEEDFACTOR)
             {
                 speedFactor += SPEEDSTEP;
             }
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT)
         {
-            if (speedFactor > MIN_SPEEDFACTOR)
+            if (e.isShiftDown())
+            {
+                if (speedFactor < MAX_SPEEDFACTOR)
+                {
+                    speedFactor -= SPEEDSTEP * 10;
+                }
+            }
+            else if (speedFactor > MIN_SPEEDFACTOR)
             {
                 speedFactor -= SPEEDSTEP;
             }
