@@ -34,6 +34,9 @@ public class HeatMapGraph
     boolean minimize = false;
 
     PGraphics buffer;
+    int labelX;
+    int labelY;
+    int currentID;
 
     public HeatMapGraph(RenderArea renderArea, MapGraphs mapGraphs)
     {
@@ -114,7 +117,12 @@ public class HeatMapGraph
         buffer.pushStyle();
         buffer.pushMatrix();
 
-        int currentID = drawBuffer();
+        currentID = drawBuffer();
+        if (currentID == -1)
+        {
+            labelX = -1;
+            labelY = -1;
+        }
         //System.out.println(currentID);
 
         if (minimize)
@@ -156,26 +164,30 @@ public class HeatMapGraph
                     buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
                     if (currentID == id)
                     {
-                        buffer.translate(0, 0, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f / 2);
-                        buffer.fill(0);
-                        
-                        buffer.rotateZ(-mapGraphs.cameraX);
-                        buffer.rotateX(-mapGraphs.cameraY);
-                        buffer.pushMatrix();
-                        buffer.fill(0,255,0);
-                        buffer.noStroke();
-                        buffer.rect(-5, -15, 60, 18);
-                        buffer.fill(0);
-                        buffer.textFont(renderArea.createFont("Calibri", 30, false));
-                        buffer.textSize(15);
-                        
-                        buffer.text((int) (gridOfTowers[i][ii].height / 10) + " taxis", -2, -2);
-                        buffer.popMatrix();
-                        buffer.stroke(0);
+                        labelX = (int) buffer.screenX(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
+                        labelY = (int) buffer.screenY(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
+                        //System.out.println(labelX + "," + labelY);
+//                        buffer.translate(0, 0, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f / 2);
+//                        buffer.fill(0);
+//                        
+//                        buffer.rotateZ(-mapGraphs.cameraX);
+//                        buffer.rotateX(-mapGraphs.cameraY);
+//                        
+//                        buffer.pushMatrix();
+//                        buffer.fill(0,255,0);
+//                        buffer.noStroke();
+//                        buffer.rect(-5, -15, 60, 18);
+//                        buffer.fill(0);
+//                        buffer.textSize(15);
+//                        buffer.text((int) (gridOfTowers[i][ii].height / 10) + " taxis", -2, -2);
+//                        buffer.popMatrix();
+//                        
+//                        buffer.stroke(0);
                     }
                     buffer.popMatrix();
-                    id++;
+                    
                 }
+                id++;
             }
         }
 
@@ -186,7 +198,6 @@ public class HeatMapGraph
     public int drawBuffer()
     {
         buffer.beginDraw();
-        buffer.pushStyle();
         buffer.background(0);
         buffer.translate(renderArea.width / 2, renderArea.height / 2, mapGraphs.zoom);
 
@@ -206,13 +217,13 @@ public class HeatMapGraph
                 {
                     buffer.pushMatrix();
                     buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
-                    buffer.fill(id++ - 16777215);
+                    buffer.fill(id - 16777215);
                     buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
                     buffer.popMatrix();
                 }
+                id++;
             }
         }
-        buffer.popStyle();
         buffer.endDraw();
         //Used to fix a bug in processing
         renderArea.pushMatrix();
