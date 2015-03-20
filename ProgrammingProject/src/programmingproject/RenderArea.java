@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import processing.core.PApplet;
-import processing.core.PGraphics;
+import processing.opengl.PGraphics3D;
 
 /**
  *
@@ -20,8 +20,8 @@ public class RenderArea extends PApplet
     Data data;
     LinePieChart linePieChart;
 
-    PGraphics flatBuffer;
-    
+    PGraphics3D buffer;
+
     GUI gui;
 
     Query query;
@@ -29,31 +29,38 @@ public class RenderArea extends PApplet
     @Override
     public void setup()
     {
-        size(width, height, P3D);
-        
-        flatBuffer = createGraphics(width, height, P2D);
-        
+        size(width, height, P2D);
+
+        buffer = (PGraphics3D) createGraphics(width, height, P3D);
+
         gui = new GUI(this);
         query = new Query();
 
-        mapGraphs = new MapGraphs(this);
+        mapGraphs = new MapGraphs(this, buffer);
         linePieChart = new LinePieChart(this);
     }
 
     @Override
     public void draw()
     {
+        buffer.beginDraw();
+//        flatBuffer.clear(); // clear the PGraphics
         switch (currentScreen)
         {
             case 0:
-                mapGraphs.draw();
+                mapGraphs.draw(buffer);
                 break;
-                
+
             case 1:
-                linePieChart.draw();
+                linePieChart.draw(buffer);
                 break;
         }
-        image(flatBuffer, 0, 0);
+        
+//        beginRecord(flatBuffer);
+        
+//        endRecord();
+        buffer.endDraw();
+        image(buffer, 0, 0);
     }
 
     @Override
@@ -67,7 +74,7 @@ public class RenderArea extends PApplet
                 case 0:
                     mapGraphs.mousePressed(e);
                     break;
-                
+
                 case 1:
                     linePieChart.mousePressed(e);
                     break;
@@ -152,15 +159,15 @@ public class RenderArea extends PApplet
         {
             case "Heat Map":
                 mapGraphs.currentGraph = 0;
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 100));
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 10000));
                 break;
             case "Taxi Animator":
                 mapGraphs.currentGraph = 1;
-                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 500));
+                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
                 break;
             case "Area Map Graph":
                 mapGraphs.currentGraph = 2;
-                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 500));
+                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
                 break;
             case "Vendor comparison":
                 mapGraphs.currentGraph = 3;
@@ -176,6 +183,10 @@ public class RenderArea extends PApplet
         if (mapGraphs != null)
         {
             mapGraphs.heatMapGraph.buffer = createGraphics(newWidth, newHeight, RenderArea.P3D);
+        }
+        if (buffer != null)
+        {
+            buffer = (PGraphics3D) createGraphics(newWidth, newHeight, RenderArea.P3D);
         }
     }
 }

@@ -10,12 +10,15 @@ import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.util.ArrayList;
+import processing.opengl.PGraphics3D;
 
 /**
  *
  * @author Shane
  */
-public class LocationDrawable {
+public class LocationDrawable
+{
+
     float lat;
     float lon;
     float x;
@@ -23,8 +26,7 @@ public class LocationDrawable {
     String name;
     int visitors;
     SimplePointMarker marker;
-    
-    
+
     public LocationDrawable(float lat, float lon, String name, UnfoldingMap map)
     {
         this.lat = lat;
@@ -33,23 +35,18 @@ public class LocationDrawable {
         ScreenPosition screenPosition = map.getScreenPosition(new Location(lat, lon));
         x = screenPosition.x;
         y = screenPosition.y;
-        marker = new SimplePointMarker(new Location(lat,lon));
+        marker = new SimplePointMarker(new Location(lat, lon));
         map.addMarker(marker);
     }
-    
-    public void draw(RenderArea renderArea)
-    {
-       renderArea.translate(x, y, 4);
-    }
-    
-    
+
     //for all trips  checksif the drop off point is withn +- .01 lat and long
     //and if so, increments the visitor counter 
     public void setData(ArrayList<Trip> trips)
     {
-        for(Trip t : trips)
+        for (Trip t : trips)
         {
-            if(t.dropoffLat <= lat + .01 && t.dropoffLat >= lat - .01 && t.dropoffLong <= lon + .01 && t.dropoffLong >= lon - .01 ){
+            if (t.dropoffLat <= lat + .01 && t.dropoffLat >= lat - .01 && t.dropoffLong <= lon + .01 && t.dropoffLong >= lon - .01)
+            {
                 visitors++;
             }
         }

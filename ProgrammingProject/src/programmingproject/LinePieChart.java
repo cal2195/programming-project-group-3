@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 import processing.core.PImage;
 import java.util.ArrayList;
+import processing.opengl.PGraphics3D;
 /**
  *
  * @author John Milsom
@@ -53,16 +54,16 @@ public class LinePieChart {
         getPositions();
     }
     
-    public void draw()
+    public void draw(PGraphics3D buffer)
     {
-        renderArea.pushStyle();
+        buffer.pushStyle();
         if(!doneFirstSetup)
         {
             setup();
             doneFirstSetup = true;
         }
-        renderArea.pushMatrix();
-        renderArea.background(0);
+        buffer.pushMatrix();
+        buffer.background(0);
         
         if (demoMode)
         {
@@ -73,27 +74,27 @@ public class LinePieChart {
             cameraX += 0.001f;
         }
 
-        renderArea.translate(renderArea.width / 2, renderArea.height / 2, 1);
-        renderArea.rotateX(cameraY);
-        renderArea.rotateZ(cameraX);
-        renderArea.image(bg, -renderArea.height / 2, -renderArea.height / 2, renderArea.height, renderArea.height);
-        renderArea.fill(0);
-        renderArea.noStroke();
+        buffer.translate(buffer.width / 2, buffer.height / 2, 1);
+        buffer.rotateX(cameraY);
+        buffer.rotateZ(cameraX);
+        buffer.image(bg, -buffer.height / 2, -buffer.height / 2, buffer.height, buffer.height);
+        buffer.fill(0);
+        buffer.noStroke();
 
-        renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
+        buffer.translate(-buffer.width / 2, -buffer.height / 2, 0);
         
-        plotPoints();
+        plotPoints(buffer);
         
-        renderArea.popMatrix();
+        buffer.popMatrix();
         
         //in-case window is resized
-        if (oldRenderHeight != renderArea.height || oldRenderWidth != renderArea.width)
+        if (oldRenderHeight != buffer.height || oldRenderWidth != buffer.width)
         {
             getPositions();
         }
-        oldRenderHeight = renderArea.height;
-        oldRenderWidth = renderArea.width;
-        renderArea.popStyle();
+        oldRenderHeight = buffer.height;
+        oldRenderWidth = buffer.width;
+        buffer.popStyle();
     }  
     
     public void mousePressed(MouseEvent e)
@@ -145,23 +146,23 @@ public class LinePieChart {
         
     }
     
-    public void plotPoints()
+    public void plotPoints(PGraphics3D buffer)
     {
         for(int count = 0; count < positions.length ; count++)
         {
-            renderArea.fill(0,120,255);
+            buffer.fill(0,120,255);
             
             for(int zPos = 0; zPos <= positions[count][2] ; zPos++)
             {
-                renderArea.pushMatrix();
-                renderArea.translate(positions[count][0],positions[count][1],zPos);
-                renderArea.box(1);
-                renderArea.popMatrix();
+                buffer.pushMatrix();
+                buffer.translate(positions[count][0],positions[count][1],zPos);
+                buffer.box(1);
+                buffer.popMatrix();
             } 
-            renderArea.pushMatrix();
-            renderArea.fill(0,120,255);
-            renderArea.line(0, 0, 100,100);
-            renderArea.popMatrix();
+            buffer.pushMatrix();
+            buffer.fill(0,120,255);
+            buffer.line(0, 0, 100,100);
+            buffer.popMatrix();
             
         }   
     }

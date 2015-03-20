@@ -109,10 +109,10 @@ public class HeatMapGraph
         System.out.println("TRIP SIZE: " + trips.size());
     }
 
-    public void draw()
+    public void draw(PGraphics3D buffer)
     {
-        renderArea.pushStyle();
-        renderArea.pushMatrix();
+        buffer.pushStyle();
+        buffer.pushMatrix();
 
         int currentID = drawBuffer();
         //System.out.println(currentID);
@@ -133,9 +133,9 @@ public class HeatMapGraph
             percent += 0.05;
         }
 
-        renderArea.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
+        buffer.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
 
-        renderArea.fill(255, 0, 0, 100f);
+        buffer.fill(255, 0, 0, 100f);
 
         int id = 1;
         for (int i = 0; i < GRID_WIDTH; i++)
@@ -144,43 +144,43 @@ public class HeatMapGraph
             {
                 if (gridOfTowers[i][ii].height != 0)
                 {
-                    renderArea.pushMatrix();
-                    renderArea.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
+                    buffer.pushMatrix();
+                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
                     if (currentID == id)
                     {
-                        renderArea.fill(255, 0, 0);
+                        buffer.fill(255, 0, 0);
                     } else
                     {
-                        renderArea.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
+                        buffer.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
                     }
-                    renderArea.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
+                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
                     if (currentID == id)
                     {
-                        renderArea.translate(0, 0, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f / 2);
-                        renderArea.fill(0);
+                        buffer.translate(0, 0, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f / 2);
+                        buffer.fill(0);
                         
-                        renderArea.rotateZ(-mapGraphs.cameraX);
-                        renderArea.rotateX(-mapGraphs.cameraY);
-                        renderArea.pushMatrix();
-                        renderArea.fill(0,255,0);
-                        renderArea.noStroke();
-                        renderArea.rect(-5, -15, 60, 18);
-                        renderArea.fill(0);
-                        renderArea.textFont(renderArea.createFont("Calibri", 30, false));
-                        renderArea.textSize(15);
+                        buffer.rotateZ(-mapGraphs.cameraX);
+                        buffer.rotateX(-mapGraphs.cameraY);
+                        buffer.pushMatrix();
+                        buffer.fill(0,255,0);
+                        buffer.noStroke();
+                        buffer.rect(-5, -15, 60, 18);
+                        buffer.fill(0);
+                        buffer.textFont(renderArea.createFont("Calibri", 30, false));
+                        buffer.textSize(15);
                         
-                        renderArea.text((int) (gridOfTowers[i][ii].height / 10) + " taxis", -2, -2);
-                        renderArea.popMatrix();
-                        renderArea.stroke(0);
+                        buffer.text((int) (gridOfTowers[i][ii].height / 10) + " taxis", -2, -2);
+                        buffer.popMatrix();
+                        buffer.stroke(0);
                     }
-                    renderArea.popMatrix();
+                    buffer.popMatrix();
                     id++;
                 }
             }
         }
 
-        renderArea.popMatrix();
-        renderArea.popStyle();
+        buffer.popMatrix();
+        buffer.popStyle();
     }
 
     public int drawBuffer()

@@ -6,6 +6,7 @@ import de.fhpotsdam.unfolding.providers.Google;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import processing.opengl.PGraphics3D;
 
 /**
  *
@@ -17,7 +18,7 @@ public class MapGraphs
     RenderArea renderArea;
 
     UnfoldingMap map;
-    int mapWidth = 2000, mapHeight = 2000;
+    int mapWidth = 3000, mapHeight = 3000;
 
     //Camera Rotation
     float cameraX, cameraY;
@@ -34,7 +35,7 @@ public class MapGraphs
     LocationVisualization location;
     VendorVisual vendorVisual;
 
-    public MapGraphs(RenderArea renderArea)
+    public MapGraphs(RenderArea renderArea, PGraphics3D buffer)
     {
         this.renderArea = renderArea;
 
@@ -52,11 +53,11 @@ public class MapGraphs
         areaMapGraph = new AreaMapGraph(renderArea, this);
     }
 
-    public void draw()
+    public void draw(PGraphics3D buffer)
     {
-        renderArea.pushStyle();
-        renderArea.pushMatrix();
-        renderArea.background(179, 209, 255);
+        buffer.pushStyle();
+        buffer.pushMatrix();
+        buffer.background(179, 209, 255);
 
         if (demoMode)
         {
@@ -67,14 +68,20 @@ public class MapGraphs
             cameraX += 0.001f;
         }
 
-        renderArea.translate(renderArea.width / 2, renderArea.height / 2, zoom);
+        buffer.translate(buffer.width / 2, buffer.height / 2, zoom);
         
-        renderArea.rotateX(cameraY);
-        renderArea.rotateZ(cameraX);
+        buffer.rotateX(cameraY);
+        buffer.rotateZ(cameraX);
         
-        renderArea.translate(cameraTransX, cameraTransY, 0);
+        buffer.translate(cameraTransX, cameraTransY, 0);
         
+//        this.renderArea.beginRecord(renderArea);
+        buffer.pushMatrix();
+        buffer.translate(-mapWidth / 2, -mapHeight / 2, 0);
         map.draw();
+        buffer.image(map.mapDisplay.getOuterPG(), 0, 0);
+        buffer.popMatrix();
+//        this.renderArea.endRecord();
         //renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
 
         //renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
@@ -82,21 +89,21 @@ public class MapGraphs
         switch (currentGraph)
         {
             case 0:
-                heatMapGraph.draw();
+                heatMapGraph.draw(buffer);
                 break;
             case 1:
-                tripAnimator.draw();
+                tripAnimator.draw(buffer);
                 break;
             case 2:
-                location.draw();
+                location.draw(buffer);
                 break;
             case 3:
-                vendorVisual.draw();
+                vendorVisual.draw(buffer);
                 break;
         }
 
-        renderArea.popMatrix();
-        renderArea.popStyle();
+        buffer.popMatrix();
+        buffer.popStyle();
         //renderArea.image(heatMapGraph.buffer, 0, 0);
     }
 
