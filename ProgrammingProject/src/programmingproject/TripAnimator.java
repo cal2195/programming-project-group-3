@@ -2,6 +2,7 @@ package programmingproject;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import processing.opengl.PGraphics3D;
 
 /**
  *
@@ -43,10 +44,10 @@ public class TripAnimator
         this.mapGraphs = mapGraphs;
     }
 
-    public void draw()
+    public void draw(PGraphics3D buffer)
     {
-        renderArea.pushStyle();
-        renderArea.pushMatrix();
+        buffer.pushStyle();
+        buffer.pushMatrix();
 
         delta = 1;
         if (lastTime == 0)
@@ -61,31 +62,26 @@ public class TripAnimator
         }
         
 
-        renderArea.stroke(0);
-        //renderArea.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
+        buffer.stroke(0);
+//        buffer.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
         for (TaxiDrawable car : cars)
         {
-            renderArea.pushMatrix();
-            car.draw(renderArea, (int)timeOfDay);
+            buffer.pushMatrix();
+            car.draw(buffer, (int)timeOfDay);
             car.moveAndCheck((int)timeOfDay);
-            renderArea.popMatrix();
+            buffer.popMatrix();
         }
-        renderArea.popMatrix();
-        renderArea.popStyle();
         timeOfDay += speedFactor * delta;
 
-        renderArea.pushStyle();
-        renderArea.pushMatrix();
-        renderArea.translate(0, 0, 0);
-        renderArea.fill(0);
-        renderArea.textFont(renderArea.createFont("Calibri", 50, false));
-        renderArea.textSize(50);
-        renderArea.text(DateTime.secsToHourAndMinute((int)timeOfDay), -300f, 10f, 3f);
-        renderArea.textSize(25);
+        buffer.fill(0);
+        buffer.textFont(this.renderArea.createFont("Calibri", 50, false));
+        buffer.textSize(50);
+        buffer.text(DateTime.secsToHourAndMinute((int)timeOfDay), -300f, 10f, 3f);
+        buffer.textSize(25);
         String percentString = String.format("%.2f", (float) speedFactor / (float) MAX_SPEEDFACTOR * 100);
-        renderArea.text(speedFactor + "x realtime", -300f, 50f, 3f);
-        renderArea.popMatrix();
-        renderArea.popStyle();
+        buffer.text(speedFactor + "x realtime", -300f, 50f, 3f);
+        buffer.popMatrix();
+        buffer.popStyle();
         if (timeOfDay >= DateTime.SECONDS_PER_DAY)
         {
             timeOfDay = 0;

@@ -11,8 +11,8 @@ import processing.opengl.PGraphics3D;
 /**
  *
  * @author cal
- * 
- * Adapting HeatMapGrpah.java   2015-03-18
+ *
+ * Adapting HeatMapGrpah.java 2015-03-18
  */
 public class VendorVisual
 {
@@ -27,14 +27,14 @@ public class VendorVisual
 
     // 0 = telescope,   1 = side by side
     int visualStyle = 1;
-    
+
     ArrayList<Trip> trips1 = new ArrayList<>();
     ArrayList<Trip> trips2 = new ArrayList<>();
     ArrayList<Trip> queuedTrips1 = new ArrayList<>();
     ArrayList<Trip> queuedTrips2 = new ArrayList<>();
     Tower[][] gridOfTowers1;
     Tower[][] gridOfTowers2;
-    
+
     float percent = 1f;
     Random random = new Random();
     boolean minimize = false;
@@ -108,14 +108,13 @@ public class VendorVisual
         System.out.println("TRIP SIZE: " + trips1.size());
     }
 
-    public void draw()
+    public void draw(PGraphics3D buffer)
     {
-        renderArea.pushStyle();
-        renderArea.pushMatrix();
+        buffer.pushStyle();
+        buffer.pushMatrix();
 
 //        int currentID = drawBuffer();
         //System.out.println(currentID);
-
         if (minimize)
         {
             if (percent > 0f)
@@ -132,119 +131,122 @@ public class VendorVisual
             percent += 0.05;
         }
 
-        renderArea.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
+        buffer.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
 
-        renderArea.fill(255, 0, 0, 100f);
+        buffer.fill(255, 0, 0, 100f);
 
         int id = 1;
         for (int i = 0; i < GRID_WIDTH; i++)
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
             {
-                switch (visualStyle) {
+                switch (visualStyle)
+                {
                     case 0:
-                        if (gridOfTowers1[i][ii].height ==  gridOfTowers2[i][ii].height)
+                        if (gridOfTowers1[i][ii].height == gridOfTowers2[i][ii].height)
                         {
-                            drawTower(gridOfTowers1[i][ii], i, ii, 255, 63, 255, 0.75f, 0.75f, 0);
+                            drawTower(buffer, gridOfTowers1[i][ii], i, ii, 255, 63, 255, 0.75f, 0.75f, 0);
                         } else
                         {
-                            if (gridOfTowers1[i][ii].height >  gridOfTowers2[i][ii].height)
+                            if (gridOfTowers1[i][ii].height > gridOfTowers2[i][ii].height)
                             {
-                                drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 0.5f, 0.5f, 0f);
-                                drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63, 1f, 1f, 0f);
+                                drawTower(buffer, gridOfTowers1[i][ii], i, ii, 63, 63, 255, 0.5f, 0.5f, 0f);
+                                drawTower(buffer, gridOfTowers2[i][ii], i, ii, 255, 63, 63, 1f, 1f, 0f);
                             } else
                             {
-                                drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 1f, 1f, 0f);
-                                drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63, 0.5f, 0.5f, 0f);
+                                drawTower(buffer, gridOfTowers1[i][ii], i, ii, 63, 63, 255, 1f, 1f, 0f);
+                                drawTower(buffer, gridOfTowers2[i][ii], i, ii, 255, 63, 63, 0.5f, 0.5f, 0f);
                             }
                         }
                         break;
                     case 1:
-                        drawTower(gridOfTowers1[i][ii], i, ii, 63, 63, 255, 0.4f, 0.8f, -0.2f);
-                        drawTower(gridOfTowers2[i][ii], i, ii, 255, 63, 63,  0.4f, 0.8f, 0.2f);
+                        drawTower(buffer, gridOfTowers1[i][ii], i, ii, 63, 63, 255, 0.4f, 0.8f, -0.2f);
+                        drawTower(buffer, gridOfTowers2[i][ii], i, ii, 255, 63, 63, 0.4f, 0.8f, 0.2f);
                         break;
                 }
             }
         }
 
-        renderArea.popMatrix();
-        renderArea.popStyle();
-    }
-
-    public void drawTower(Tower tower, int x, int y, int red, int green, int blue, float baseX, float baseY, float baseOffset)
-    {
-        if (tower.height == 0) return;
-        renderArea.pushMatrix();
-        renderArea.translate((float) (x + baseOffset) * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) y * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((tower.height)) * SCALE * percent / 2 / 500f);
-/*        if (currentID == id)
-        {
-            renderArea.fill(255);   // color of mouse over tower
-        }*/
-        // towers:
-        renderArea.fill(red, green, blue);
-        renderArea.box(mapGraphs.mapWidth / GRID_WIDTH * baseX, mapGraphs.mapHeight / GRID_HEIGHT * baseY, (float) ((double) (tower.height)) * SCALE * percent / 500f);
-/*        if (currentID == id)
-        {
-            renderArea.translate(0, 0, (float) ((double) (tower.height)) * SCALE * percent / 500f / 2);
-            renderArea.fill(0);
-            // mouse over info text:
-            renderArea.rotateZ(-mapGraphs.cameraX);
-            renderArea.rotateX(-mapGraphs.cameraY);
-            renderArea.pushMatrix();
-            renderArea.fill(0,255,0);
-            renderArea.noStroke();
-            renderArea.rect(-5, -15, 60, 18);
-            renderArea.fill(0);
-            renderArea.textFont(renderArea.createFont("Calibri", 15, false));
-            renderArea.textSize(15);
-
-            renderArea.text((int) (tower.height / 10) + " taxis", -2, -2);
-            renderArea.popMatrix();
-            renderArea.stroke(0);
-        }
-        id++; */
-        renderArea.popMatrix();
-    }
-    
-/*    public int drawBuffer() //to detect mouse over
-    {
-        buffer.beginDraw();
-        buffer.pushStyle();
-        buffer.background(0);
-        buffer.translate(renderArea.width / 2, renderArea.height / 2, mapGraphs.zoom);
-
-        buffer.rotateX(mapGraphs.cameraY);
-        buffer.rotateZ(mapGraphs.cameraX);
-
-        buffer.translate(mapGraphs.cameraTransX, mapGraphs.cameraTransY, 0);
-        buffer.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
-
-        int id = 1;
-        buffer.noStroke();
-        for (int i = 0; i < GRID_WIDTH; i++)
-        {
-            for (int ii = 0; ii < GRID_HEIGHT; ii++)
-            {
-                if (gridOfTowers[i][ii].height1 != 0)
-                {
-                    buffer.pushMatrix();
-                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height1)) * SCALE * percent / 2 / 500f);
-                    buffer.fill(id++ - 16777215);
-                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height1)) * SCALE * percent / 500f);
-                    buffer.popMatrix();
-                }
-            }
-        }
+        buffer.popMatrix();
         buffer.popStyle();
-        buffer.endDraw();
-        //Used to fix a bug in processing
-        renderArea.pushMatrix();
-        renderArea.translate(-2500, -2500);
-        renderArea.text("processing you confuse me...", 0, 0);
-        renderArea.popMatrix();
-        return buffer.get(renderArea.mouseX, renderArea.mouseY) + 16777215;
-    }*/
+    }
 
+    public void drawTower(PGraphics3D buffer, Tower tower, int x, int y, int red, int green, int blue, float baseX, float baseY, float baseOffset)
+    {
+        if (tower.height == 0)
+        {
+            return;
+        }
+        buffer.pushMatrix();
+        buffer.translate((float) (x + baseOffset) * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) y * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((tower.height)) * SCALE * percent / 2 / 500f);
+        /*        if (currentID == id)
+         {
+         renderArea.fill(255);   // color of mouse over tower
+         }*/
+        // towers:
+        buffer.fill(red, green, blue);
+        buffer.box(mapGraphs.mapWidth / GRID_WIDTH * baseX, mapGraphs.mapHeight / GRID_HEIGHT * baseY, (float) ((double) (tower.height)) * SCALE * percent / 500f);
+        /*        if (currentID == id)
+         {
+         renderArea.translate(0, 0, (float) ((double) (tower.height)) * SCALE * percent / 500f / 2);
+         renderArea.fill(0);
+         // mouse over info text:
+         renderArea.rotateZ(-mapGraphs.cameraX);
+         renderArea.rotateX(-mapGraphs.cameraY);
+         renderArea.pushMatrix();
+         renderArea.fill(0,255,0);
+         renderArea.noStroke();
+         renderArea.rect(-5, -15, 60, 18);
+         renderArea.fill(0);
+         renderArea.textFont(renderArea.createFont("Calibri", 15, false));
+         renderArea.textSize(15);
+
+         renderArea.text((int) (tower.height / 10) + " taxis", -2, -2);
+         renderArea.popMatrix();
+         renderArea.stroke(0);
+         }
+         id++; */
+        buffer.popMatrix();
+    }
+
+    /*    public int drawBuffer() //to detect mouse over
+     {
+     buffer.beginDraw();
+     buffer.pushStyle();
+     buffer.background(0);
+     buffer.translate(renderArea.width / 2, renderArea.height / 2, mapGraphs.zoom);
+
+     buffer.rotateX(mapGraphs.cameraY);
+     buffer.rotateZ(mapGraphs.cameraX);
+
+     buffer.translate(mapGraphs.cameraTransX, mapGraphs.cameraTransY, 0);
+     buffer.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
+
+     int id = 1;
+     buffer.noStroke();
+     for (int i = 0; i < GRID_WIDTH; i++)
+     {
+     for (int ii = 0; ii < GRID_HEIGHT; ii++)
+     {
+     if (gridOfTowers[i][ii].height1 != 0)
+     {
+     buffer.pushMatrix();
+     buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height1)) * SCALE * percent / 2 / 500f);
+     buffer.fill(id++ - 16777215);
+     buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height1)) * SCALE * percent / 500f);
+     buffer.popMatrix();
+     }
+     }
+     }
+     buffer.popStyle();
+     buffer.endDraw();
+     //Used to fix a bug in processing
+     renderArea.pushMatrix();
+     renderArea.translate(-2500, -2500);
+     renderArea.text("processing you confuse me...", 0, 0);
+     renderArea.popMatrix();
+     return buffer.get(renderArea.mouseX, renderArea.mouseY) + 16777215;
+     }*/
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
@@ -256,11 +258,12 @@ public class VendorVisual
             visualStyle = 1;
 //            setData(renderArea.query.getTripsForMonth(2), renderArea.query.getTripsForMonth(3));
         }/* else if (e.getKeyCode() == KeyEvent.VK_3)
-        {
-            setData(renderArea.query.getTripsForMonth(3));
-        } else if (e.getKeyCode() == KeyEvent.VK_4)
-        {
-            setData(renderArea.query.getTripsForMonth(4));
-        }*/
+         {
+         setData(renderArea.query.getTripsForMonth(3));
+         } else if (e.getKeyCode() == KeyEvent.VK_4)
+         {
+         setData(renderArea.query.getTripsForMonth(4));
+         }*/
+
     }
 }
