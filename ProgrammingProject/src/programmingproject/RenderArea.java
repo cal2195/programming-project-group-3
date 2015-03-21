@@ -183,21 +183,16 @@ public class RenderArea extends PApplet
             //*HERE* testing purposes, feel free to change/remove:
             
                 case "Jan":
-                sampleSize = 1000;
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, sampleSize));
-                mapGraphs.heatMapGraph.setScale(sampleSize);
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000));
                 break;
             case "Feb":
-                sampleSize = 1000;
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, sampleSize));
-                mapGraphs.heatMapGraph.setScale(sampleSize);
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, 5000));
                 break;
             //*TO HERE*
                 
             case "Heat Map":
                 mapGraphs.currentGraph = 0;
                 mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000000));
-                mapGraphs.heatMapGraph.setScale(1000000);
                 break;
             case "Taxi Animator":
                 mapGraphs.currentGraph = 1;
