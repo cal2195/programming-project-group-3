@@ -21,7 +21,7 @@ public class HeatMapGraph
     //Constants
     final int GRID_WIDTH = 300;
     final int GRID_HEIGHT = 300;
-    float ABS_SCALE = 1E6f;
+    final float ABS_SCALE = 1E6f;
     float relScale = 1;
 
     Gradient gradient;
@@ -107,6 +107,7 @@ public class HeatMapGraph
     {
         minimize = true;
         queuedTrips = data;
+        setScale(data.size());
     }
 
     public void switchData()
