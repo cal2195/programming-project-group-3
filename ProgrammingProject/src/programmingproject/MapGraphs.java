@@ -153,6 +153,21 @@ public class MapGraphs
         this.cameraTransX = cameraTransX;
         this.cameraTransY = cameraTransY;
         this.zoom = zoom;
+        switch (currentGraph)
+        {
+            case 0:
+                heatMapGraph.reloadData();
+                break;
+            case 1:
+                tripAnimator.reloadData();
+                break;
+            case 2:
+                location.reloadData();
+                break;
+            case 3:
+                vendorVisual.reloadData();
+                break;
+        }
     }
 
     public void keyPressed(KeyEvent e)
