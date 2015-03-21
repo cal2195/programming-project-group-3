@@ -68,12 +68,11 @@ public class TripAnimator
         }
         timeOfDay += speedFactor * delta;
 
-        buffer.fill(0);
+        buffer.fill(20);
         buffer.textFont(this.renderArea.createFont("Calibri", 50, false));
         buffer.textSize(50);
         buffer.text(DateTime.secsToHourAndMinute((int) timeOfDay), -300f, 10f, 3f);
         buffer.textSize(25);
-        String percentString = String.format("%.2f", (float) speedFactor / (float) MAX_SPEEDFACTOR * 100);
         buffer.text(speedFactor + "x realtime", -300f, 50f, 3f);
         buffer.popMatrix();
         buffer.popStyle();
@@ -113,7 +112,7 @@ public class TripAnimator
         trips = queuedTrips;
         for (Trip trip : trips)
         {
-            TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map);
+            TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map, true);
             cars.add(tempCar);
         }
         System.out.println("TRIP SIZE: " + trips.size());
@@ -123,10 +122,10 @@ public class TripAnimator
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
-            setData(renderArea.query.getTripsForMonth(1, 1000));
+            setData(renderArea.query.getTripsForMonth(1, 500000));
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
-            setData(renderArea.query.getTripsForMonth(2, 1000));
+            setData(renderArea.query.getTripsForMonth(2, 500000));
         } else if (e.getKeyCode() == KeyEvent.VK_3)
         {
             setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
