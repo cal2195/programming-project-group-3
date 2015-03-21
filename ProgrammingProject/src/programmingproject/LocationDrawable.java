@@ -52,4 +52,10 @@ public class LocationDrawable
         }
     }
 
+    public void updateLocation(UnfoldingMap map)
+    {
+        ScreenPosition screenPosition = map.getScreenPosition(new Location(lat, lon));
+        x = screenPosition.x;
+        y = screenPosition.y;
+    }
 }
