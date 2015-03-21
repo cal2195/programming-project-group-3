@@ -95,6 +95,12 @@ public class TripAnimator
         reset();
         switchData();
     }
+    
+    public void reloadData()
+    {
+        cars.clear();
+        switchData();
+    }
 
     public void reset()
     {

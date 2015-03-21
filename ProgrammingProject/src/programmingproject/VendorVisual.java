@@ -107,6 +107,14 @@ public class VendorVisual
         calculateTowers(trips2, gridOfTowers2);
         System.out.println("TRIP SIZE: " + trips1.size());
     }
+    
+    public void reloadData()
+    {
+        resetTowers(gridOfTowers1);
+        resetTowers(gridOfTowers2);
+        calculateTowers(trips1, gridOfTowers1);
+        calculateTowers(trips2, gridOfTowers2);
+    }
 
     public void draw(PGraphics3D buffer)
     {
