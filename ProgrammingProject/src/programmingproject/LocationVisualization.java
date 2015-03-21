@@ -84,6 +84,14 @@ public class LocationVisualization
             l.visitors = 0;
         }
     }
+    
+    public void reloadData()
+    {
+        for (LocationDrawable l : locations)
+        {
+            l.updateLocation(mapGraphs.map);
+        }
+    }
 
     //sets the number of visitors for each location for the trips returned
     //from a given query
