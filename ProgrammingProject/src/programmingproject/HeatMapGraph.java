@@ -111,6 +111,12 @@ public class HeatMapGraph
         calculateTowers();
         System.out.println("TRIP SIZE: " + trips.size());
     }
+    
+    public void reloadData()
+    {
+        resetTowers();
+        calculateTowers();
+    }
 
     public void draw(PGraphics3D buffer)
     {
