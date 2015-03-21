@@ -179,6 +179,15 @@ public class RenderArea extends PApplet
     {
         switch (theEvent.getController().getLabel())
         {
+            //*HERE* testing purposes, feel free to change/remove:
+            case "Jan":
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 10000));
+                break;
+            case "Feb":
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, 10000));
+                break;
+            //*TO HERE*
+                
             case "Heat Map":
                 mapGraphs.currentGraph = 0;
                 mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 10000));
@@ -194,6 +203,8 @@ public class RenderArea extends PApplet
             case "Vendor comparison":
                 mapGraphs.currentGraph = 3;
                 mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
+                break;
+            default:
                 break;
         }
     }

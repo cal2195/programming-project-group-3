@@ -23,7 +23,7 @@ public class GUI
         cp5.setFont(renderArea.createFont("Arial", 14));
         
         mapGraphsGUI = new MapGraphsGUI(renderArea, cp5);
-//        queryGUI = new QueryGUI(renderArea, cp5);
+        queryGUI = new QueryGUI(renderArea, cp5);
     }
     
     public void showGUI(int screen)
