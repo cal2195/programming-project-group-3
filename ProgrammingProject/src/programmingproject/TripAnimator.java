@@ -12,7 +12,7 @@ public class TripAnimator
 {
 
     public static final short MAX_SPEEDFACTOR = 500;
-    public static final short MIN_SPEEDFACTOR = -500;
+    public static final short MIN_SPEEDFACTOR = 0;
     public static final short SPEEDSTEP = 1;
 
     //have tried to keep this fairly accurate but still works best with speed factors < 100, 
@@ -23,7 +23,9 @@ public class TripAnimator
     long lastTime = 0;
     static double delta;
 
-    int MODE = 0;
+    //mode 0 will show all trips in parallel through the day
+    //mode 1 shows all the trips when and where they happened
+    public static int MODE = 0;
 
     Trip trip;
     //this taxi for test porpoises!
@@ -112,7 +114,7 @@ public class TripAnimator
         trips = queuedTrips;
         for (Trip trip : trips)
         {
-            TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map, true);
+            TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map);
             cars.add(tempCar);
         }
         System.out.println("TRIP SIZE: " + trips.size());
