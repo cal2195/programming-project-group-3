@@ -22,7 +22,7 @@ public class TaxiDrawable
     boolean dead;
     short deathFrames;
     int startTime, tripTime;
-    private final short DEATHFRAMES = 10;
+    private final short DEATHFRAMES = 1;
     int dataSet;
 
     TaxiDrawable(Trip trip, UnfoldingMap map)
