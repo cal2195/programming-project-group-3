@@ -24,7 +24,7 @@ public class QueryGUI
 
     public void setup()
     {
-        queryWindow = cp5.addGroup("query").setLabel("Queries").setBarHeight(15).setPosition(100, 70).setWidth(renderArea.width - 200).activateEvent(true).setBackgroundColor(renderArea.color(255, 150)).setBackgroundHeight(renderArea.height - 10);
+        queryWindow = cp5.addGroup("query").setLabel("Queries").setBarHeight(15).setPosition(100, 70).setWidth(renderArea.width - 200).activateEvent(true).setBackgroundColor(renderArea.color(255, 150)).setBackgroundHeight(renderArea.height - 100);
     }
     
     public void hide()
