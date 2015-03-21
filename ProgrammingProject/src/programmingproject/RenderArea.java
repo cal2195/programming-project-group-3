@@ -177,37 +177,64 @@ public class RenderArea extends PApplet
 
     public void controlEvent(ControlEvent theEvent)
     {
-        int sampleSize;
-        switch (theEvent.getController().getLabel())
+        if (theEvent.isController())
         {
-            //*HERE* testing purposes, feel free to change/remove:
-            
-                case "Jan":
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000));
-                break;
-            case "Feb":
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, 5000));
-                break;
-            //*TO HERE*
-                
-            case "Heat Map":
-                mapGraphs.currentGraph = 0;
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000000));
-                break;
-            case "Taxi Animator":
-                mapGraphs.currentGraph = 1;
-                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
-                break;
-            case "Area Map Graph":
-                mapGraphs.currentGraph = 2;
-                mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
-                break;
-            case "Vendor comparison":
-                mapGraphs.currentGraph = 3;
-                mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
-                break;
-            default:
-                break;
+            switch (theEvent.getController().getLabel())
+            {
+                //*HERE* testing purposes, feel free to change/remove:
+
+                    case "Jan":
+                    mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000));
+                    break;
+                case "Feb":
+                    mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, 5000));
+                    break;
+                //*TO HERE*
+
+/*  For visualisation selection using buttons:
+                case "Heat Map":
+                    mapGraphs.currentGraph = 0;
+                    mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000000));
+                    break;
+                case "Taxi Animator":
+                    mapGraphs.currentGraph = 1;
+                    mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
+                    break;
+                case "Area Map Graph":
+                    mapGraphs.currentGraph = 2;
+                    mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
+                    break;
+                case "Vendor comparison":
+                    mapGraphs.currentGraph = 3;
+                    mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
+                    break;
+*/
+                default:
+                    break;
+            }
+        } else if (theEvent.isFrom("visList"))
+        {
+            switch (MapGraphsGUI.VISUAL_LABELS[(int) theEvent.getValue()])
+            {
+                case "Heat Map":
+                    mapGraphs.currentGraph = 0;
+                    mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000000));
+                    break;
+                case "Taxi Animator":
+                    mapGraphs.currentGraph = 1;
+                    mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
+                    break;
+                case "Area Map Graph":
+                    mapGraphs.currentGraph = 2;
+                    mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
+                    break;
+                case "Vendor comparison":
+                    mapGraphs.currentGraph = 3;
+                    mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package programmingproject;
 
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
+import controlP5.DropdownList;
 
 /**
  *
@@ -12,6 +13,14 @@ public class MapGraphsGUI
 
     RenderArea renderArea;
     ControlP5 cp5;
+    
+    DropdownList visList;
+    public static final String[] VISUAL_LABELS = new String[] {
+        "Heat Map",
+        "Taxi Animator",
+        "Area Map Graph",
+        "Vendor comparison",
+    };
 
     public MapGraphsGUI(RenderArea renderArea, ControlP5 cp5)
     {
@@ -23,6 +32,17 @@ public class MapGraphsGUI
 
     public void setup()
     {
+        int width = 200;
+        visList = cp5.addDropdownList("visList")
+                .setCaptionLabel("Visualisations")
+                .setWidth(width)
+                .setBarHeight(20)
+                .setItemHeight(20)
+//                .setColorBackground(renderArea.color(80,150))
+                .setPosition(renderArea.width - 200, 20)
+                .addItems(VISUAL_LABELS);
+        
+/*  Visualisation selection using buttons:
         // create a new button with name 'buttonA'
         cp5.addButton("Heat Map")
                 .setPosition(20, 10)
@@ -40,5 +60,6 @@ public class MapGraphsGUI
         cp5.addButton("Vendor comparison")
                 .setPosition(680, 10)
                 .setSize(200, 19);
+*/
     }
 }
