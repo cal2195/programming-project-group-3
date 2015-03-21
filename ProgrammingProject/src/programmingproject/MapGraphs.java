@@ -69,12 +69,12 @@ public class MapGraphs
         }
 
         buffer.translate(buffer.width / 2, buffer.height / 2, zoom);
-        
+
         buffer.rotateX(cameraY);
         buffer.rotateZ(cameraX);
-        
+
         buffer.translate(cameraTransX, cameraTransY, 0);
-        
+
 //        this.renderArea.beginRecord(renderArea);
         buffer.pushMatrix();
         buffer.translate(-mapWidth / 2, -mapHeight / 2, 0);
@@ -118,7 +118,7 @@ public class MapGraphs
         {
             lastMousePosition = e;
         }
-        
+
         if (e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK)
         {
             //excellent comments ahead, praise the sun!
@@ -131,7 +131,7 @@ public class MapGraphs
             cameraX -= (e.getXOnScreen() - lastMousePosition.getXOnScreen()) / MOUSE_SENSITIVITY;
             cameraY -= (e.getYOnScreen() - lastMousePosition.getYOnScreen()) / MOUSE_SENSITIVITY;
         }
-        
+
         lastMousePosition = e;
     }
 
@@ -139,7 +139,7 @@ public class MapGraphs
     {
         lastMousePosition = null;
     }
-    
+
     public void mouseWheelMoved(MouseWheelEvent e)
     {
         zoom -= e.getWheelRotation() * 20;
@@ -147,20 +147,59 @@ public class MapGraphs
 
     public void keyPressed(KeyEvent e)
     {
-        switch (currentGraph)
+        if (e.getKeyCode() == KeyEvent.VK_EQUALS)
         {
-            case 0:
-                heatMapGraph.keyPressed(e);
-                break;
-            case 1:
-                tripAnimator.keyPressed(e);
-                break;
-            case 2:
-                location.keyPressed(e);
-                break;
-            case 3:
-                vendorVisual.keyPressed(e);
-                break;
+            map.zoomLevelIn();
+            switch (currentGraph)
+            {
+                case 0:
+                    heatMapGraph.reloadData();
+                    break;
+//                case 1:
+//                    tripAnimator.keyPressed(e);
+//                    break;
+//                case 2:
+//                    location.keyPressed(e);
+//                    break;
+//                case 3:
+//                    vendorVisual.keyPressed(e);
+//                    break;
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_MINUS)
+        {
+            map.zoomLevelOut();
+            switch (currentGraph)
+            {
+                case 0:
+                    heatMapGraph.reloadData();
+                    break;
+//                case 1:
+//                    tripAnimator.keyPressed(e);
+//                    break;
+//                case 2:
+//                    location.keyPressed(e);
+//                    break;
+//                case 3:
+//                    vendorVisual.keyPressed(e);
+//                    break;
+            }
+        } else
+        {
+            switch (currentGraph)
+            {
+                case 0:
+                    heatMapGraph.keyPressed(e);
+                    break;
+                case 1:
+                    tripAnimator.keyPressed(e);
+                    break;
+                case 2:
+                    location.keyPressed(e);
+                    break;
+                case 3:
+                    vendorVisual.keyPressed(e);
+                    break;
+            }
         }
     }
 }
