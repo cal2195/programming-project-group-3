@@ -11,7 +11,7 @@ import processing.opengl.PGraphics3D;
 public class TripAnimator
 {
 
-    public static final short MAX_SPEEDFACTOR = 500;
+    public static final short MAX_SPEEDFACTOR = 1000;
     public static final short MIN_SPEEDFACTOR = 0;
     public static final short SPEEDSTEP = 1;
 
@@ -25,17 +25,17 @@ public class TripAnimator
 
     //mode 0 will show all trips in parallel through the day
     //mode 1 shows all the trips when and where they happened
-    public static int MODE = 0;
+    //add more modes if you want, just update max modes and it'll iterate through on pressing "m"
+    public static int MODE = 1;
+    private static final int MAX_MODE = 1;
 
-    Trip trip;
-    //this taxi for test porpoises!
-    TaxiDrawable testTaxi;
+
 
     ArrayList<Trip> trips = new ArrayList<>();
     ArrayList<Trip> queuedTrips = new ArrayList<>();
     ArrayList<TaxiDrawable> cars = new ArrayList<>();
 
-    double timeOfDay = 0;
+    double animatorSecondsPassed = 0;
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
@@ -64,23 +64,36 @@ public class TripAnimator
         for (TaxiDrawable car : cars)
         {
             buffer.pushMatrix();
-            car.draw(buffer, (int) timeOfDay);
-            car.moveAndCheck((int) timeOfDay);
+            car.draw(buffer, (int) animatorSecondsPassed);
+            car.moveAndCheck((int) animatorSecondsPassed);
             buffer.popMatrix();
         }
-        timeOfDay += speedFactor * delta;
+        animatorSecondsPassed += speedFactor * delta;
 
         buffer.fill(20);
         buffer.textFont(this.renderArea.createFont("Calibri", 50, false));
         buffer.textSize(50);
-        buffer.text(DateTime.secsToHourAndMinute((int) timeOfDay), -300f, 10f, 3f);
+        if(MODE == 0)
+        {
+            buffer.text(DateTime.secsToHourAndMinute((int) animatorSecondsPassed), -320f, 50f, 3f);
+        }
+        else if(MODE == 1)
+        {
+            String[] dateAndTime = DateTime.secsToDateTime((int) animatorSecondsPassed).split(" ");
+            buffer.text(dateAndTime[0], -350f, -10f, 3f); 
+            buffer.text(dateAndTime[1], -320f, 50, 3f); 
+        }
         buffer.textSize(25);
-        buffer.text(speedFactor + "x realtime", -300f, 50f, 3f);
+        buffer.text(speedFactor + "x realtime", -300f, 100f, 3f);
         buffer.popMatrix();
         buffer.popStyle();
-        if (timeOfDay >= DateTime.SECONDS_PER_DAY)
+        if (animatorSecondsPassed >= DateTime.SECONDS_PER_DAY && MODE == 0)
         {
-            timeOfDay = 0;
+            animatorSecondsPassed = 0;
+        }
+        else if (animatorSecondsPassed >= DateTime.SECONDS_TILL_MONTH_STARTS[2] && MODE == 1)
+        {
+            animatorSecondsPassed = 0;
         }
     }
 
@@ -106,7 +119,7 @@ public class TripAnimator
     public void reset()
     {
         cars.clear();
-        timeOfDay = 0;
+        animatorSecondsPassed = 0;
     }
 
     public void switchData()
@@ -127,18 +140,45 @@ public class TripAnimator
             setData(renderArea.query.getTripsForMonth(1, 500000));
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
-            setData(renderArea.query.getTripsForMonth(2, 500000));
+            setData(renderArea.query.getTripsForMonth(1, 1000000));
+        }else if (e.getKeyCode() == 77) //if m is pressed
+        {
+            MODE++;
+            if(MODE > MAX_MODE){
+                MODE = 0;
+            }
+            
+            //recomputes cars to allow hotswapping between modes
+            cars.clear();
+            for (Trip trip : trips)
+            {
+                TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map);
+                cars.add(tempCar);
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_3)
         {
             setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
         } else if (e.getKeyCode() == KeyEvent.VK_UP)
         {
-            timeOfDay += DateTime.SECONDS_PER_HOUR;
+            if(e.isShiftDown())
+                {
+                    animatorSecondsPassed += DateTime.SECONDS_PER_DAY;
+                }
+                else
+                {
+                    animatorSecondsPassed += DateTime.SECONDS_PER_HOUR;
+                }
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN)
         {
-            if (timeOfDay > DateTime.SECONDS_PER_HOUR)
+            if (animatorSecondsPassed > DateTime.SECONDS_PER_HOUR)
             {
-                timeOfDay -= DateTime.SECONDS_PER_HOUR;
+                if(e.isShiftDown() && animatorSecondsPassed > DateTime.SECONDS_PER_DAY){
+                    animatorSecondsPassed -= DateTime.SECONDS_PER_DAY;
+                }
+                else
+                {
+                    animatorSecondsPassed -= DateTime.SECONDS_PER_HOUR;
+                }
                 for (TaxiDrawable car : cars)
                 {
                     car.resetTaxi();
@@ -161,7 +201,7 @@ public class TripAnimator
         {
             if (e.isShiftDown())
             {
-                if (speedFactor < MAX_SPEEDFACTOR)
+                if (speedFactor > MIN_SPEEDFACTOR + SPEEDSTEP * 10)
                 {
                     speedFactor -= SPEEDSTEP * 10;
                 }
