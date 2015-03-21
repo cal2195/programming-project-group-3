@@ -25,7 +25,7 @@ public class TaxiDrawable
     private final short DEATHFRAMES = 10;
     int dataSet;
 
-    TaxiDrawable(Trip trip, UnfoldingMap map, boolean timeOfDayOnly)
+    TaxiDrawable(Trip trip, UnfoldingMap map)
     {
         float latitude = trip.pickupLat;
         float longitude = trip.pickupLong;
@@ -34,11 +34,11 @@ public class TaxiDrawable
         startx = x;
         y = screenPosition.y;
         starty = y;
-        if(timeOfDayOnly)
+        if(TripAnimator.MODE == 0)
         {   
             startTime = trip.pickupTime % DateTime.SECONDS_PER_DAY;
         }
-        else
+        else if(TripAnimator.MODE == 1)
         {
             startTime = trip.pickupTime;
         }
