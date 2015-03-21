@@ -21,7 +21,8 @@ public class HeatMapGraph
     //Constants
     final int GRID_WIDTH = 300;
     final int GRID_HEIGHT = 300;
-    final int SCALE = 10;
+    float ABS_SCALE = 1E6f;
+    float relScale = 1;
 
     Gradient gradient;
 
@@ -98,6 +99,10 @@ public class HeatMapGraph
         }
     }
 
+    public void setScale(int sampleSize) {
+        relScale = ABS_SCALE / sampleSize;
+    }
+    
     public void setData(ArrayList<Trip> data)
     {
         minimize = true;
@@ -159,7 +164,7 @@ public class HeatMapGraph
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     buffer.pushMatrix();
-                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
+                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * relScale * percent / 2 / 500f);
                     if (currentID == id)
                     {
                         buffer.fill(255, 0, 0);
@@ -167,11 +172,11 @@ public class HeatMapGraph
                     {
                         buffer.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
                     }
-                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
+                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
                     if (currentID == id)
                     {
-                        labelX = (int) buffer.screenX(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
-                        labelY = (int) buffer.screenY(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
+                        labelX = (int) buffer.screenX(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
+                        labelY = (int) buffer.screenY(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
                         //System.out.println(labelX + "," + labelY);
 //                        buffer.translate(0, 0, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f / 2);
 //                        buffer.fill(0);
@@ -222,9 +227,9 @@ public class HeatMapGraph
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     buffer.pushMatrix();
-                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * SCALE * percent / 2 / 500f);
+                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * relScale * percent / 2 / 500f);
                     buffer.fill(id - 16777215);
-                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f);
+                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
                     buffer.popMatrix();
                 }
                 id++;
