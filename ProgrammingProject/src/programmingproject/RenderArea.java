@@ -177,20 +177,27 @@ public class RenderArea extends PApplet
 
     public void controlEvent(ControlEvent theEvent)
     {
+        int sampleSize;
         switch (theEvent.getController().getLabel())
         {
             //*HERE* testing purposes, feel free to change/remove:
-            case "Jan":
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 10000));
+            
+                case "Jan":
+                sampleSize = 1000;
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, sampleSize));
+                mapGraphs.heatMapGraph.setScale(sampleSize);
                 break;
             case "Feb":
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, 10000));
+                sampleSize = 1000;
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, sampleSize));
+                mapGraphs.heatMapGraph.setScale(sampleSize);
                 break;
             //*TO HERE*
                 
             case "Heat Map":
                 mapGraphs.currentGraph = 0;
                 mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000000));
+                mapGraphs.heatMapGraph.setScale(1000000);
                 break;
             case "Taxi Animator":
                 mapGraphs.currentGraph = 1;
