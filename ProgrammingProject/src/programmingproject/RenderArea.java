@@ -194,7 +194,7 @@ public class RenderArea extends PApplet
                 break;
             case "Taxi Animator":
                 mapGraphs.currentGraph = 1;
-                mapGraphs.tripAnimator.setData(query.getTripsForTaxi("1", 100000));
+                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
                 break;
             case "Area Map Graph":
                 mapGraphs.currentGraph = 2;
