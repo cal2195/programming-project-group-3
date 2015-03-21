@@ -77,8 +77,8 @@ public class HeatMapGraph
     {
         for (Trip trip : trips)
         {
-            float latitude = trip.dropoffLat;
-            float longitude = trip.dropoffLong;
+            float latitude = trip.pickupLat;
+            float longitude = trip.pickupLong;
             ScreenPosition pos = mapGraphs.map.getScreenPosition(new Location(latitude, longitude));
             int relX = (int) (pos.x);
             int relY = (int) (pos.y);
@@ -91,9 +91,9 @@ public class HeatMapGraph
                 gridOfTowers[x][y].height += 10;
             } else
             {
-                System.out.println("GRID ERROR - OUT OF BOUNDS");
-                System.out.println("relX = " + relX + " relY = " + relY);
-                System.out.println("x = " + x + " y = " + y);
+//                System.out.println("GRID ERROR - OUT OF BOUNDS");
+//                System.out.println("relX = " + relX + " relY = " + relY);
+//                System.out.println("x = " + x + " y = " + y);
             }
         }
     }
@@ -110,6 +110,12 @@ public class HeatMapGraph
         resetTowers();
         calculateTowers();
         System.out.println("TRIP SIZE: " + trips.size());
+    }
+    
+    public void reloadData()
+    {
+        resetTowers();
+        calculateTowers();
     }
 
     public void draw(PGraphics3D buffer)
