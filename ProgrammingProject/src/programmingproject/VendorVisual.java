@@ -14,7 +14,7 @@ import processing.opengl.PGraphics3D;
  *
  * Adapting HeatMapGrpah.java 2015-03-18
  */
-public class VendorVisual
+public class VendorVisual extends AbstractMapVisualisation
 {
 
     RenderArea renderArea;
@@ -108,6 +108,7 @@ public class VendorVisual
         System.out.println("TRIP SIZE: " + trips1.size());
     }
     
+    @Override
     public void reloadData()
     {
         resetTowers(gridOfTowers1);
@@ -116,6 +117,7 @@ public class VendorVisual
         calculateTowers(trips2, gridOfTowers2);
     }
 
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
@@ -255,6 +257,7 @@ public class VendorVisual
      renderArea.popMatrix();
      return buffer.get(renderArea.mouseX, renderArea.mouseY) + 16777215;
      }*/
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)

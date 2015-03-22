@@ -22,6 +22,11 @@ public class Query
         taxiDatabase = new TaxiDatabase();
         taxiDatabase.connect();
     }
+    
+    public ArrayList<Trip> getALLTHETHINGS()
+    {
+        return getTrips("SELECT * FROM taxi_data");
+    }
 
     public ArrayList<Trip> getTripsForTaxi(String medallion)
     {
