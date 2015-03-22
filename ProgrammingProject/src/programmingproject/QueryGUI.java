@@ -37,7 +37,7 @@ public class QueryGUI
         this.renderArea = renderArea;
         this.cp5 = cp5;
 
-        height = renderArea.height - 20;
+        height = 360;
         width = 400;
         
         setup();
@@ -180,9 +180,16 @@ public class QueryGUI
                 .moveTo(queryWindow);
     }
     
-    public int sampleSize()
+    public String getQuery()
     {
-        return (int) ((int) sampleSlider.getValue() * sampleRadio.getValue());
+        String query = "SELECT * FROM taxi_data WHERE";
+        query += " (\n" + monthRangeQuery(0, janDate) + " OR \n" + monthRangeQuery(1, febDate) + "\n)";
+        query += weekDayQuery();
+        query += hourQuery();
+        query += vendorQuery();
+        query += passengerQuery();
+        query += sampleQuery();
+        return query;
     }
     
     private String timeRangeQuery(long from, long to)
@@ -246,31 +253,49 @@ public class QueryGUI
         int lowerBound = ((int) hours.getLowValue()) * DateTime.SECONDS_PER_HOUR;
         int upperBound = ((int) hours.getHighValue() + 1) * DateTime.SECONDS_PER_HOUR;
         String pickDT = "pickup_datetime % " + DateTime.SECONDS_PER_DAY;
-        return "(" + pickDT + " >= " + lowerBound + " AND " + pickDT + " < " + upperBound + ")";
+        return " AND (\n(" + pickDT + " >= " + lowerBound + " AND " + pickDT + " < " + upperBound + ")\n)";
+    }
+    
+    private String vendorQuery()
+    {
+        boolean cmt = vendorID.getArrayValue(0) == 1;
+        boolean vts = vendorID.getArrayValue(1) == 1;
+        if (cmt && vts)
+        {
+            return "";
+        }
+        String query = " AND (\n";
+        if (!cmt && !vts) 
+        {
+            query += "NULL";
+        }
+        else if (cmt)
+        {
+            query += "vendor_id = 'CMT'";
+        }
+        else
+        {
+            query += "vendor_id = 'VTS'";
+        }
+        query += "\n)";
+        return query;
+    }
+    
+    private String passengerQuery()
+    {
+        int lowerBound = (int) passengers.getLowValue();
+        int upperBound = (int) passengers.getHighValue();
+        return " AND (\n(passenger_count >= " + lowerBound + " AND passenger_count <= " + upperBound + ")\n)";
     }
     
     private String sampleQuery()
     {
         return " LIMIT " + sampleSize();
     }
-    
-    public String getQuery()
+        
+    private int sampleSize()
     {
-        String query = "SELECT * FROM taxi_data WHERE";
-        
-        // Jan and Feb selectors:
-        query += " (\n" + monthRangeQuery(0, janDate) + " OR \n" + monthRangeQuery(1, febDate) + "\n)";
-        
-        // Weekday selectors:
-        query += weekDayQuery();
-        
-        // Hour selector:
-        query += " AND (\n" + hourQuery() + "\n)";
-        
-        // Sample size selector
-        query += sampleQuery();
-        
-        return query;
+        return (int) ((int) sampleSlider.getValue() * sampleRadio.getValue());
     }
     
     public void hide()
