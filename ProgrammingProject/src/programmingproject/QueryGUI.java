@@ -21,11 +21,10 @@ public class QueryGUI
     Group queryWindow;
     Button janButton, febButton;
     Slider sampleSlider;
-    RadioButton sampleRadio, vendorID;
+    RadioButton sampleRadio;
     Button setQueryOne, setQueryTwo;
-    CheckBox months, days;
-    Range hours, passengers;
-    Slider hourFrom, hourTo;
+    CheckBox vendorID, months, days;
+    Range janDate, febDate, hours, passengers;
     
     final int SAMPLE_POS = 10;
     
@@ -82,31 +81,56 @@ public class QueryGUI
                 .setPosition(10, SAMPLE_POS + 20)
                 .setItemsPerRow(6)
                 .setSpacingColumn(50)
-                .addItem("10", 1)
-                .addItem("100", 2)
-                .addItem("1k", 3)
-                .addItem("10k", 4)
-                .addItem("100k", 5)
-                .addItem("1M", 6)
+                .addItem("10", 10)
+                .addItem("100", 100)
+                .addItem("1k", 1000)
+                .addItem("10k", 10000)
+                .addItem("100k", 100000)
+                .addItem("1M", 1000000)
                 .moveTo(queryWindow)
                 .activate(2);
                        
         // Months checkboxs:
         months = cp5.addCheckBox("months")
-                .setPosition(10, 80)
+                .setPosition(20, 70)
                 .setSize(20, 20)
-                .setItemsPerRow(6)
-                .setSpacingColumn(40)
+                .setItemsPerRow(1)
                 .setSpacingRow(5)
-                .moveTo(queryWindow);
-        for (int i = 0; i < MONTHS.length; i++)
-        {
-            months.addItem(MONTHS[i], i).activate(i);
-        }
+                .addItem("Jan", 0)
+                .addItem("Feb", 0)
+                .activateAll()
+                .moveTo(queryWindow)
+                ;
+        janDate = cp5.addRange("janDate")
+                .setBroadcast(false) 
+                .setCaptionLabel("Date")
+                .setPosition(80, 72.5f)
+                .setSize(250, 15)
+                .setDecimalPrecision(0)
+                .setRange(1, DateTime.DAYS_IN_MONTH[0])
+                .setRangeValues(1, DateTime.DAYS_IN_MONTH[0])
+                .setValue(15)
+                .showTickMarks(false)
+                .setBroadcast(true)
+                .moveTo(queryWindow)
+                ;
+        febDate = cp5.addRange("febDate")
+                .setBroadcast(false) 
+                .setCaptionLabel("Date")
+                .setPosition(80, 97.5f)
+                .setSize(250, 15)
+                .setDecimalPrecision(0)
+                .setRange(1, DateTime.DAYS_IN_MONTH[1])
+                .setRangeValues(1, DateTime.DAYS_IN_MONTH[1])
+                .setValue(15)
+                .showTickMarks(false)
+                .setBroadcast(true)
+                .moveTo(queryWindow)
+                ;
 
         // Days checkboxs:
         days = cp5.addCheckBox("days")
-                .setPosition(10, 150)
+                .setPosition(20, 150)
                 .setSize(20, 20)
                 .setItemsPerRow(7)
                 .setSpacingColumn(30)
@@ -114,31 +138,10 @@ public class QueryGUI
                 .moveTo(queryWindow);
         for (int i = 0; i < DAYS.length; i++)
         {
-            days.addItem(DAYS[i], i).activate(i);
+            days.addItem(DAYS[i], i);
         }
+        days.activateAll();
 
-        // Hours range:
-//        hourFrom = cp5.addSlider("hourFrom")
-//                .setCaptionLabel("Hour From")
-//                .setPosition(10, 150)
-//                .setSize(130, 15)
-//                .setRange(0, 23)
-//                .setNumberOfTickMarks(24)
-//                .showTickMarks(false)
-//                .setDecimalPrecision(0)
-//                .moveTo(queryWindow)
-//                ;
-//        hourTo = cp5.addSlider("hourTo")
-//                .setCaptionLabel("Hour To")
-//                .setPosition(10, 170)
-//                .setSize(130, 15)
-//                .setRange(0, 23)
-//                .setNumberOfTickMarks(24)
-//                .showTickMarks(false)
-//                .setDecimalPrecision(0)
-//                .moveTo(queryWindow)
-//                ;
-        
         hours = cp5.addRange("hours")
                 .setCaptionLabel("Hours")
                 .setPosition(10, 200)
@@ -157,30 +160,40 @@ public class QueryGUI
                 .moveTo(queryWindow)
                 ;
 
-        vendorID = cp5.addRadioButton("vendorID")
+        vendorID = cp5.addCheckBox("vendorID")
                 .setSize(15, 15)
                 .setPosition(90, 280)
                 .setItemsPerRow(6)
                 .setSpacingColumn(50)
                 .addItem("CMT", 1)
                 .addItem("VTS", 2)
-                .addItem("Both", 3)
                 .setGroup(LABEL)
-                .activate(2);
+                .activate(0)
+                .activate(1);
         cp5.addTextlabel("vendorIDLabel")
                 .setText("Vendor ID:")
                 .setPosition(10, 280)
                 .moveTo(queryWindow);
         
         // Jan Feb buttons TEMP
-        janButton = cp5.addButton("Jan")
+        janButton = cp5.addButton("Ja")
                 .setPosition(10, 400)
                 .setSize(40, 20)
                 .moveTo(queryWindow);
-        febButton = cp5.addButton("Feb")
+        febButton = cp5.addButton("Fe")
                 .setPosition(60, 400)
                 .setSize(40, 20)
                 .moveTo(queryWindow);
+    }
+    
+    public int sampleSize()
+    {
+        return (int) (sampleSlider.getValue() * sampleRadio.getValue());
+    }
+    
+    public String getQuery()
+    {
+        return "SELECT * FROM taxi_data LIMIT " + sampleSize();
     }
     
     public void hide()
