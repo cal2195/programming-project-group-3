@@ -15,6 +15,7 @@ public class MapGraphsGUI
     ControlP5 cp5;
     
     DropdownList visList;
+    public static final String VIS_LIST_LABEL = "visList";
     public static final String[] VISUAL_LABELS = new String[] {
         "Heat Map",
         "Taxi Animator",
@@ -35,7 +36,7 @@ public class MapGraphsGUI
     public void setup()
     {
         int width = 200;
-        visList = cp5.addDropdownList("visList")
+        visList = cp5.addDropdownList(VIS_LIST_LABEL)
                 .setCaptionLabel("Visualisations")
                 .setSize(width, 400)
                 .setBarHeight(20)
