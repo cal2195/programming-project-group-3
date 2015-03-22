@@ -19,7 +19,7 @@ public class MapGraphsGUI
         "Heat Map",
         "Taxi Animator",
         "Area Map Graph",
-        "Vendor comparison",
+        "Query comparison",
     };
 
     public MapGraphsGUI(RenderArea renderArea, ControlP5 cp5)
