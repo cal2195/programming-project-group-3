@@ -35,4 +35,14 @@ public class CurrentQuery
     {
         return activeQuery;
     }
+    
+    public void setQueryOne(ArrayList<Trip> trips)
+    {
+        queryOne = trips;
+    }
+    
+    public void setQueryTwo(ArrayList<Trip> trips)
+    {
+        queryTwo = trips;
+    }
 }
