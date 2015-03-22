@@ -9,7 +9,8 @@ public class Trip
     int pickupTime;
     boolean vendorID;   // 'CMT' corresponds to True; 'VTS' corresponds to False
     boolean[] flags = new boolean[1]; //flags is currently[storeAndFwdFlag], but we can use this to store useful data like evening/etc
-    int rateCode, passengers, time;
+    byte rateCode, passengers;
+    short time;
     float distance, pickupLat, pickupLong, dropoffLat, dropoffLong;
 
     public Trip(boolean vendorID, int rateCode, String storeAndFwdFlag, int pickupTime, int passengers, 
@@ -18,9 +19,9 @@ public class Trip
         this.pickupTime = pickupTime;
         this.vendorID = vendorID;
         this.flags[0] = storeAndFwdFlag.equals("Y");
-        this.rateCode = rateCode;
-        this.passengers = passengers;
-        this.time = time;
+        this.rateCode = (byte) rateCode;
+        this.passengers = (byte) passengers;
+        this.time = (short) time;
         this.distance = distance;
         this.pickupLat = pickupLat;
         this.pickupLong = pickupLong;
@@ -29,6 +30,7 @@ public class Trip
 
     }
 
+    @Override
     public String toString()
     {
         String result = "";
