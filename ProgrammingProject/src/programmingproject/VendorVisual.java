@@ -14,7 +14,7 @@ import processing.opengl.PGraphics3D;
  *
  * Adapting HeatMapGrpah.java 2015-03-18
  */
-public class VendorVisual
+public class VendorVisual extends AbstractMapVisualisation
 {
 
     RenderArea renderArea;

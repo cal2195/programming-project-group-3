@@ -8,7 +8,7 @@ import processing.opengl.PGraphics3D;
  *
  * @author Dan
  */
-public class TripAnimator
+public class TripAnimator extends AbstractMapVisualisation
 {
 
     public static final short MAX_SPEEDFACTOR = 1000;
@@ -110,6 +110,7 @@ public class TripAnimator
         switchData();
     }
     
+    @Override
     public void reloadData()
     {
         cars.clear();

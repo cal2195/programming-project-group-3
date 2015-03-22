@@ -12,7 +12,7 @@ import processing.core.PImage;
  *
  * @author cal
  */
-public class AreaMapGraph
+public class AreaMapGraph extends AbstractMapVisualisation
 {
 
     RenderArea renderArea;

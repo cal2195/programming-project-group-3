@@ -9,16 +9,11 @@ package programmingproject;
  *
  * @author Shane
  */
-import de.fhpotsdam.unfolding.UnfoldingMap;
-import de.fhpotsdam.unfolding.geo.Location;
-import de.fhpotsdam.unfolding.providers.Google;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import processing.core.PImage;
 import processing.opengl.PGraphics3D;
 
-public class LocationVisualization
+public class LocationVisualization extends AbstractMapVisualisation
 {
 
     ArrayList<LocationDrawable> locations;
@@ -85,6 +80,7 @@ public class LocationVisualization
         }
     }
     
+    @Override
     public void reloadData()
     {
         for (LocationDrawable l : locations)

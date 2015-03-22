@@ -12,7 +12,7 @@ import processing.opengl.PGraphics3D;
  *
  * @author cal
  */
-public class HeatMapGraph
+public class HeatMapGraph extends AbstractMapVisualisation
 {
 
     RenderArea renderArea;
@@ -118,6 +118,7 @@ public class HeatMapGraph
         System.out.println("TRIP SIZE: " + trips.size());
     }
     
+    @Override
     public void reloadData()
     {
         resetTowers();
