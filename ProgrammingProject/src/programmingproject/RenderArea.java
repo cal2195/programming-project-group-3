@@ -177,67 +177,56 @@ public class RenderArea extends PApplet
 
     public void controlEvent(ControlEvent theEvent)
     {
-        if (theEvent.isController())
+        println(theEvent);
+        
+        if (theEvent.isFrom("visList"))
         {
-            switch (theEvent.getController().getLabel())
-            {
-                //*HERE* testing purposes, feel free to change/remove:
-
-                    case "Jan":
-                    mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000));
-                    break;
-                case "Feb":
-                    mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, 5000));
-                    break;
-                //*TO HERE*
-
-/*  For visualisation selection using buttons:
-                case "Heat Map":
-                    mapGraphs.currentGraph = 0;
-                    mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000000));
-                    break;
-                case "Taxi Animator":
-                    mapGraphs.currentGraph = 1;
-                    mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
-                    break;
-                case "Area Map Graph":
-                    mapGraphs.currentGraph = 2;
-                    mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
-                    break;
-                case "Vendor comparison":
-                    mapGraphs.currentGraph = 3;
-                    mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
-                    break;
-*/
-                default:
-                    break;
-            }
-        } else if (theEvent.isFrom("visList"))
+            mapGraphsGUIEvent(theEvent);
+        } else if (theEvent.isController() /*&& QueryGUI.LABEL.equals(theEvent.getController().getParent().getName())*/)
         {
-            switch (MapGraphsGUI.VISUAL_LABELS[(int) theEvent.getValue()])
-            {
-                case "Heat Map":
-                    mapGraphs.currentGraph = 0;
-                    mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000000));
-                    break;
-                case "Taxi Animator":
-                    mapGraphs.currentGraph = 1;
-                    mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
-                    break;
-                case "Area Map Graph":
-                    mapGraphs.currentGraph = 2;
-                    mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
-                    break;
-                case "Vendor comparison":
-                    mapGraphs.currentGraph = 3;
-                    mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
-                    break;
-                default:
-                    break;
-            }
+            queryGUIEvent(theEvent);
         }
     }
 
+    private void mapGraphsGUIEvent(ControlEvent theEvent)
+    {
+        switch ((int) theEvent.getValue())
+        {
+            case 0: //"Heat Map":
+                mapGraphs.currentGraph = 0;
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 10000));
+                break;
+            case 1: //"Taxi Animator":
+                mapGraphs.currentGraph = 1;
+                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
+                break;
+            case 2: //"Area Map Graph":
+                mapGraphs.currentGraph = 2;
+//                    mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
+                break;
+            case 3: //"Vendor comparison":
+                mapGraphs.currentGraph = 3;
+                mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
+                break;
+            default:
+                break;
+        }
+}
+    
+    private void queryGUIEvent(ControlEvent theEvent)
+    {
+        switch (theEvent.getController().getLabel()) {
+            case "Jan":
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000));
+                break;
+            case "Feb":
+                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, 5000));
+                break;
+            default:
+                break;
+        }
+    }
+    
     @Override
     protected void resizeRenderer(int newWidth, int newHeight) //When the window is resized, adjust all buffers accordingly!
     {

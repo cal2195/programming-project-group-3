@@ -20,7 +20,7 @@ public class GUI
         this.renderArea = renderArea;
         cp5 = new ControlP5(renderArea);
         
-        cp5.setFont(renderArea.createFont("Arial", 14));
+        cp5.setFont(renderArea.createFont("Arial", 12));
         
         mapGraphsGUI = new MapGraphsGUI(renderArea, cp5);
         queryGUI = new QueryGUI(renderArea, cp5);
