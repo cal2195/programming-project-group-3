@@ -1,11 +1,6 @@
 package programmingproject;
 
-import controlP5.Button;
-import controlP5.CheckBox;
-import controlP5.ControlP5;
-import controlP5.Group;
-import controlP5.RadioButton;
-import controlP5.Slider;
+import controlP5.*;
 import processing.core.PApplet;
 
 /**
@@ -18,6 +13,7 @@ public class QueryGUI
     final int width;
     
     static final String LABEL = "queryGUI";
+    public static final String[] DAYS = {"mo", "tu", "we", "th", "fr", "sa", "su"};
     public static final String[] MONTHS = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"};
     
     RenderArea renderArea;
@@ -25,9 +21,11 @@ public class QueryGUI
     Group queryWindow;
     Button janButton, febButton;
     Slider sampleSlider;
-    RadioButton sampleRadio;
+    RadioButton sampleRadio, vendorID;
     Button setQueryOne, setQueryTwo;
-    CheckBox months;
+    CheckBox months, days;
+    Range hours, passengers;
+    Slider hourFrom, hourTo;
     
     final int SAMPLE_POS = 10;
     
@@ -38,7 +36,7 @@ public class QueryGUI
         this.cp5 = cp5;
 
         height = renderArea.height - 20;
-        width = 250;
+        width = 400;
         
         setup();
     }
@@ -52,7 +50,8 @@ public class QueryGUI
                 .setWidth(width)
                 .activateEvent(false)
                 .setBackgroundColor(renderArea.color(48, 196))
-                .setBackgroundHeight(height);
+                .setBackgroundHeight(height)
+                .close();
 
         // Set query 1 and 2 Buttons:
         setQueryOne = cp5.addButton("queryOne")
@@ -68,34 +67,36 @@ public class QueryGUI
 
         // Sample size selector:
         sampleSlider = cp5.addSlider("sampleSlider")
+                .setBroadcast(false) 
                 .setCaptionLabel("Sample Size")
                 .setPosition(10, SAMPLE_POS)
-                .setSize(130, 20)
+                .setSize(300, 15)
                 .setRange(0, 100)
-                .setNumberOfTickMarks(101)
+                .setDecimalPrecision(0)
                 .showTickMarks(false)
                 .setValue(50)
-                .setGroup(LABEL);
+                .setBroadcast(true)
+                .moveTo(queryWindow);
         sampleRadio = cp5.addRadioButton("sampleRadio")
                 .setSize(15, 15)
-                .setPosition(10, SAMPLE_POS + 25)
-                .setItemsPerRow(3)
-                .setSpacingColumn(60)
+                .setPosition(10, SAMPLE_POS + 20)
+                .setItemsPerRow(6)
+                .setSpacingColumn(50)
                 .addItem("10", 1)
                 .addItem("100", 2)
                 .addItem("1k", 3)
                 .addItem("10k", 4)
                 .addItem("100k", 5)
                 .addItem("1M", 6)
-                .setGroup(LABEL)
+                .moveTo(queryWindow)
                 .activate(2);
                        
         // Months checkboxs:
         months = cp5.addCheckBox("months")
-                .setPosition(10, 100)
+                .setPosition(10, 80)
                 .setSize(20, 20)
-                .setItemsPerRow(4)
-                .setSpacingColumn(35)
+                .setItemsPerRow(6)
+                .setSpacingColumn(40)
                 .setSpacingRow(5)
                 .moveTo(queryWindow);
         for (int i = 0; i < MONTHS.length; i++)
@@ -103,7 +104,73 @@ public class QueryGUI
             months.addItem(MONTHS[i], i).activate(i);
         }
 
+        // Days checkboxs:
+        days = cp5.addCheckBox("days")
+                .setPosition(10, 150)
+                .setSize(20, 20)
+                .setItemsPerRow(7)
+                .setSpacingColumn(30)
+                .setSpacingRow(5)
+                .moveTo(queryWindow);
+        for (int i = 0; i < DAYS.length; i++)
+        {
+            days.addItem(DAYS[i], i).activate(i);
+        }
 
+        // Hours range:
+//        hourFrom = cp5.addSlider("hourFrom")
+//                .setCaptionLabel("Hour From")
+//                .setPosition(10, 150)
+//                .setSize(130, 15)
+//                .setRange(0, 23)
+//                .setNumberOfTickMarks(24)
+//                .showTickMarks(false)
+//                .setDecimalPrecision(0)
+//                .moveTo(queryWindow)
+//                ;
+//        hourTo = cp5.addSlider("hourTo")
+//                .setCaptionLabel("Hour To")
+//                .setPosition(10, 170)
+//                .setSize(130, 15)
+//                .setRange(0, 23)
+//                .setNumberOfTickMarks(24)
+//                .showTickMarks(false)
+//                .setDecimalPrecision(0)
+//                .moveTo(queryWindow)
+//                ;
+        
+        hours = cp5.addRange("hours")
+                .setCaptionLabel("Hours")
+                .setPosition(10, 200)
+                .setSize(300, 15)
+                .setDecimalPrecision(0)
+                .setRange(0, 23)
+                .moveTo(queryWindow)
+                ;
+
+        passengers = cp5.addRange("passengers")
+                .setCaptionLabel("Passengers")
+                .setPosition(10, 240)
+                .setSize(275, 15)
+                .setDecimalPrecision(0)
+                .setRange(0, 6)
+                .moveTo(queryWindow)
+                ;
+
+        vendorID = cp5.addRadioButton("vendorID")
+                .setSize(15, 15)
+                .setPosition(90, 280)
+                .setItemsPerRow(6)
+                .setSpacingColumn(50)
+                .addItem("CMT", 1)
+                .addItem("VTS", 2)
+                .addItem("Both", 3)
+                .setGroup(LABEL)
+                .activate(2);
+        cp5.addTextlabel("vendorIDLabel")
+                .setText("Vendor ID:")
+                .setPosition(10, 280)
+                .moveTo(queryWindow);
         
         // Jan Feb buttons TEMP
         janButton = cp5.addButton("Jan")
