@@ -108,6 +108,7 @@ public class VendorVisual extends AbstractMapVisualisation
         System.out.println("TRIP SIZE: " + trips1.size());
     }
     
+    @Override
     public void reloadData()
     {
         resetTowers(gridOfTowers1);
@@ -116,6 +117,7 @@ public class VendorVisual extends AbstractMapVisualisation
         calculateTowers(trips2, gridOfTowers2);
     }
 
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
@@ -255,6 +257,7 @@ public class VendorVisual extends AbstractMapVisualisation
      renderArea.popMatrix();
      return buffer.get(renderArea.mouseX, renderArea.mouseY) + 16777215;
      }*/
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)

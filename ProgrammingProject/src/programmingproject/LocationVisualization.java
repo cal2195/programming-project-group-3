@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programmingproject;
 
 /**
@@ -40,6 +35,7 @@ public class LocationVisualization extends AbstractMapVisualisation
 
     //draws each location as a box (for now) with text above with the name
     //and number of visitors for the current querey
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
@@ -100,6 +96,7 @@ public class LocationVisualization extends AbstractMapVisualisation
     }
 
     //gets particular queries
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)

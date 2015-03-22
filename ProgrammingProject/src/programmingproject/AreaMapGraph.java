@@ -3,10 +3,8 @@ package programmingproject;
 import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
-import processing.core.PImage;
 
 /**
  *

@@ -43,6 +43,7 @@ public class TripAnimator extends AbstractMapVisualisation
         this.mapGraphs = mapGraphs;
     }
 
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
@@ -134,6 +135,7 @@ public class TripAnimator extends AbstractMapVisualisation
         System.out.println("TRIP SIZE: " + trips.size());
     }
 
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)

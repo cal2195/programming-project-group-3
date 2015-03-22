@@ -125,6 +125,7 @@ public class HeatMapGraph extends AbstractMapVisualisation
         calculateTowers();
     }
 
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
@@ -246,6 +247,7 @@ public class HeatMapGraph extends AbstractMapVisualisation
         return buffer.get(renderArea.mouseX, renderArea.mouseY) + 16777215;
     }
 
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
