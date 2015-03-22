@@ -1,7 +1,6 @@
 package programmingproject;
 
 import controlP5.ControlP5;
-import controlP5.ListBox;
 
 /**
  *
@@ -30,6 +29,4 @@ public class GUI
     {
         
     }
-    
-    
 }

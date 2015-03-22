@@ -1,7 +1,6 @@
 package programmingproject;
 
 import controlP5.*;
-import processing.core.PApplet;
 
 /**
  *

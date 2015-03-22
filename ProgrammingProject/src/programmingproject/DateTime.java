@@ -1,7 +1,5 @@
 package programmingproject;
 
-
-
 /**
  *
  * @author Dan
