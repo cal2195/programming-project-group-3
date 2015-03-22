@@ -1,18 +1,19 @@
 package programmingproject;
 
-
-
 /**
  *
  * @author Dan
  */
 public class DateTime
 {
+	public static final int SECONDS_PER_WEEK = 604800;
+	public static final int SECONDS_PER_DAY = 86400;
+	public static final int SECONDS_PER_HOUR = 3600;
+        public static final int DAYS_PER_WEEK = 7;
+	public static final int[] DAYS_IN_MONTH = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-	public static int SECONDS_PER_DAY = 86400;
-	public static int SECONDS_PER_HOUR = 3600;
-	public static int[] DAYS_IN_MONTH = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
+        public static final int FIRST_WEEK_DAY = 2; //2014-01-01 = Wednesday
+        
 	public static final long[] SECONDS_TILL_MONTH_STARTS = {0,2678400,5097600,7776000, 10368000, 
 		13046400, 15638400, 18316800, 20995200, 23587200, 26265600, 28857600};
 

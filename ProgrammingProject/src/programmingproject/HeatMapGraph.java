@@ -12,7 +12,7 @@ import processing.opengl.PGraphics3D;
  *
  * @author cal
  */
-public class HeatMapGraph
+public class HeatMapGraph extends AbstractMapVisualisation
 {
 
     RenderArea renderArea;
@@ -118,12 +118,14 @@ public class HeatMapGraph
         System.out.println("TRIP SIZE: " + trips.size());
     }
     
+    @Override
     public void reloadData()
     {
         resetTowers();
         calculateTowers();
     }
 
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
@@ -245,6 +247,7 @@ public class HeatMapGraph
         return buffer.get(renderArea.mouseX, renderArea.mouseY) + 16777215;
     }
 
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)

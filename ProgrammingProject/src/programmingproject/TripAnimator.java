@@ -8,7 +8,7 @@ import processing.opengl.PGraphics3D;
  *
  * @author Dan
  */
-public class TripAnimator
+public class TripAnimator extends AbstractMapVisualisation
 {
 
     public static final short MAX_SPEEDFACTOR = 1000;
@@ -43,6 +43,7 @@ public class TripAnimator
         this.mapGraphs = mapGraphs;
     }
 
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
@@ -71,7 +72,7 @@ public class TripAnimator
         animatorSecondsPassed += speedFactor * delta;
 
         buffer.fill(20);
-        buffer.textFont(this.renderArea.createFont("Calibri", 50, false));
+        //buffer.textFont(this.renderArea.createFont("Calibri", 50, false));
         buffer.textSize(50);
         if(MODE == 0)
         {
@@ -80,7 +81,7 @@ public class TripAnimator
         else if(MODE == 1)
         {
             String[] dateAndTime = DateTime.secsToDateTime((int) animatorSecondsPassed).split(" ");
-            buffer.text(dateAndTime[0], -350f, -10f, 3f); 
+            buffer.text(dateAndTime[0], -350f, -10f, 3f);
             buffer.text(dateAndTime[1], -320f, 50, 3f); 
         }
         buffer.textSize(25);
@@ -110,6 +111,7 @@ public class TripAnimator
         switchData();
     }
     
+    @Override
     public void reloadData()
     {
         cars.clear();
@@ -133,6 +135,7 @@ public class TripAnimator
         System.out.println("TRIP SIZE: " + trips.size());
     }
 
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
