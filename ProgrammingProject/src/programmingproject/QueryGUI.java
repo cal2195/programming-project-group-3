@@ -12,9 +12,12 @@ public class QueryGUI
     final int height;
     final int width;
     
-    static final String LABEL = "queryGUI";
+    public static final String LABEL = "queryGUI";
+    public static final String QUERY_ONE_LABEL = "queryOne";
+    public static final String QUERY_TWO_LABEL = "queryTwo";
     public static final String[] DAYS = {"mo", "tu", "we", "th", "fr", "sa", "su"};
-    public static final String[] MONTHS = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"};
+    
+    public boolean ready;
     
     RenderArea renderArea;
     ControlP5 cp5;
@@ -31,6 +34,7 @@ public class QueryGUI
 
     public QueryGUI(RenderArea renderArea, ControlP5 cp5)
     {
+        ready = false;
         this.renderArea = renderArea;
         this.cp5 = cp5;
 
@@ -38,6 +42,7 @@ public class QueryGUI
         width = 400;
         
         setup();
+        ready = true;
     }
 
     public void setup()
@@ -53,12 +58,12 @@ public class QueryGUI
                 .close();
 
         // Set query 1 and 2 Buttons:
-        setQueryOne = cp5.addButton("queryOne")
+        setQueryOne = cp5.addButton(QUERY_ONE_LABEL)
                 .setCaptionLabel("Set Query 1")
                 .setPosition(10, height - 30)
                 .setSize(100, 20)
                 .moveTo(queryWindow);
-        setQueryTwo = cp5.addButton("queryTwo")
+        setQueryTwo = cp5.addButton(QUERY_TWO_LABEL)
                 .setCaptionLabel("Set Query 2")
                 .setPosition(width - 110, height - 30)
                 .setSize(100, 20)
@@ -174,26 +179,82 @@ public class QueryGUI
                 .setText("Vendor ID:")
                 .setPosition(10, 280)
                 .moveTo(queryWindow);
-        
-        // Jan Feb buttons TEMP
-        janButton = cp5.addButton("Ja")
-                .setPosition(10, 400)
-                .setSize(40, 20)
-                .moveTo(queryWindow);
-        febButton = cp5.addButton("Fe")
-                .setPosition(60, 400)
-                .setSize(40, 20)
-                .moveTo(queryWindow);
     }
     
     public int sampleSize()
     {
-        return (int) (sampleSlider.getValue() * sampleRadio.getValue());
+        return (int) ((int) sampleSlider.getValue() * sampleRadio.getValue());
+    }
+    
+    private String timeRangeQuery(long from, long to)
+    {
+        return "(pickup_datetime >= " + from + " AND pickup_datetime < " + to + ")";
+    }
+    
+    private String monthRangeQuery(int index, Range dateSlider)
+    {
+        if (index >= 2 || months.getArrayValue(index) == 0) 
+        {
+            return "NULL";
+        }
+        long startOfMonth = DateTime.SECONDS_TILL_MONTH_STARTS[index];
+        int lowerBound = ((int) dateSlider.getLowValue() - 1) * DateTime.SECONDS_PER_DAY;
+        int upperBound = ((int) dateSlider.getHighValue()) * DateTime.SECONDS_PER_DAY;
+        return timeRangeQuery(lowerBound + startOfMonth, upperBound + startOfMonth);
+    }
+    
+    private String weekDayQuery(int index)
+    {
+        if (index >= 7)
+        {
+            return "NULL";
+        }
+        index = (index - DateTime.FIRST_WEEK_DAY + DateTime.DAYS_PER_WEEK) % DateTime.DAYS_PER_WEEK;
+        int lowerBound = index * DateTime.SECONDS_PER_DAY;
+        int upperBound = (index + 1) * DateTime.SECONDS_PER_DAY;
+        
+        String pickDT = "pickup_datetime % " + DateTime.SECONDS_PER_WEEK;
+        return "(" + pickDT + " >= " + lowerBound + " AND " + pickDT + " < " + upperBound + ")";
+    }
+    
+    private String hourQuery()
+    {
+        int lowerBound = ((int) hours.getLowValue()) * DateTime.SECONDS_PER_HOUR;
+        int upperBound = ((int) hours.getHighValue() + 1) * DateTime.SECONDS_PER_HOUR;
+        String pickDT = "pickup_datetime % " + DateTime.SECONDS_PER_DAY;
+        return "(" + pickDT + " >= " + lowerBound + " AND " + pickDT + " < " + upperBound + ")";
+    }
+    
+    private String sampleQuery()
+    {
+        return " LIMIT " + sampleSize();
     }
     
     public String getQuery()
     {
-        return "SELECT * FROM taxi_data LIMIT " + sampleSize();
+        String query = "SELECT * FROM taxi_data WHERE";
+        
+        // Jan and Feb selectors:
+        query += " (\n" + monthRangeQuery(0, janDate) + " OR \n" + monthRangeQuery(1, febDate) + "\n)";
+        
+        // Weekday selectors:
+        query += " AND (\n";
+        for (int i = 0; i < DateTime.DAYS_PER_WEEK; i++)
+        {
+            if (days.getArrayValue(i) == 1f)
+            {
+                query += weekDayQuery(i) + " OR \n";
+            }
+        }
+        query += "NULL\n)";
+        
+        // Hour selector:
+        query += " AND (\n" + hourQuery() + "\n)";
+        
+        // Sample size selector
+        query += sampleQuery();
+        
+        return query;
     }
     
     public void hide()

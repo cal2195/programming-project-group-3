@@ -180,14 +180,19 @@ public class RenderArea extends PApplet
 
     public void controlEvent(ControlEvent theEvent)
     {
-        println(theEvent);
-        
-        if (theEvent.isFrom("visList"))
+        if (theEvent.isFrom(MapGraphsGUI.VIS_LIST_LABEL))
         {
             mapGraphsGUIEvent(theEvent);
-        } else if (theEvent.isController() /*&& QueryGUI.LABEL.equals(theEvent.getController().getParent().getName())*/)
+        }
+        else if (theEvent.isFrom(QueryGUI.QUERY_ONE_LABEL))
         {
-            queryGUIEvent(theEvent);
+            println("Query One:");
+            println(gui.queryGUI.getQuery());
+        }
+        else if (theEvent.isFrom(QueryGUI.QUERY_TWO_LABEL))
+        {
+            println("Query Two:");
+            println(gui.queryGUI.getQuery());
         }
     }
 
