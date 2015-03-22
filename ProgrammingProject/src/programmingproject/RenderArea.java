@@ -57,8 +57,10 @@ public class RenderArea extends PApplet
             case 1:
                 linePieChart.draw(buffer);
                 break;
+                
             case 2:
                 statsVisual.draw(buffer);
+                break;
         }
 
         buffer.endDraw();
@@ -202,23 +204,27 @@ public class RenderArea extends PApplet
         {
             case 0: //"Heat Map":
                 currentScreen = 0;
-                mapGraphs.currentGraph = 0;
+                //mapGraphs.currentGraph = 0;
+                mapGraphs.currentVisualisation = mapGraphs.heatMapGraph;
                 mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 10000));
                 break;
             case 1: //"Taxi Animator":
                 currentScreen = 0;
-                mapGraphs.currentGraph = 1;
+                //mapGraphs.currentGraph = 1;
+                mapGraphs.currentVisualisation = mapGraphs.tripAnimator;
                 mapGraphs.tripAnimator.setData(query.getTaxisAtHour(4, 5000));
 //                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
                 break;
             case 2: //"Area Map Graph":
                 currentScreen = 0;
-                mapGraphs.currentGraph = 2;
+                //mapGraphs.currentGraph = 2;
+                mapGraphs.currentVisualisation = mapGraphs.areaMapGraph;
 //                    mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
                 break;
             case 3: //"Query comparison":
                 currentScreen = 0;
-                mapGraphs.currentGraph = 3;
+                //mapGraphs.currentGraph = 3;
+                mapGraphs.currentVisualisation = mapGraphs.vendorVisual;
                 mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
                 break;
             case 4: //"Line Pie Chart":

@@ -31,6 +31,16 @@ public class CurrentQuery
         }
     }
     
+    public void sendEventToActiveVisualisation()
+    {
+        
+    }
+    
+    public void requestQuery(String query)
+    {
+        
+    }
+    
     public ArrayList<Trip> active()
     {
         return activeQuery;

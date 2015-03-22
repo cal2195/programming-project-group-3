@@ -29,8 +29,10 @@ public class MapGraphs
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
     AreaMapGraph areaMapGraph;
+    
     //Graphs
-    int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
+    //int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
+    AbstractMapVisualisation currentVisualisation;
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
     LocationVisualization location;
@@ -51,6 +53,8 @@ public class MapGraphs
         location = new LocationVisualization(renderArea, this);
         vendorVisual = new VendorVisual(renderArea, this);
         areaMapGraph = new AreaMapGraph(renderArea, this);
+        
+        currentVisualisation = heatMapGraph;
     }
 
     public void draw(PGraphics3D buffer)
@@ -86,21 +90,7 @@ public class MapGraphs
 
         //renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
         //Draw whichever visualisation is active
-        switch (currentGraph)
-        {
-            case 0:
-                heatMapGraph.draw(buffer);
-                break;
-            case 1:
-                tripAnimator.draw(buffer);
-                break;
-            case 2:
-                location.draw(buffer);
-                break;
-            case 3:
-                vendorVisual.draw(buffer);
-                break;
-        }
+        currentVisualisation.draw(buffer);
 
         buffer.popMatrix();
         buffer.popStyle();
@@ -153,21 +143,7 @@ public class MapGraphs
         this.cameraTransX = cameraTransX;
         this.cameraTransY = cameraTransY;
         this.zoom = zoom;
-        switch (currentGraph)
-        {
-            case 0:
-                heatMapGraph.reloadData();
-                break;
-            case 1:
-                tripAnimator.reloadData();
-                break;
-            case 2:
-                location.reloadData();
-                break;
-            case 3:
-                vendorVisual.reloadData();
-                break;
-        }
+        currentVisualisation.reloadData();
     }
 
     public void keyPressed(KeyEvent e)
@@ -175,115 +151,31 @@ public class MapGraphs
         if (e.getKeyCode() == KeyEvent.VK_EQUALS)
         {
             map.zoomLevelIn();
-            switch (currentGraph)
-            {
-                case 0:
-                    heatMapGraph.reloadData();
-                    break;
-                case 1:
-                    tripAnimator.reloadData();
-                    break;
-                case 2:
-                    location.reloadData();
-                    break;
-                case 3:
-                    vendorVisual.reloadData();
-                    break;
-            }
+            currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_MINUS)
         {
             map.zoomLevelOut();
-            switch (currentGraph)
-            {
-                case 0:
-                    heatMapGraph.reloadData();
-                    break;
-                case 1:
-                    tripAnimator.reloadData();
-                    break;
-                case 2:
-                    location.reloadData();
-                    break;
-                case 3:
-                    vendorVisual.reloadData();
-                    break;
-            }
+            currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_I)
         {
             map.panUp();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
-            switch (currentGraph)
-            {
-                case 0:
-                    heatMapGraph.reloadData();
-                    break;
-                case 1:
-                    tripAnimator.reloadData();
-                    break;
-                case 2:
-                    location.reloadData();
-                    break;
-                case 3:
-                    vendorVisual.reloadData();
-                    break;
-            }
+            currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_J)
         {
             map.panLeft();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
-            switch (currentGraph)
-            {
-                case 0:
-                    heatMapGraph.reloadData();
-                    break;
-                case 1:
-                    tripAnimator.reloadData();
-                    break;
-                case 2:
-                    location.reloadData();
-                    break;
-                case 3:
-                    vendorVisual.reloadData();
-                    break;
-            }
+            currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_K)
         {
             map.panDown();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
-            switch (currentGraph)
-            {
-                case 0:
-                    heatMapGraph.reloadData();
-                    break;
-                case 1:
-                    tripAnimator.reloadData();
-                    break;
-                case 2:
-                    location.reloadData();
-                    break;
-                case 3:
-                    vendorVisual.reloadData();
-                    break;
-            }
+            currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_L)
         {
             map.panRight();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
-            switch (currentGraph)
-            {
-                case 0:
-                    heatMapGraph.reloadData();
-                    break;
-                case 1:
-                    tripAnimator.reloadData();
-                    break;
-                case 2:
-                    location.reloadData();
-                    break;
-                case 3:
-                    vendorVisual.reloadData();
-                    break;
-            }
+            currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_QUOTE)
         {
             System.out.println(map.getCenter().getLat() + "f, " + map.getCenter().getLon() + "f, " + map.getZoomLevel() + ", " + cameraX + "f, " + cameraY + "f, " + cameraTransX + "f, " + cameraTransY + "f, " + zoom + "f");
@@ -292,21 +184,7 @@ public class MapGraphs
             setCamera(40.770947f, -73.87256f, 16, 2.67433f, 1.0016665f, -154.64786f, 393.83865f, 1.0f);
         } else
         {
-            switch (currentGraph)
-            {
-                case 0:
-                    heatMapGraph.keyPressed(e);
-                    break;
-                case 1:
-                    tripAnimator.keyPressed(e);
-                    break;
-                case 2:
-                    location.keyPressed(e);
-                    break;
-                case 3:
-                    vendorVisual.keyPressed(e);
-                    break;
-            }
+            currentVisualisation.keyPressed(e);
         }
     }
 }
