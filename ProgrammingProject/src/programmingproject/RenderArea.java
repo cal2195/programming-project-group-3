@@ -19,6 +19,7 @@ public class RenderArea extends PApplet
     MapGraphs mapGraphs;
     Data data;
     LinePieChart linePieChart;
+    StatsVisual statsVisual;
 
     PGraphics3D buffer;
 
@@ -39,6 +40,7 @@ public class RenderArea extends PApplet
 
         mapGraphs = new MapGraphs(this, buffer);
         linePieChart = new LinePieChart(this);
+        statsVisual = new StatsVisual(this);
     }
 
     @Override
@@ -55,6 +57,8 @@ public class RenderArea extends PApplet
             case 1:
                 linePieChart.draw(buffer);
                 break;
+            case 2:
+                statsVisual.draw(buffer);
         }
 
         buffer.endDraw();
@@ -214,6 +218,10 @@ public class RenderArea extends PApplet
                 break;
             case 4: //"Line Pie Chart":
                 currentScreen = 1;
+                break;
+            case 5: //"Stats Visual":
+                currentScreen = 2;
+                break;
             default:
                 break;
         }

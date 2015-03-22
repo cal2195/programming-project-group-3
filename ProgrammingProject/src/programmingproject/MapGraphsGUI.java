@@ -21,6 +21,7 @@ public class MapGraphsGUI
         "Area Map Graph",
         "Query comparison",
         "Line Pie Chart",
+        "Stats Visual",
     };
 
     public MapGraphsGUI(RenderArea renderArea, ControlP5 cp5)

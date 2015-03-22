@@ -42,6 +42,7 @@ public class StatsVisual
     }
     
     public void draw(PGraphics3D buffer){
+        buffer.background(48);
         buffer.text("Average passengers: " + averagePassengers,550,350);
         buffer.text("Average distance: " + averageDistance,550,380);
         buffer.text("Average Duration: " + averageDuration,550,410);
