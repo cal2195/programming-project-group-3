@@ -202,7 +202,7 @@ public class QueryGUI
         return timeRangeQuery(lowerBound + startOfMonth, upperBound + startOfMonth);
     }
     
-    private String weekDayQuery(int index)
+    private String dayQuery(int index)
     {
         if (index >= 7)
         {
@@ -214,6 +214,31 @@ public class QueryGUI
         
         String pickDT = "pickup_datetime % " + DateTime.SECONDS_PER_WEEK;
         return "(" + pickDT + " >= " + lowerBound + " AND " + pickDT + " < " + upperBound + ")";
+    }
+    
+    private String weekDayQuery()
+    {
+        boolean allChecked = true;
+        for(float value : days.getArrayValue()){
+            if (value == 0)
+            {
+                allChecked = false;
+            }
+        }
+        if (allChecked)
+        {
+            return "";
+        }
+        String query = "";
+        query += " AND (\n";
+        for (int i = 0; i < DateTime.DAYS_PER_WEEK; i++)
+        {
+            if (days.getArrayValue(i) == 1f)
+            {
+                query += dayQuery(i) + " OR \n";
+            }
+        }
+        return query += "NULL\n)";
     }
     
     private String hourQuery()
@@ -237,15 +262,7 @@ public class QueryGUI
         query += " (\n" + monthRangeQuery(0, janDate) + " OR \n" + monthRangeQuery(1, febDate) + "\n)";
         
         // Weekday selectors:
-        query += " AND (\n";
-        for (int i = 0; i < DateTime.DAYS_PER_WEEK; i++)
-        {
-            if (days.getArrayValue(i) == 1f)
-            {
-                query += weekDayQuery(i) + " OR \n";
-            }
-        }
-        query += "NULL\n)";
+        query += weekDayQuery();
         
         // Hour selector:
         query += " AND (\n" + hourQuery() + "\n)";
