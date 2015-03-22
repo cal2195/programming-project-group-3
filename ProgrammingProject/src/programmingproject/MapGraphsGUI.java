@@ -20,6 +20,7 @@ public class MapGraphsGUI
         "Taxi Animator",
         "Area Map Graph",
         "Query comparison",
+        "Line Pie Chart",
     };
 
     public MapGraphsGUI(RenderArea renderArea, ControlP5 cp5)
@@ -35,10 +36,9 @@ public class MapGraphsGUI
         int width = 200;
         visList = cp5.addDropdownList("visList")
                 .setCaptionLabel("Visualisations")
-                .setWidth(width)
+                .setSize(width, 400)
                 .setBarHeight(20)
                 .setItemHeight(20)
-//                .setColorBackground(renderArea.color(80,150))
                 .setPosition(renderArea.width - 200, 20)
                 .addItems(VISUAL_LABELS);
         
