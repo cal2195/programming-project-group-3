@@ -264,5 +264,9 @@ public class RenderArea extends PApplet
         {
             buffer = (PGraphics3D) createGraphics(newWidth, newHeight, RenderArea.P3D);
         }
+        if (gui != null)
+        {
+            gui.resize();
+        }
     }
 }

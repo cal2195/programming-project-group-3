@@ -63,4 +63,9 @@ public class MapGraphsGUI
                 .setSize(200, 19);
 */
     }
+    
+    public void resize()
+    {
+        visList.setPosition(renderArea.width - 200, 20);
+    }
 }

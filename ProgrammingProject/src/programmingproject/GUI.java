@@ -29,4 +29,9 @@ public class GUI
     {
         
     }
+    
+    public void resize()
+    {
+        mapGraphsGUI.resize();
+    }
 }
