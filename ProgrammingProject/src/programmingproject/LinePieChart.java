@@ -1,5 +1,6 @@
 package programmingproject;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Random;
@@ -24,13 +25,18 @@ public class LinePieChart {
     
             
     //Data Visualisation
-    int sampleSize = 500;
+    int sampleSize = 300;
     
     //Camera rotation
     float cameraX, cameraY;
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
+    
+    //Show lines to centre
+    boolean linesShowing = true;
+    
+    
     
     /**
      *
@@ -150,8 +156,32 @@ public class LinePieChart {
             buffer.pushMatrix();
             buffer.translate(positions[count][0],positions[count][1], positions[count][2]/2 );
             buffer.box(1, 1, positions[count][2]);
+            buffer.stroke(0,120,255); 
             buffer.popMatrix();
-            
-        }   
+            if(linesShowing)
+            {
+                buffer.pushMatrix();
+                buffer.translate(buffer.width/2, buffer.height/2, 34);
+                buffer.box(3,3,68);
+                buffer.popMatrix();
+                buffer.line(positions[count][0],positions[count][1], positions[count][2], buffer.width/2, buffer.height/2, positions[count][2]);
+            }
+        }
     }
+    
+    public void keyPressed(KeyEvent e)
+    {
+        if(e.getKeyCode() == KeyEvent.VK_0)
+        {
+            if(linesShowing)
+            {
+                linesShowing = false;
+            }
+            else
+            {
+                linesShowing = true;
+            }
+        }
+    }
+    
 }
