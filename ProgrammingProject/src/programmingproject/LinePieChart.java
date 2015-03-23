@@ -51,9 +51,9 @@ public class LinePieChart {
         positions = new int[sampleSize][3];
         doneFirstSetup =false;
         oldRenderHeight = renderArea.height;
-        oldRenderWidth = renderArea.width;
-        
+        oldRenderWidth = renderArea.width;  
     }
+    
     public void setup()
     {
         getSamples();
@@ -92,6 +92,8 @@ public class LinePieChart {
         plotPoints(buffer);
         
         buffer.popMatrix();
+        buffer.fill(255);
+        buffer.text("Press '0' to toggle lines into center", 10,30);
         
         //in-case window is resized
         if (oldRenderHeight != buffer.height || oldRenderWidth != buffer.width)
@@ -183,5 +185,4 @@ public class LinePieChart {
             }
         }
     }
-    
 }
