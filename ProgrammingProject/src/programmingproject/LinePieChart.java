@@ -147,17 +147,9 @@ public class LinePieChart {
         for(int count = 0; count < positions.length ; count++)
         {
             buffer.fill(0,120,255);
-            
-            for(int zPos = 0; zPos <= positions[count][2] ; zPos++)
-            {
-                buffer.pushMatrix();
-                buffer.translate(positions[count][0],positions[count][1],zPos);
-                buffer.box(1);
-                buffer.popMatrix();
-            } 
             buffer.pushMatrix();
-            buffer.fill(0,120,255);
-            buffer.line(0, 0, 100,100);
+            buffer.translate(positions[count][0],positions[count][1], positions[count][2]/2 );
+            buffer.box(1, 1, positions[count][2]);
             buffer.popMatrix();
             
         }   
