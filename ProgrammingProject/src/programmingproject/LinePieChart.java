@@ -1,5 +1,6 @@
 package programmingproject;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Random;
@@ -24,13 +25,18 @@ public class LinePieChart {
     
             
     //Data Visualisation
-    int sampleSize = 500;
+    int sampleSize = 300;
     
     //Camera rotation
     float cameraX, cameraY;
     MouseEvent lastMousePosition;
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
+    
+    //Show lines to centre
+    boolean linesShowing = true;
+    
+    
     
     /**
      *
@@ -45,9 +51,9 @@ public class LinePieChart {
         positions = new int[sampleSize][3];
         doneFirstSetup =false;
         oldRenderHeight = renderArea.height;
-        oldRenderWidth = renderArea.width;
-        
+        oldRenderWidth = renderArea.width;  
     }
+    
     public void setup()
     {
         getSamples();
@@ -86,6 +92,8 @@ public class LinePieChart {
         plotPoints(buffer);
         
         buffer.popMatrix();
+        buffer.fill(255);
+        buffer.text("Press '0' to toggle lines into center", 10,30);
         
         //in-case window is resized
         if (oldRenderHeight != buffer.height || oldRenderWidth != buffer.width)
@@ -120,15 +128,11 @@ public class LinePieChart {
     
     public void getSamples()
     {
-        System.out.println("\n Starting \n");
         ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
-        System.out.println("\n Done. \n");
         for(int count = 0; count < timeAndPassengers.length; count++ )
         {
             timeAndPassengers[count][0] = (int)(currentTrips.get(count).pickupTime)%DateTime.SECONDS_PER_DAY;
             timeAndPassengers[count][1] = currentTrips.get(count).passengers;
-            System.out.println(count);
-            
         }
     }
     
@@ -151,19 +155,34 @@ public class LinePieChart {
         for(int count = 0; count < positions.length ; count++)
         {
             buffer.fill(0,120,255);
-            
-            for(int zPos = 0; zPos <= positions[count][2] ; zPos++)
+            buffer.pushMatrix();
+            buffer.translate(positions[count][0],positions[count][1], positions[count][2]/2 );
+            buffer.box(1, 1, positions[count][2]);
+            buffer.stroke(0,120,255); 
+            buffer.popMatrix();
+            if(linesShowing)
             {
                 buffer.pushMatrix();
-                buffer.translate(positions[count][0],positions[count][1],zPos);
-                buffer.box(1);
+                buffer.translate(buffer.width/2, buffer.height/2, 34);
+                buffer.box(3,3,68);
                 buffer.popMatrix();
-            } 
-            buffer.pushMatrix();
-            buffer.fill(0,120,255);
-            buffer.line(0, 0, 100,100);
-            buffer.popMatrix();
-            
-        }   
+                buffer.line(positions[count][0],positions[count][1], positions[count][2], buffer.width/2, buffer.height/2, positions[count][2]);
+            }
+        }
+    }
+    
+    public void keyPressed(KeyEvent e)
+    {
+        if(e.getKeyCode() == KeyEvent.VK_0)
+        {
+            if(linesShowing)
+            {
+                linesShowing = false;
+            }
+            else
+            {
+                linesShowing = true;
+            }
+        }
     }
 }

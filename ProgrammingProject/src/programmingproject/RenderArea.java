@@ -177,6 +177,9 @@ public class RenderArea extends PApplet
             case 0:
                 mapGraphs.keyPressed(e);
                 break;
+            case 1:
+                linePieChart.keyPressed(e);
+                break;
         }
     }
 
