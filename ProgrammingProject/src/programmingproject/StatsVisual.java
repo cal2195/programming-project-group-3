@@ -45,7 +45,8 @@ public class StatsVisual
         totPassengers = 2;
     }
     
-    public void draw(PGraphics3D buffer){
+    public void draw(PGraphics3D buffer)
+    {
         buffer.background(255);
         buffer.text("Average passengers: " + averagePassengers,550,350);
         buffer.text("Average distance: " + averageDistance,550,380);
@@ -56,7 +57,8 @@ public class StatsVisual
         pieChart(100, vendorAngles,550,150,buffer);
     }
     
-    void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer) {
+    void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer)
+    {
         float lastAngle = 0;
         float gray = 0;
         for (int i = 0; i < data.length; i++) {
@@ -67,25 +69,31 @@ public class StatsVisual
         }
     }
     
-    public void setData(ArrayList<Trip> data){
+    public void setData(ArrayList<Trip> data)
+    {
         this.data = data;
         float totalDistance = 0;
         float totalTime = 0;
         float totalPassengers = 0;
-        for(Trip t : this.data){
-            if(t.distance > longestTrip){
+        for(Trip t : this.data)
+        {
+            if(t.distance > longestTrip)
+            {
                 longestTrip=t.distance;
             }
-            if(t.distance < shortestTrip){
+            if(t.distance < shortestTrip)
+            {
                 shortestTrip = t.distance;
             }
             passengerTotals[t.passengers-1]++;
             totalDistance += t.distance;
             totalTime += t.time;
             totalPassengers += t.passengers;
-            if(t.vendorID){
+            if(t.vendorID)
+            {
                 vendorTotals[0]++;
-            } else{
+            } else
+            {
                 vendorTotals[1]++;
             }
         }
@@ -96,17 +104,22 @@ public class StatsVisual
         setAngles();
     }
     
-    private void setAngles(){
-        for(int i = 0; i < passengerTotals.length; i++){
+    private void setAngles()
+    {
+        for(int i = 0; i < passengerTotals.length; i++)
+        {
             passengerAngles[i] = (int) ((int) passengerTotals[i] * 360 / totPassengers);
         }
-        for(int i = 0; i < vendorTotals.length; i++){
+        for(int i = 0; i < vendorTotals.length; i++)
+        {
             vendorAngles[i] = (int) ((int) vendorTotals[i] * 360 / totVendors);
         }
     }
     
-    public void reset(){
-        for(int i = 0; i < passengerTotals.length; i++){
+    public void reset()
+    {
+        for(int i = 0; i < passengerTotals.length; i++)
+        {
             passengerTotals[i] = 0;
         }
         vendorTotals[0] = 0;
