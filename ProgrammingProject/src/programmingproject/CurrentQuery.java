@@ -9,11 +9,13 @@ import java.util.ArrayList;
  */
 public class CurrentQuery
 {
-    
+    RenderArea renderArea;
     private ArrayList<Trip> queryOne, queryTwo, activeQuery;
     
-    public CurrentQuery()
+    public CurrentQuery(RenderArea renderArea)
     {
+        this.renderArea = renderArea;
+        
         queryOne = new ArrayList<>();
         queryTwo = new ArrayList<>();
         
@@ -38,7 +40,15 @@ public class CurrentQuery
     
     public void requestQuery(String query)
     {
+        ArrayList<Trip> queryBuffer;
         
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+//                queryBuffer = renderArea.query.getTrips("one");
+            }
+        }).start();
     }
     
     public ArrayList<Trip> active()

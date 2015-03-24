@@ -236,20 +236,6 @@ public class RenderArea extends PApplet
             default:
                 break;
         }
-}
-    
-    private void queryGUIEvent(ControlEvent theEvent)
-    {
-        switch (theEvent.getController().getLabel()) {
-            case "Jan":
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 1000));
-                break;
-            case "Feb":
-                mapGraphs.heatMapGraph.setData(query.getTripsForMonth(2, 5000));
-                break;
-            default:
-                break;
-        }
     }
     
     @Override
