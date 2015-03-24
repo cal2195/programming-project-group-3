@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author cal
  */
-public class AreaMapGraph extends AbstractMapVisualisation
+public class AreaMapGraph extends AbstractVisualisation
 {
 
     RenderArea renderArea;

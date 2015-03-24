@@ -14,12 +14,14 @@ import processing.opengl.PGraphics3D;
 public class RenderArea extends PApplet
 {
 
-    int currentScreen = 0;
+    //sint currentScreen = 0;
     HeatMapGraph heightMapGraph;
     MapGraphs mapGraphs;
     Data data;
     LinePieChart linePieChart;
     StatsVisual statsVisual;
+
+    AbstractVisualisation currentVisualisation;
 
     PGraphics3D buffer;
 
@@ -41,6 +43,8 @@ public class RenderArea extends PApplet
         mapGraphs = new MapGraphs(this, buffer);
         linePieChart = new LinePieChart(this);
         statsVisual = new StatsVisual(this);
+
+        currentVisualisation = mapGraphs.heatMapGraph;
     }
 
     @Override
@@ -48,19 +52,12 @@ public class RenderArea extends PApplet
     {
         buffer.beginDraw();
 
-        switch (currentScreen)
+        if (currentVisualisation == linePieChart || currentVisualisation == statsVisual)
         {
-            case 0:
-                mapGraphs.draw(buffer);
-                break;
-
-            case 1:
-                linePieChart.draw(buffer);
-                break;
-                
-            case 2:
-                statsVisual.draw(buffer);
-                break;
+            currentVisualisation.draw(buffer);
+        } else
+        {
+            mapGraphs.draw(buffer);
         }
 
         buffer.endDraw();
@@ -78,14 +75,14 @@ public class RenderArea extends PApplet
             translate(mapGraphs.heatMapGraph.labelX, mapGraphs.heatMapGraph.labelY);
             fill(0, 255, 0);
             rect(0, 0, 100, 50);
-            
+
             int desiredID = mapGraphs.heatMapGraph.currentID - 1;
             int row = (desiredID / mapGraphs.heatMapGraph.GRID_WIDTH);
             int column = desiredID - (row * mapGraphs.heatMapGraph.GRID_WIDTH);
-            
+
             fill(0);
             text((int) (mapGraphs.heatMapGraph.gridOfTowers[row][column].height / 10) + " taxis", 5, 20);
-            
+
             popMatrix();
             popStyle();
         }
@@ -97,16 +94,7 @@ public class RenderArea extends PApplet
         super.mousePressed(e);
         if (!gui.cp5.isMouseOver())
         {
-            switch (currentScreen)
-            {
-                case 0:
-                    mapGraphs.mousePressed(e);
-                    break;
-
-                case 1:
-                    linePieChart.mousePressed(e);
-                    break;
-            }
+            currentVisualisation.mousePressed(e);
         }
     }
 
@@ -116,15 +104,7 @@ public class RenderArea extends PApplet
         super.mouseDragged(e);
         if (!gui.cp5.isMouseOver())
         {
-            switch (currentScreen)
-            {
-                case 0:
-                    mapGraphs.mouseDragged(e);
-                    break;
-                case 1:
-                    linePieChart.mouseDragged(e);
-                    break;
-            }
+            currentVisualisation.mouseDragged(e);
         }
     }
 
@@ -134,15 +114,7 @@ public class RenderArea extends PApplet
         super.mouseReleased(e);
         if (!gui.cp5.isMouseOver())
         {
-            switch (currentScreen)
-            {
-                case 0:
-                    mapGraphs.mouseReleased(e);
-                    break;
-                case 1:
-                    linePieChart.mouseReleased(e);
-                    break;
-            }
+            currentVisualisation.mouseReleased(e);
         }
     }
 
@@ -152,35 +124,14 @@ public class RenderArea extends PApplet
         super.mouseWheelMoved(e);
         if (!gui.cp5.isMouseOver())
         {
-            switch (currentScreen)
-            {
-                case 0:
-                    mapGraphs.mouseWheelMoved(e);
-                    break;
-            }
+            currentVisualisation.mouseWheelMoved(e);
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER)
-        {
-            currentScreen++;
-            if (currentScreen >= 2)
-            {
-                currentScreen = 0;
-            }
-        }
-        switch (currentScreen)
-        {
-            case 0:
-                mapGraphs.keyPressed(e);
-                break;
-            case 1:
-                linePieChart.keyPressed(e);
-                break;
-        }
+        currentVisualisation.keyPressed(e);
     }
 
     public void controlEvent(ControlEvent theEvent)
@@ -188,13 +139,11 @@ public class RenderArea extends PApplet
         if (theEvent.isFrom(MapGraphsGUI.VIS_LIST_LABEL))
         {
             mapGraphsGUIEvent(theEvent);
-        }
-        else if (theEvent.isFrom(QueryGUI.QUERY_ONE_LABEL))
+        } else if (theEvent.isFrom(QueryGUI.QUERY_ONE_LABEL))
         {
             println("Query One:");
             println(gui.queryGUI.getQuery());
-        }
-        else if (theEvent.isFrom(QueryGUI.QUERY_TWO_LABEL))
+        } else if (theEvent.isFrom(QueryGUI.QUERY_TWO_LABEL))
         {
             println("Query Two:");
             println(gui.queryGUI.getQuery());
@@ -206,41 +155,31 @@ public class RenderArea extends PApplet
         switch ((int) theEvent.getValue())
         {
             case 0: //"Heat Map":
-                currentScreen = 0;
-                //mapGraphs.currentGraph = 0;
-                mapGraphs.currentVisualisation = mapGraphs.heatMapGraph;
+                currentVisualisation = mapGraphs.heatMapGraph;
                 mapGraphs.heatMapGraph.setData(query.getTripsForMonth(1, 10000));
                 break;
             case 1: //"Taxi Animator":
-                currentScreen = 0;
-                //mapGraphs.currentGraph = 1;
-                mapGraphs.currentVisualisation = mapGraphs.tripAnimator;
+                currentVisualisation = mapGraphs.tripAnimator;
                 mapGraphs.tripAnimator.setData(query.getTaxisAtHour(4, 5000));
-//                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
                 break;
             case 2: //"Area Map Graph":
-                currentScreen = 0;
-                //mapGraphs.currentGraph = 2;
-                mapGraphs.currentVisualisation = mapGraphs.areaMapGraph;
-//                    mapGraphs.areaMapGraph.setData(query.getTripsForMonth(1, 50000));
+                currentVisualisation = mapGraphs.areaMapGraph;
                 break;
             case 3: //"Query comparison":
-                currentScreen = 0;
-                //mapGraphs.currentGraph = 3;
-                mapGraphs.currentVisualisation = mapGraphs.vendorVisual;
+                currentVisualisation = mapGraphs.vendorVisual;
                 mapGraphs.vendorVisual.setData(query.getTaxisAtHour(9, 5000), query.getTaxisAtHour(3, 5000));
                 break;
             case 4: //"Line Pie Chart":
-                currentScreen = 1;
+                currentVisualisation = linePieChart;
                 break;
             case 5: //"Stats Visual":
-                currentScreen = 2;
+                currentVisualisation = statsVisual;
                 break;
             default:
                 break;
         }
     }
-    
+
     @Override
     protected void resizeRenderer(int newWidth, int newHeight) //When the window is resized, adjust all buffers accordingly!
     {

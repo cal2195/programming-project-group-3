@@ -19,7 +19,7 @@ public class MapGraphs
     RenderArea renderArea;
 
     UnfoldingMap map;
-    int mapWidth = 3000, mapHeight = 3000;
+    int mapWidth = 1000, mapHeight = 1000;
 
     //Camera Rotation
     float cameraX, cameraY;
@@ -32,7 +32,7 @@ public class MapGraphs
     
     //Graphs
     //int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
-    AbstractMapVisualisation currentVisualisation;
+    //AbstractVisualisation renderArea.currentVisualisation;
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
     LocationVisualization location;
@@ -54,7 +54,7 @@ public class MapGraphs
         vendorVisual = new VendorVisual(renderArea, this);
         areaMapGraph = new AreaMapGraph(renderArea, this);
         
-        currentVisualisation = heatMapGraph;
+        renderArea.currentVisualisation = heatMapGraph;
     }
 
     public void draw(PGraphics3D buffer)
@@ -90,7 +90,7 @@ public class MapGraphs
 
         //renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
         //Draw whichever visualisation is active
-        currentVisualisation.draw(buffer);
+        renderArea.currentVisualisation.draw(buffer);
 
         buffer.popMatrix();
         buffer.popStyle();
@@ -143,7 +143,7 @@ public class MapGraphs
         this.cameraTransX = cameraTransX;
         this.cameraTransY = cameraTransY;
         this.zoom = zoom;
-        currentVisualisation.reloadData();
+        renderArea.currentVisualisation.reloadData();
     }
 
     public void keyPressed(KeyEvent e)
@@ -151,31 +151,31 @@ public class MapGraphs
         if (e.getKeyCode() == KeyEvent.VK_EQUALS)
         {
             map.zoomLevelIn();
-            currentVisualisation.reloadData();
+            renderArea.currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_MINUS)
         {
             map.zoomLevelOut();
-            currentVisualisation.reloadData();
+            renderArea.currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_I)
         {
             map.panUp();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
-            currentVisualisation.reloadData();
+            renderArea.currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_J)
         {
             map.panLeft();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
-            currentVisualisation.reloadData();
+            renderArea.currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_K)
         {
             map.panDown();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
-            currentVisualisation.reloadData();
+            renderArea.currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_L)
         {
             map.panRight();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
-            currentVisualisation.reloadData();
+            renderArea.currentVisualisation.reloadData();
         } else if (e.getKeyCode() == KeyEvent.VK_QUOTE)
         {
             System.out.println(map.getCenter().getLat() + "f, " + map.getCenter().getLon() + "f, " + map.getZoomLevel() + ", " + cameraX + "f, " + cameraY + "f, " + cameraTransX + "f, " + cameraTransY + "f, " + zoom + "f");
@@ -184,7 +184,7 @@ public class MapGraphs
             setCamera(40.770947f, -73.87256f, 16, 2.67433f, 1.0016665f, -154.64786f, 393.83865f, 1.0f);
         } else
         {
-            currentVisualisation.keyPressed(e);
+            renderArea.currentVisualisation.keyPressed(e);
         }
     }
 }

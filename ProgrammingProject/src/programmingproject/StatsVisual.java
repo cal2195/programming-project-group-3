@@ -13,7 +13,7 @@ import processing.opengl.PGraphics3D;
  *
  * @author Shane
  */
-public class StatsVisual
+public class StatsVisual extends AbstractVisualisation
 {
     RenderArea renderArea;
     int[] passengerTotals;
