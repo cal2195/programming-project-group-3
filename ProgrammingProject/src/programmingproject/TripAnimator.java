@@ -8,7 +8,7 @@ import processing.opengl.PGraphics3D;
  *
  * @author Dan
  */
-public class TripAnimator extends AbstractMapVisualisation
+public class TripAnimator extends AbstractVisualisation
 {
 
     public static final short MAX_SPEEDFACTOR = 1000;

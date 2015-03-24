@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import processing.opengl.PGraphics3D;
 
-public class LocationVisualization extends AbstractMapVisualisation
+public class LocationVisualization extends AbstractVisualisation
 {
 
     ArrayList<LocationDrawable> locations;

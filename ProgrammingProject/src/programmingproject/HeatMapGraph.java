@@ -12,7 +12,7 @@ import processing.opengl.PGraphics3D;
  *
  * @author cal
  */
-public class HeatMapGraph extends AbstractMapVisualisation
+public class HeatMapGraph extends AbstractVisualisation
 {
 
     RenderArea renderArea;
