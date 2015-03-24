@@ -47,7 +47,7 @@ public class StatsVisual
     
     public void draw(PGraphics3D buffer)
     {
-        buffer.background(255);
+        buffer.background(254);
         buffer.text("Average passengers: " + averagePassengers,550,350);
         buffer.text("Average distance: " + averageDistance,550,380);
         buffer.text("Average Duration: " + averageDuration,550,410);
@@ -138,12 +138,15 @@ public class StatsVisual
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
             setData(renderArea.query.getTripsForMonth(1, 1000));
+            System.out.println("query 1");
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
             setData(renderArea.query.getTripsForMonth(2, 1000));
+            System.out.println("query 2");
         } else if (e.getKeyCode() == KeyEvent.VK_3)
         {
             setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
+            System.out.println("query 3");
         }
     }    
 }
