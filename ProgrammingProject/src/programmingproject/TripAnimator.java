@@ -22,6 +22,9 @@ public class TripAnimator extends AbstractVisualisation
 
     long lastTime = 0;
     static double delta;
+    
+    
+    Gradient gradient;
 
     //mode 0 will show all trips in parallel through the day
     //mode 1 shows all the trips when and where they happened
@@ -34,11 +37,27 @@ public class TripAnimator extends AbstractVisualisation
     ArrayList<Trip> trips = new ArrayList<>();
     ArrayList<Trip> queuedTrips = new ArrayList<>();
     ArrayList<TaxiDrawable> cars = new ArrayList<>();
+    
 
     double animatorSecondsPassed = 0;
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
+        
+        gradient = new Gradient(renderArea);
+        
+        gradient.addColor(renderArea.color(0, 17, 60));//dark blue for night
+        gradient.addColor(renderArea.color(5, 42, 87));//darkish blue for night
+        gradient.addColor(renderArea.color(43, 65, 115));//dawning blue for night
+        gradient.addColor(renderArea.color(71, 93, 142));//dawning blue for start sunrise2
+        gradient.addColor(renderArea.color(136, 150, 179));//dawning blue for start sunrise3
+        gradient.addColor(renderArea.color(181, 181, 191));//dawning blue for start sunrise3
+        gradient.addColor(renderArea.color(206, 195, 191));//dawning blue for start sunrise3
+        gradient.addColor(renderArea.color(226, 203, 187));//dawning blue for start sunrise3
+        gradient.addColor(renderArea.color(252, 206, 173));//dawning blue for start sunrise3
+        gradient.addColor(renderArea.color(253, 173, 88));//dawning blue for start sunrise3
+
+        
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
     }
@@ -46,9 +65,12 @@ public class TripAnimator extends AbstractVisualisation
     @Override
     public void draw(PGraphics3D buffer)
     {
+        
         buffer.pushStyle();
         buffer.pushMatrix();
-
+        /* not working right now!
+        buffer.background(gradient.getGradient((float) animatorSecondsPassed/1000));
+        */
         delta = 1;
         if (lastTime == 0)
         {
