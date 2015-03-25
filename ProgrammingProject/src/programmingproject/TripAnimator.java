@@ -14,6 +14,36 @@ public class TripAnimator extends AbstractVisualisation
     public static final short MAX_SPEEDFACTOR = 1000;
     public static final short MIN_SPEEDFACTOR = 0;
     public static final short SPEEDSTEP = 1;
+    
+                        //info from http://www.timeanddate.com/sun/usa/new-york?month=1&year=2013
+                        //1st - 10th Jan
+        int[] dawnOffsets = {0,0,0,0,0,0,0,0,0,0,0,
+                        //11th - 20th Jan
+                        1,1,1,2,2,3,3,4,4,5,
+                        //21st - 31st Jan
+                        5,6,7,7,8,9,10,11,11,12,13,
+                        //1st - 10th Feb
+                        14,15,16,17,18,19,21,22,23,24,
+                        //11th - 20th Feb
+                        25,27,28,29,30,32,33,34,36,37,
+                        //21st - 28th Feb +1 dummy value
+                        39,40,41,43,44,46,47, 58
+                        };
+    
+    
+                        //1st - 10th Jan
+        int[] sunsetOffsets = {0,0,0,1,2,3,4,5,6,7,8,
+                        //11th - 20th Jan
+                        9,10,11,13,14,15,16,17,18,19,
+                        //21st - 31st Jan
+                        21,22,23,24,25,27,28,29,30,32,33,
+                        //1st - 10th Feb
+                        34,35,36,38,39,40,41,43,44,45,
+                        //11th - 20th Feb
+                        46,48,49,50,51,52,55,56,57,
+                        //21st - 28th Feb +1 dummy value
+                        58,59,61,62,63,64,65,66, 67
+                        };
 
     //have tried to keep this fairly accurate but still works best with speed factors < 100, 
     public static short speedFactor = 1;
@@ -31,7 +61,10 @@ public class TripAnimator extends AbstractVisualisation
     //add more modes if you want, just update max modes and it'll iterate through on pressing "m"
     public static int MODE = 1;
     private static final int MAX_MODE = 1;
+    
 
+
+        
 
 
     ArrayList<Trip> trips = new ArrayList<>();
@@ -56,14 +89,15 @@ public class TripAnimator extends AbstractVisualisation
         gradient.addColor(renderArea.color(252, 206, 173));//sunrise5
         gradient.addColor(renderArea.color(253, 173, 88));//max sunrise
         gradient.addColor(renderArea.color(252, 206, 173));//sunrise5
-        gradient.addColor(renderArea.color(179, 209, 255));//standard sky
+        gradient.addColor(renderArea.color(206, 195, 230));//sunrise4 modified
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
         
-        
-        
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
         
+        
+                
+
         
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
@@ -76,15 +110,29 @@ public class TripAnimator extends AbstractVisualisation
         buffer.pushStyle();
         buffer.pushMatrix();
         
-        double currentTime = (animatorSecondsPassed % DateTime.SECONDS_PER_DAY);
-        double dawnStart = 6.5 * DateTime.SECONDS_PER_HOUR;
+        int dayIndex = (int)animatorSecondsPassed/DateTime.SECONDS_PER_DAY;
+        
+        //jan 01 sunrise at 7.20 so start at 6.50
+        double dawnStart = ((6 + 0.833333333) * DateTime.SECONDS_PER_HOUR ) - dawnOffsets[dayIndex]*60;
         double transitionLength = 1 * DateTime.SECONDS_PER_HOUR;
         double dawnEnd = dawnStart + transitionLength;
         double eachTransitionSegmentLength = transitionLength / gradient.colors.size();
         
-        double sunsetStart = 16.5 * DateTime.SECONDS_PER_HOUR;
+        //jan 01 sunset at 16.40 so start at 16.10
+        double sunsetStart = ((16.0 + 0.16666666666) * DateTime.SECONDS_PER_HOUR) + sunsetOffsets[dayIndex]*60;
         double sunsetEnd = sunsetStart + transitionLength;
         
+        
+        
+        
+        double currentTime = (animatorSecondsPassed % DateTime.SECONDS_PER_DAY);
+                
+        //print statements for dawn and sunset time current day
+        /*
+        System.out.println("Dawn " + DateTime.secsToHourAndMinute((long)dawnStart + 1800));
+        System.out.println("Sunset " + DateTime.secsToHourAndMinute((long)sunsetStart + 1800));
+        */
+                
         if(currentTime < dawnStart || currentTime > sunsetEnd){            
             this.mapGraphs.setBackground(gradient.getGradient(0));
         }
@@ -97,7 +145,7 @@ public class TripAnimator extends AbstractVisualisation
             this.mapGraphs.setBackground(gradient.getGradient(gradient.colors.size()));
         }
         else if(currentTime > sunsetStart && currentTime < sunsetEnd){
-            this.mapGraphs.setBackground(gradient.getGradient((float) (gradient.colors.size() -(currentTime - 59400)/(float)eachTransitionSegmentLength)));
+            this.mapGraphs.setBackground(gradient.getGradient((float) (gradient.colors.size() -(currentTime - sunsetStart)/(float)eachTransitionSegmentLength)));
            // System.out.println((currentTime - dawnStart)/360);
         }
         
