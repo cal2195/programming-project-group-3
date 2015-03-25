@@ -37,10 +37,14 @@ public class MapGraphs
     TripAnimator tripAnimator;
     LocationVisualization location;
     VendorVisual vendorVisual;
+    
+    int background;
 
     public MapGraphs(RenderArea renderArea, PGraphics3D buffer)
     {
         this.renderArea = renderArea;
+        
+        resetBackground();
 
         //Wanna try a different map?
         //Replace the last parameter with one of these!! http://unfoldingmaps.org/javadoc/index.html?de/fhpotsdam/unfolding/providers/package-summary.html
@@ -56,12 +60,22 @@ public class MapGraphs
         
         renderArea.currentVisualisation = heatMapGraph;
     }
+    
+    public void setBackground(int red, int green, int blue)
+    {
+        background = renderArea.color(red, green, blue);
+    }
+    
+    public void resetBackground()
+    {
+        background = renderArea.color(179, 209, 255);
+    }
 
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
         buffer.pushMatrix();
-        buffer.background(179, 209, 255);
+        buffer.background(background);
 
         if (demoMode)
         {
