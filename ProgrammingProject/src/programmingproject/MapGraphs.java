@@ -66,6 +66,11 @@ public class MapGraphs
         background = renderArea.color(red, green, blue);
     }
     
+        public void setBackground(int color)
+    {
+        background = renderArea.color(color);
+    }
+    
     public void resetBackground()
     {
         background = renderArea.color(179, 209, 255);

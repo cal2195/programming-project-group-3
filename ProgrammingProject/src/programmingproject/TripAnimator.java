@@ -46,17 +46,24 @@ public class TripAnimator extends AbstractVisualisation
         
         gradient = new Gradient(renderArea);
         
+        
         gradient.addColor(renderArea.color(0, 17, 60));//dark blue for night
-        gradient.addColor(renderArea.color(5, 42, 87));//darkish blue for night
-        gradient.addColor(renderArea.color(43, 65, 115));//dawning blue for night
-        gradient.addColor(renderArea.color(71, 93, 142));//dawning blue for start sunrise2
-        gradient.addColor(renderArea.color(136, 150, 179));//dawning blue for start sunrise3
-        gradient.addColor(renderArea.color(181, 181, 191));//dawning blue for start sunrise3
-        gradient.addColor(renderArea.color(206, 195, 191));//dawning blue for start sunrise3
-        gradient.addColor(renderArea.color(226, 203, 187));//dawning blue for start sunrise3
-        gradient.addColor(renderArea.color(252, 206, 173));//dawning blue for start sunrise3
-        gradient.addColor(renderArea.color(253, 173, 88));//dawning blue for start sunrise3
-
+        
+        gradient.addColor(renderArea.color(5, 42, 87));//sunrise1
+        gradient.addColor(renderArea.color(43, 65, 115));//sunrise2
+        gradient.addColor(renderArea.color(181, 181, 191));//sunrise3
+        gradient.addColor(renderArea.color(206, 195, 191));//sunrise4
+        gradient.addColor(renderArea.color(252, 206, 173));//sunrise5
+        gradient.addColor(renderArea.color(253, 173, 88));//max sunrise
+        gradient.addColor(renderArea.color(252, 206, 173));//sunrise5
+        gradient.addColor(renderArea.color(179, 209, 255));//standard sky
+        gradient.addColor(renderArea.color(179, 209, 255));//standard sky
+        gradient.addColor(renderArea.color(179, 209, 255));//standard sky
+        
+        
+        
+        gradient.addColor(renderArea.color(179, 209, 255));//standard sky
+        
         
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
@@ -68,9 +75,32 @@ public class TripAnimator extends AbstractVisualisation
         
         buffer.pushStyle();
         buffer.pushMatrix();
-        /* not working right now!
-        buffer.background(gradient.getGradient((float) animatorSecondsPassed/1000));
-        */
+        
+        double currentTime = (animatorSecondsPassed % DateTime.SECONDS_PER_DAY);
+        double dawnStart = 6.5 * DateTime.SECONDS_PER_HOUR;
+        double transitionLength = 1 * DateTime.SECONDS_PER_HOUR;
+        double dawnEnd = dawnStart + transitionLength;
+        double eachTransitionSegmentLength = transitionLength / gradient.colors.size();
+        
+        double sunsetStart = 16.5 * DateTime.SECONDS_PER_HOUR;
+        double sunsetEnd = sunsetStart + transitionLength;
+        
+        if(currentTime < dawnStart || currentTime > sunsetEnd){            
+            this.mapGraphs.setBackground(gradient.getGradient(0));
+        }
+        else if(currentTime > dawnStart && currentTime < dawnEnd){
+            this.mapGraphs.setBackground(gradient.getGradient((float) (currentTime - dawnStart)/(float)eachTransitionSegmentLength));
+         //   System.out.println((currentTime - dawnStart)/360);
+        }
+        else if(currentTime > dawnEnd && currentTime < sunsetStart)
+        {
+            this.mapGraphs.setBackground(gradient.getGradient(gradient.colors.size()));
+        }
+        else if(currentTime > sunsetStart && currentTime < sunsetEnd){
+            this.mapGraphs.setBackground(gradient.getGradient((float) (gradient.colors.size() -(currentTime - 59400)/(float)eachTransitionSegmentLength)));
+           // System.out.println((currentTime - dawnStart)/360);
+        }
+        
         delta = 1;
         if (lastTime == 0)
         {
@@ -162,10 +192,10 @@ public class TripAnimator extends AbstractVisualisation
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
-            setData(renderArea.query.getTripsForMonth(1, 500000));
+            setData(renderArea.query.getTripsForMonth(1, 100000));
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
-            setData(renderArea.query.getTripsForMonth(1, 1000000));
+            setData(renderArea.query.getTripsForMonth(1, 200000));
         }else if (e.getKeyCode() == 77) //if m is pressed
         {
             MODE++;
