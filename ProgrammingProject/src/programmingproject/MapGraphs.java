@@ -116,7 +116,6 @@ public class MapGraphs
 
         buffer.translate(cameraTransX, cameraTransY, 0);
 
-        buffer.pointLight(255,255,0,700,700,200);
         
 //        this.renderArea.beginRecord(renderArea);
         buffer.pushMatrix();
