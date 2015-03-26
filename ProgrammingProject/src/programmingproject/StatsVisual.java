@@ -71,6 +71,7 @@ public class StatsVisual extends AbstractVisualisation
     
     public void setData(ArrayList<Trip> data)
     {
+        reset();
         this.data = data;
         float totalDistance = 0;
         float totalTime = 0;
