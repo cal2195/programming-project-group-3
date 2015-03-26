@@ -193,10 +193,6 @@ public class TripAnimator extends AbstractVisualisation
                 screenPosition = mapGraphs.map.getScreenPosition(new Location((float) 40.7116, (float) -74.0123));
                 buffer.pointLight(255, 255, 255, screenPosition.x, screenPosition.y, 200);
                 
-                //float) 40.6397, (float) -73.7789, JFK airport
-                screenPosition = mapGraphs.map.getScreenPosition(new Location((float) 40.6397, (float) -73.7789));
-                //buffer.lightFalloff(0.4f, 0.00f, 0.00002f);
-                //buffer.pointLight(255, 255, 255, screenPosition.x, screenPosition.y, 200);
                 
             } catch (Exception e)
             {
