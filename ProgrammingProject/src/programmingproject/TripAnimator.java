@@ -136,7 +136,7 @@ public class TripAnimator extends AbstractVisualisation
         } else if (currentTime > dawnEnd && currentTime < sunsetStart)
         {
             this.mapGraphs.setBackground(gradient.getGradient(gradient.colors.size()));
-            mapGraphs.setAmbientLight(gradient.getGradient(gradient.colors.size()));
+            //mapGraphs.setAmbientLight(255, 255, 255);
         } else if (currentTime > sunsetStart && currentTime < sunsetEnd)
         {
             this.mapGraphs.setBackground(gradient.getGradient((float) (gradient.colors.size() - (currentTime - sunsetStart) / (float) eachTransitionSegmentLength)));
@@ -154,6 +154,17 @@ public class TripAnimator extends AbstractVisualisation
             lastTime = System.currentTimeMillis();
             //   System.out.println(delta);
         }
+        
+            try
+            {
+                
+                buffer.lightFalloff(0.5f, 0.00f, 0.00002f);
+
+                buffer.pointLight(255, 255, 255, 0, 0, 200);
+                buffer.pointLight(255, 255, 255, 20, 100, 200);
+            } catch (Exception e)
+            {
+            }
 
         buffer.stroke(0);
 //        buffer.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
