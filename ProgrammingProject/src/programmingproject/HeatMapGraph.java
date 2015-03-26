@@ -107,12 +107,12 @@ public class HeatMapGraph extends AbstractVisualisation
     {
         minimize = true;
         queuedTrips = data;
-        setScale(data.size());
     }
 
     public void switchData()
     {
         trips = queuedTrips;
+        setScale(trips.size());
         resetTowers();
         calculateTowers();
         System.out.println("TRIP SIZE: " + trips.size());
