@@ -36,7 +36,7 @@ public class LinePieChart extends AbstractVisualisation
     boolean linesShowing = false;
     
     //VerticalLines
-    ArrayList<VerticalLine> lines = new ArrayList(); 
+    ArrayList<VerticalLine> lines; 
 
     /**
      *
@@ -51,6 +51,7 @@ public class LinePieChart extends AbstractVisualisation
         doneFirstSetup = false;
         oldRenderHeight = renderArea.height;
         oldRenderWidth = renderArea.width;
+        lines = new ArrayList<VerticalLine>();
     }
 
     public void setup(PGraphics3D buffer)

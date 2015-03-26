@@ -189,8 +189,8 @@ public class RenderArea extends PApplet
                 currentVisualisation = mapGraphs.areaMapGraph;
                 break;
             case 3: //"Query comparison":
-                currentVisualisation = mapGraphs.vendorVisual;
-                mapGraphs.vendorVisual.reloadData();
+                currentVisualisation = mapGraphs.comparisonQuery;
+                mapGraphs.comparisonQuery.reloadData();
                 break;
             case 4: //"Line Pie Chart":
                 currentVisualisation = linePieChart;
