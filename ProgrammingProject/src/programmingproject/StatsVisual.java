@@ -74,15 +74,13 @@ public class StatsVisual extends AbstractVisualisation
                 float textAngle = lastAngle + (renderArea.radians((float) data[i]) / 2);
                 double textX =  x / 2 + (15 + diameter / 2) * Math.cos(textAngle);
                 double textY = y /2 + (15 + diameter / 2) * Math.sin(textAngle);
-                
-                //textAlign(CENTER);
                 buffer.text("" + (i+1), (int) textX, (int) textY);
             } 
             lastAngle += renderArea.radians((float) data[i]);
             gray += 40;
             if(vendors)
             {
-               gray *= 2;    
+               gray *= 3;    
             }
         }
     }
