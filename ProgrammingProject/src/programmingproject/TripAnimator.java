@@ -1,5 +1,7 @@
 package programmingproject;
 
+import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import processing.opengl.PGraphics3D;
@@ -59,6 +61,7 @@ public class TripAnimator extends AbstractVisualisation
     static double delta;
 
     Gradient gradient;
+    Gradient gradientLight;
 
     //mode 0 will show all trips in parallel through the day
     //mode 1 shows all the trips when and where they happened
@@ -76,6 +79,8 @@ public class TripAnimator extends AbstractVisualisation
     {
 
         gradient = new Gradient(renderArea);
+        
+        gradientLight = new Gradient(renderArea);
 
         gradient.addColor(renderArea.color(0, 17, 60));//dark blue for night
 
@@ -91,6 +96,28 @@ public class TripAnimator extends AbstractVisualisation
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
 
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
+        
+        
+        
+        
+        
+        
+        gradientLight.addColor(renderArea.color(20, 37, 80));//dark blue for night
+
+        gradientLight.addColor(renderArea.color(15, 52, 97));//sunrise1
+        gradientLight.addColor(renderArea.color(43, 65, 115));//sunrise2
+        gradientLight.addColor(renderArea.color(181, 181, 191));//sunrise3
+        gradientLight.addColor(renderArea.color(206, 195, 191));//sunrise4
+        gradientLight.addColor(renderArea.color(252, 206, 173));//sunrise5
+        gradientLight.addColor(renderArea.color(253, 173, 88));//max sunrise
+        gradientLight.addColor(renderArea.color(252, 206, 173));//sunrise5
+        gradientLight.addColor(renderArea.color(226, 200, 230));//sunrise4 modified
+        gradientLight.addColor(renderArea.color(240, 240, 240));//standard sky
+        gradientLight.addColor(renderArea.color(255, 255, 255));//standard sky
+
+        gradientLight.addColor(renderArea.color(255, 255, 255));//standard sky
+        
+        
 
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
@@ -127,20 +154,20 @@ public class TripAnimator extends AbstractVisualisation
         if (currentTime < dawnStart || currentTime > sunsetEnd)
         {
             this.mapGraphs.setBackground(gradient.getGradient(0));
-            mapGraphs.setAmbientLight(gradient.getGradient(0));
+            mapGraphs.setAmbientLight(gradientLight.getGradient(0));
         } else if (currentTime > dawnStart && currentTime < dawnEnd)
         {
             this.mapGraphs.setBackground(gradient.getGradient((float) (currentTime - dawnStart) / (float) eachTransitionSegmentLength));
-            mapGraphs.setAmbientLight(gradient.getGradient((float) (currentTime - dawnStart) / (float) eachTransitionSegmentLength));
+            mapGraphs.setAmbientLight(gradientLight.getGradient((float) (currentTime - dawnStart) / (float) eachTransitionSegmentLength));
             //   System.out.println((currentTime - dawnStart)/360);
         } else if (currentTime > dawnEnd && currentTime < sunsetStart)
         {
             this.mapGraphs.setBackground(gradient.getGradient(gradient.colors.size()));
-            //mapGraphs.setAmbientLight(255, 255, 255);
+            mapGraphs.setAmbientLight(0xffffff);
         } else if (currentTime > sunsetStart && currentTime < sunsetEnd)
         {
             this.mapGraphs.setBackground(gradient.getGradient((float) (gradient.colors.size() - (currentTime - sunsetStart) / (float) eachTransitionSegmentLength)));
-            mapGraphs.setAmbientLight(gradient.getGradient((float) (gradient.colors.size() - (currentTime - sunsetStart) / (float) eachTransitionSegmentLength)));
+            mapGraphs.setAmbientLight(gradientLight.getGradient((float) (gradient.colors.size() - (currentTime - sunsetStart) / (float) eachTransitionSegmentLength)));
             // System.out.println((currentTime - dawnStart)/360);
         }
 
@@ -157,11 +184,20 @@ public class TripAnimator extends AbstractVisualisation
         
             try
             {
+                //empireStateBuilding
+                ScreenPosition screenPosition = mapGraphs.map.getScreenPosition(new Location((float) 40.7484, (float) -73.9857));
+                //buffer.lightFalloff(0.4f, 0.00f, 0.00002f);
+                buffer.pointLight(255, 255, 255, screenPosition.x, screenPosition.y, 200);
                 
-                buffer.lightFalloff(0.5f, 0.00f, 0.00002f);
-
-                buffer.pointLight(255, 255, 255, 0, 0, 200);
-                buffer.pointLight(255, 255, 255, 20, 100, 200);
+                //(float) 40.7116, (float) -74.0123, "Ground Zero", mapGraphs.map)); //ground zero
+                screenPosition = mapGraphs.map.getScreenPosition(new Location((float) 40.7116, (float) -74.0123));
+                buffer.pointLight(255, 255, 255, screenPosition.x, screenPosition.y, 200);
+                
+                //float) 40.6397, (float) -73.7789, JFK airport
+                screenPosition = mapGraphs.map.getScreenPosition(new Location((float) 40.6397, (float) -73.7789));
+                //buffer.lightFalloff(0.4f, 0.00f, 0.00002f);
+                //buffer.pointLight(255, 255, 255, screenPosition.x, screenPosition.y, 200);
+                
             } catch (Exception e)
             {
             }
