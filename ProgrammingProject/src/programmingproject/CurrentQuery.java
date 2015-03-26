@@ -10,7 +10,8 @@ public class CurrentQuery
 {
 
     RenderArea renderArea;
-    private ArrayList<Trip> queryOne, queryTwo, activeQuery;
+    ArrayList<Trip> queryOne, queryTwo, activeQuery;
+    boolean activeQueryOne = true;
 
     public CurrentQuery(RenderArea renderArea)
     {
@@ -24,18 +25,14 @@ public class CurrentQuery
 
     public void swap()
     {
-        if (activeQuery == queryOne)
+        if (activeQueryOne)
         {
             activeQuery = queryTwo;
         } else
         {
             activeQuery = queryOne;
         }
-    }
-
-    public void sendEventToActiveVisualisation()
-    {
-
+        activeQueryOne = !activeQueryOne;
     }
 
     public void requestQuery(String query, boolean setQueryOne)
@@ -47,6 +44,7 @@ public class CurrentQuery
             @Override
             public void run()
             {
+                System.out.println("Getting query " + (setQueryOne ? "1" : "2") + " for " + query);
                 ArrayList<Trip> queryBuffer = renderArea.query.getTrips(query);
 
                 if (setQueryOne)
@@ -56,18 +54,25 @@ public class CurrentQuery
                 {
                     queryTwo = queryBuffer;
                 }
+                updateActiveQuery();
+                notifyVisualisation();
             }
-        }, "Query Thread").start();
+        }, "Query Thread " + (setQueryOne ? "1" : "2")).start();
     }
     
     public void notifyVisualisation()
     {
-        
+        renderArea.currentVisualisation.reloadData();
     }
 
     public ArrayList<Trip> active()
     {
         return activeQuery;
+    }
+    
+    public void updateActiveQuery()
+    {
+        activeQuery = (activeQueryOne ? queryOne : queryTwo);
     }
 
     public void setQueryOne(ArrayList<Trip> trips)

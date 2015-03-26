@@ -15,6 +15,7 @@ import processing.opengl.PGraphics3D;
  */
 public class StatsVisual extends AbstractVisualisation
 {
+
     RenderArea renderArea;
     int[] passengerTotals;
     int[] passengerAngles;
@@ -28,7 +29,7 @@ public class StatsVisual extends AbstractVisualisation
     float totPassengers;
     float totVendors;
     ArrayList<Trip> data;
-    
+
     public StatsVisual(RenderArea area)
     {
         renderArea = area;
@@ -44,31 +45,32 @@ public class StatsVisual extends AbstractVisualisation
         totVendors = 0;
         totPassengers = 2;
     }
-    
+
     public void draw(PGraphics3D buffer)
     {
         buffer.background(254);
-        buffer.text("Average passengers: " + averagePassengers,550,350);
-        buffer.text("Average distance: " + averageDistance,550,380);
-        buffer.text("Average Duration: " + averageDuration,550,410);
-        buffer.text("Longest Trip: " + longestTrip,50,350);
-        buffer.text("Shortest Trip: " + shortestTrip,50,380);
-        pieChart(100, passengerAngles,250,150,buffer);
-        pieChart(100, vendorAngles,550,150,buffer);
+        buffer.text("Average passengers: " + averagePassengers, 550, 350);
+        buffer.text("Average distance: " + averageDistance, 550, 380);
+        buffer.text("Average Duration: " + averageDuration, 550, 410);
+        buffer.text("Longest Trip: " + longestTrip, 50, 350);
+        buffer.text("Shortest Trip: " + shortestTrip, 50, 380);
+        pieChart(100, passengerAngles, 250, 150, buffer);
+        pieChart(100, vendorAngles, 550, 150, buffer);
     }
-    
+
     void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer)
     {
         float lastAngle = 0;
         float gray = 0;
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < data.length; i++)
+        {
             buffer.fill(gray);
-            buffer.arc(x/2, y/2, diameter, diameter, lastAngle, lastAngle+renderArea.radians((float)data[i]));
-            lastAngle += renderArea.radians((float)data[i]);
+            buffer.arc(x / 2, y / 2, diameter, diameter, lastAngle, lastAngle + renderArea.radians((float) data[i]));
+            lastAngle += renderArea.radians((float) data[i]);
             gray += 40;
         }
     }
-    
+
     public void setData(ArrayList<Trip> data)
     {
         reset();
@@ -76,21 +78,21 @@ public class StatsVisual extends AbstractVisualisation
         float totalDistance = 0;
         float totalTime = 0;
         float totalPassengers = 0;
-        for(Trip t : this.data)
+        for (Trip t : this.data)
         {
-            if(t.distance > longestTrip)
+            if (t.distance > longestTrip)
             {
-                longestTrip=t.distance;
+                longestTrip = t.distance;
             }
-            if(t.distance < shortestTrip)
+            if (t.distance < shortestTrip)
             {
                 shortestTrip = t.distance;
             }
-            passengerTotals[t.passengers-1]++;
+            passengerTotals[t.passengers - 1]++;
             totalDistance += t.distance;
             totalTime += t.time;
             totalPassengers += t.passengers;
-            if(t.vendorID)
+            if (t.vendorID)
             {
                 vendorTotals[0]++;
             } else
@@ -104,22 +106,22 @@ public class StatsVisual extends AbstractVisualisation
         averagePassengers = (int) totalPassengers / this.data.size();
         setAngles();
     }
-    
+
     private void setAngles()
     {
-        for(int i = 0; i < passengerTotals.length; i++)
+        for (int i = 0; i < passengerTotals.length; i++)
         {
             passengerAngles[i] = (int) ((int) passengerTotals[i] * 360 / totPassengers);
         }
-        for(int i = 0; i < vendorTotals.length; i++)
+        for (int i = 0; i < vendorTotals.length; i++)
         {
             vendorAngles[i] = (int) ((int) vendorTotals[i] * 360 / totVendors);
         }
     }
-    
+
     public void reset()
     {
-        for(int i = 0; i < passengerTotals.length; i++)
+        for (int i = 0; i < passengerTotals.length; i++)
         {
             passengerTotals[i] = 0;
         }
@@ -133,8 +135,8 @@ public class StatsVisual extends AbstractVisualisation
         totVendors = 0;
         totPassengers = 0;
     }
-    
-     public void keyPressed(KeyEvent e)
+
+    public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
@@ -149,5 +151,5 @@ public class StatsVisual extends AbstractVisualisation
             setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
             System.out.println("query 3");
         }
-    }    
+    }
 }
