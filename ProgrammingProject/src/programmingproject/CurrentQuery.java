@@ -54,6 +54,7 @@ public class CurrentQuery
                 {
                     queryTwo = queryBuffer;
                 }
+                activeQueryOne = setQueryOne;
                 updateActiveQuery();
                 notifyVisualisation();
             }
