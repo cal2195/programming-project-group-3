@@ -79,6 +79,8 @@ public class TripAnimator extends AbstractVisualisation
     {
 
         gradient = new Gradient(renderArea);
+        
+        gradientLight = new Gradient(renderArea);
 
         gradientLight = new Gradient(renderArea);
 
@@ -96,6 +98,28 @@ public class TripAnimator extends AbstractVisualisation
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
 
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
+        
+        
+        
+        
+        
+        
+        gradientLight.addColor(renderArea.color(20, 37, 80));//dark blue for night
+
+        gradientLight.addColor(renderArea.color(15, 52, 97));//sunrise1
+        gradientLight.addColor(renderArea.color(43, 65, 115));//sunrise2
+        gradientLight.addColor(renderArea.color(181, 181, 191));//sunrise3
+        gradientLight.addColor(renderArea.color(206, 195, 191));//sunrise4
+        gradientLight.addColor(renderArea.color(252, 206, 173));//sunrise5
+        gradientLight.addColor(renderArea.color(253, 173, 88));//max sunrise
+        gradientLight.addColor(renderArea.color(252, 206, 173));//sunrise5
+        gradientLight.addColor(renderArea.color(226, 200, 230));//sunrise4 modified
+        gradientLight.addColor(renderArea.color(240, 240, 240));//standard sky
+        gradientLight.addColor(renderArea.color(255, 255, 255));//standard sky
+
+        gradientLight.addColor(renderArea.color(255, 255, 255));//standard sky
+        
+        
 
         gradientLight.addColor(renderArea.color(20, 37, 80));//dark blue for night
 
