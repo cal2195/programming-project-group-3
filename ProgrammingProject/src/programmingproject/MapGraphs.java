@@ -2,10 +2,16 @@ package programmingproject;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.providers.AbstractMapProvider;
 import de.fhpotsdam.unfolding.providers.Google;
+import de.fhpotsdam.unfolding.providers.Microsoft;
+import de.fhpotsdam.unfolding.providers.OpenStreetMap;
+import de.fhpotsdam.unfolding.providers.StamenMapProvider;
+import de.fhpotsdam.unfolding.providers.Yahoo;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 import processing.core.PVector;
 import processing.opengl.PGraphics3D;
 
@@ -19,7 +25,9 @@ public class MapGraphs
     RenderArea renderArea;
 
     UnfoldingMap map;
+    ArrayList<AbstractMapProvider> mapProviders = new ArrayList<>();
     int mapWidth = 1000, mapHeight = 1000;
+    int currentMap = 0;
 
     //Camera Rotation
     float cameraX, cameraY;
@@ -39,17 +47,28 @@ public class MapGraphs
     VendorVisual vendorVisual;
 
     int background;
-    private int ambient;
+    int ambient = -1;
 
     public MapGraphs(RenderArea renderArea, PGraphics3D buffer)
     {
         this.renderArea = renderArea;
-
+        
+        mapProviders.add(new Google.GoogleMapProvider());
+        mapProviders.add(new OpenStreetMap.OpenStreetMapProvider());
+        mapProviders.add(new StamenMapProvider.Toner());
+        mapProviders.add(new Microsoft.RoadProvider());
+        mapProviders.add(new Microsoft.AerialProvider());
+        mapProviders.add(new Yahoo.RoadProvider());
+        mapProviders.add(new Yahoo.HybridProvider());
+//        mapProviders.add(new Microsoft.AerialProvider());
+//        mapProviders.add(new Yahoo.RoadProvider());
+        
+        
         resetBackground();
 
         //Wanna try a different map?
         //Replace the last parameter with one of these!! http://unfoldingmaps.org/javadoc/index.html?de/fhpotsdam/unfolding/providers/package-summary.html
-        map = new UnfoldingMap(renderArea, -mapWidth / 2, -mapHeight / 2, mapWidth, mapHeight, new Google.GoogleMapProvider());
+        map = new UnfoldingMap(renderArea, -mapWidth / 2, -mapHeight / 2, mapWidth, mapHeight, mapProviders.get(0));
         map.zoomAndPanTo(12, new Location(40.731416f, -73.990667f));
         map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
 
@@ -97,8 +116,6 @@ public class MapGraphs
         {
             buffer.ambientLight(renderArea.red(ambient), renderArea.green(ambient), renderArea.blue(ambient));
         }
-        
-        buffer.lightFalloff(0.1f, 0.00f, 0.00002f);
 
         if (demoMode)
         {
@@ -113,28 +130,21 @@ public class MapGraphs
 
         buffer.rotateX(cameraY);
         buffer.rotateZ(cameraX);
-
-        buffer.translate(cameraTransX, cameraTransY, 0);
-
-        buffer.pointLight(255,255,0,700,700,200);
         
-//        this.renderArea.beginRecord(renderArea);
+        buffer.translate(cameraTransX, cameraTransY, 0);
+        
         buffer.pushMatrix();
         buffer.translate(-mapWidth / 2, -mapHeight / 2, 0);
         
         map.draw();
         buffer.image(map.mapDisplay.getOuterPG(), 0, 0);
         buffer.popMatrix();
-//        this.renderArea.endRecord();
-        //renderArea.translate(-renderArea.width / 2, -renderArea.height / 2, 0);
 
-        //renderArea.translate(-mapWidth / 2, -mapHeight / 2, 0);
         //Draw whichever visualisation is active
         renderArea.currentVisualisation.draw(buffer);
-
+        
         buffer.popMatrix();
-        buffer.popStyle();
-        //renderArea.image(heatMapGraph.buffer, 0, 0);
+        buffer.pushStyle();
     }
 
     public void mousePressed(MouseEvent e)
@@ -222,9 +232,12 @@ public class MapGraphs
         } else if (e.getKeyCode() == KeyEvent.VK_Q)
         {
             setCamera(40.770947f, -73.87256f, 16, 2.67433f, 1.0016665f, -154.64786f, 393.83865f, 1.0f);
-        } else
+        } else if (e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET)
         {
-            //renderArea.currentVisualisation.keyPressed(e);
+            map.mapDisplay.setMapProvider(mapProviders.get(--currentMap % mapProviders.size()));
+        } else if (e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET)
+        {
+            map.mapDisplay.setMapProvider(mapProviders.get(++currentMap % mapProviders.size()));
         }
     }
 }
