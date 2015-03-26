@@ -2,8 +2,6 @@ package programmingproject;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Random;
 import processing.core.PImage;
 import java.util.ArrayList;
 import processing.opengl.PGraphics3D;
