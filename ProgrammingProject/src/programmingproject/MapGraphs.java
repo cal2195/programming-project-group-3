@@ -39,6 +39,7 @@ public class MapGraphs
     VendorVisual vendorVisual;
 
     int background;
+    private int ambient;
 
     public MapGraphs(RenderArea renderArea, PGraphics3D buffer)
     {
@@ -75,12 +76,29 @@ public class MapGraphs
     {
         background = renderArea.color(179, 209, 255);
     }
+    
+    public void setAmbientLight(int color)
+    {
+        ambient = color;
+    }
+
+    public void resetAmbient()
+    {
+        ambient = -1;
+    }
 
     public void draw(PGraphics3D buffer)
     {
         buffer.pushStyle();
         buffer.pushMatrix();
         buffer.background(background);
+        
+        if (ambient != -1)
+        {
+            buffer.ambientLight(renderArea.red(ambient), renderArea.green(ambient), renderArea.blue(ambient));
+        }
+        
+        buffer.lightFalloff(0.1f, 0.00f, 0.00002f);
 
         if (demoMode)
         {
@@ -98,9 +116,12 @@ public class MapGraphs
 
         buffer.translate(cameraTransX, cameraTransY, 0);
 
+        buffer.pointLight(255,255,0,700,700,200);
+        
 //        this.renderArea.beginRecord(renderArea);
         buffer.pushMatrix();
         buffer.translate(-mapWidth / 2, -mapHeight / 2, 0);
+        
         map.draw();
         buffer.image(map.mapDisplay.getOuterPG(), 0, 0);
         buffer.popMatrix();

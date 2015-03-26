@@ -64,7 +64,7 @@ public class TaxiDrawable
         }
     }
 
-    public void draw(PGraphics3D buffer, int time)
+    public boolean draw(PGraphics3D buffer, int time)
     {
         if (dead)
         {
@@ -95,8 +95,15 @@ public class TaxiDrawable
                 buffer.fill(255, 0, 0);
                 buffer.box(3, 3, 8);
             }
+            try
+            {
+                buffer.pointLight(255, 255, 255, x, y, 4);
+            } catch (Exception e)
+            {
+            }
+            return true;
         }
-
+        return false;
     }
 
     public void moveAndCheck(int time)
