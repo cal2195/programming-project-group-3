@@ -121,6 +121,7 @@ public class HeatMapGraph extends AbstractVisualisation
     @Override
     public void reloadData()
     {
+        setData(renderArea.currentQuery.active());
         resetTowers();
         calculateTowers();
     }
@@ -137,7 +138,6 @@ public class HeatMapGraph extends AbstractVisualisation
             labelX = -1;
             labelY = -1;
         }
-        //System.out.println(currentID);
 
         if (minimize)
         {
@@ -180,23 +180,6 @@ public class HeatMapGraph extends AbstractVisualisation
                     {
                         labelX = (int) buffer.screenX(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
                         labelY = (int) buffer.screenY(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
-                        //System.out.println(labelX + "," + labelY);
-//                        buffer.translate(0, 0, (float) ((double) (gridOfTowers[i][ii].height)) * SCALE * percent / 500f / 2);
-//                        buffer.fill(0);
-//                        
-//                        buffer.rotateZ(-mapGraphs.cameraX);
-//                        buffer.rotateX(-mapGraphs.cameraY);
-//                        
-//                        buffer.pushMatrix();
-//                        buffer.fill(0,255,0);
-//                        buffer.noStroke();
-//                        buffer.rect(-5, -15, 60, 18);
-//                        buffer.fill(0);
-//                        buffer.textSize(15);
-//                        buffer.text((int) (gridOfTowers[i][ii].height / 10) + " taxis", -2, -2);
-//                        buffer.popMatrix();
-//                        
-//                        buffer.stroke(0);
                     }
                     buffer.popMatrix();
                     
@@ -255,7 +238,7 @@ public class HeatMapGraph extends AbstractVisualisation
             setData(renderArea.query.getTripsForMonth(1));
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
-            setData(renderArea.query.getTripsForMonth(2));
+            renderArea.currentQuery.requestQuery("SELECT * FROM taxi_data LIMIT 0,5000", true);
         } else if (e.getKeyCode() == KeyEvent.VK_3)
         {
             setData(renderArea.query.getTripsForMonth(3));

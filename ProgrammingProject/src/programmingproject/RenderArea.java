@@ -14,16 +14,21 @@ import processing.opengl.PGraphics3D;
 public class RenderArea extends PApplet
 {
 
-    //sint currentScreen = 0;
     HeatMapGraph heightMapGraph;
     MapGraphs mapGraphs;
     Data data;
     LinePieChart linePieChart;
     StatsVisual statsVisual;
+    
+    CurrentQuery currentQuery;
 
     AbstractVisualisation currentVisualisation;
 
     PGraphics3D buffer;
+    
+    Audio audio;
+    
+    Credits credits;
 
     GUI gui;
 
@@ -39,10 +44,16 @@ public class RenderArea extends PApplet
 
         gui = new GUI(this);
         query = new Query();
+        
+        currentQuery = new CurrentQuery(this);
 
         mapGraphs = new MapGraphs(this, buffer);
         linePieChart = new LinePieChart(this);
         statsVisual = new StatsVisual(this);
+        
+        audio = new Audio(this);
+        
+        credits = new Credits(this, mapGraphs);
 
         currentVisualisation = mapGraphs.heatMapGraph;
     }
@@ -95,6 +106,7 @@ public class RenderArea extends PApplet
         if (!gui.cp5.isMouseOver())
         {
             currentVisualisation.mousePressed(e);
+            mapGraphs.mousePressed(e);
         }
     }
 
@@ -105,6 +117,7 @@ public class RenderArea extends PApplet
         if (!gui.cp5.isMouseOver())
         {
             currentVisualisation.mouseDragged(e);
+            mapGraphs.mouseDragged(e);
         }
     }
 
@@ -115,6 +128,7 @@ public class RenderArea extends PApplet
         if (!gui.cp5.isMouseOver())
         {
             currentVisualisation.mouseReleased(e);
+            mapGraphs.mouseReleased(e);
         }
     }
 
@@ -125,13 +139,20 @@ public class RenderArea extends PApplet
         if (!gui.cp5.isMouseOver())
         {
             currentVisualisation.mouseWheelMoved(e);
+            mapGraphs.mouseWheelMoved(e);
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
+        if (e.getKeyCode() == KeyEvent.VK_O)
+        {
+            currentVisualisation = credits;
+            credits.start();
+        }
         currentVisualisation.keyPressed(e);
+        mapGraphs.keyPressed(e);
     }
 
     public void controlEvent(ControlEvent theEvent)
