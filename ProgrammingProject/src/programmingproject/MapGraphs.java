@@ -29,7 +29,7 @@ public class MapGraphs
     float MOUSE_SENSITIVITY = 300f;
     boolean demoMode = true;
     AreaMapGraph areaMapGraph;
-    
+
     //Graphs
     //int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
     //AbstractVisualisation renderArea.currentVisualisation;
@@ -37,13 +37,14 @@ public class MapGraphs
     TripAnimator tripAnimator;
     LocationVisualization location;
     VendorVisual vendorVisual;
-    
+
     int background;
+    private int ambient;
 
     public MapGraphs(RenderArea renderArea, PGraphics3D buffer)
     {
         this.renderArea = renderArea;
-        
+
         resetBackground();
 
         //Wanna try a different map?
@@ -57,23 +58,33 @@ public class MapGraphs
         location = new LocationVisualization(renderArea, this);
         vendorVisual = new VendorVisual(renderArea, this);
         areaMapGraph = new AreaMapGraph(renderArea, this);
-        
+
         renderArea.currentVisualisation = heatMapGraph;
     }
-    
+
     public void setBackground(int red, int green, int blue)
     {
         background = renderArea.color(red, green, blue);
     }
-    
-        public void setBackground(int color)
+
+    public void setBackground(int color)
     {
-        background = renderArea.color(color);
+        background = color;
     }
-    
+
     public void resetBackground()
     {
         background = renderArea.color(179, 209, 255);
+    }
+    
+    public void setAmbientLight(int color)
+    {
+        ambient = color;
+    }
+
+    public void resetAmbient()
+    {
+        ambient = -1;
     }
 
     public void draw(PGraphics3D buffer)
@@ -81,6 +92,13 @@ public class MapGraphs
         buffer.pushStyle();
         buffer.pushMatrix();
         buffer.background(background);
+        
+        if (ambient != -1)
+        {
+            buffer.ambientLight(renderArea.red(ambient), renderArea.green(ambient), renderArea.blue(ambient));
+        }
+        
+        buffer.lightFalloff(0.1f, 0.00f, 0.00002f);
 
         if (demoMode)
         {
@@ -98,9 +116,12 @@ public class MapGraphs
 
         buffer.translate(cameraTransX, cameraTransY, 0);
 
+        buffer.pointLight(255,255,0,700,700,200);
+        
 //        this.renderArea.beginRecord(renderArea);
         buffer.pushMatrix();
         buffer.translate(-mapWidth / 2, -mapHeight / 2, 0);
+        
         map.draw();
         buffer.image(map.mapDisplay.getOuterPG(), 0, 0);
         buffer.popMatrix();
@@ -203,7 +224,7 @@ public class MapGraphs
             setCamera(40.770947f, -73.87256f, 16, 2.67433f, 1.0016665f, -154.64786f, 393.83865f, 1.0f);
         } else
         {
-            renderArea.currentVisualisation.keyPressed(e);
+            //renderArea.currentVisualisation.keyPressed(e);
         }
     }
 }
