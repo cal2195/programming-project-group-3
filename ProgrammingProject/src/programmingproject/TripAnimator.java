@@ -150,6 +150,7 @@ public class TripAnimator extends AbstractVisualisation
         int taxis = 0;
 
         int dayIndex = (int) animatorSecondsPassed / DateTime.SECONDS_PER_DAY;
+        buffer.lightFalloff(0.4f, 0.00f, 0.00002f);
 
         //jan 01 sunrise at 7.20 so start at 6.50
         double dawnStart = ((6 + 0.833333333) * DateTime.SECONDS_PER_HOUR) - dawnOffsets[dayIndex] * 60;
