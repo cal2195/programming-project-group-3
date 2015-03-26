@@ -54,11 +54,13 @@ public class StatsVisual extends AbstractVisualisation
         buffer.text("Average Duration: " + averageDuration, 550, 410);
         buffer.text("Longest Trip: " + longestTrip, 50, 350);
         buffer.text("Shortest Trip: " + shortestTrip, 50, 380);
-        pieChart(100, passengerAngles, 250, 150, buffer);
-        pieChart(100, vendorAngles, 550, 150, buffer);
+        buffer.text("Passenger Distribution", 115,45);
+        buffer.text("Vendor Distrubution",615,45);
+        pieChart(200, passengerAngles, 350, 350, buffer, false);
+        pieChart(200, vendorAngles, 1350, 350, buffer, true);
     }
 
-    void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer)
+    void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer, boolean vendors)
     {
         float lastAngle = 0;
         float gray = 0;
@@ -66,8 +68,22 @@ public class StatsVisual extends AbstractVisualisation
         {
             buffer.fill(gray);
             buffer.arc(x / 2, y / 2, diameter, diameter, lastAngle, lastAngle + renderArea.radians((float) data[i]));
+            buffer.fill(0);
+            if(data[i] != 0)
+            {
+                float textAngle = lastAngle + (renderArea.radians((float) data[i]) / 2);
+                double textX =  x / 2 + (15 + diameter / 2) * Math.cos(textAngle);
+                double textY = y /2 + (15 + diameter / 2) * Math.sin(textAngle);
+                
+                //textAlign(CENTER);
+                buffer.text("" + (i+1), (int) textX, (int) textY);
+            } 
             lastAngle += renderArea.radians((float) data[i]);
             gray += 40;
+            if(vendors)
+            {
+               gray *= 2;    
+            }
         }
     }
 
@@ -111,11 +127,11 @@ public class StatsVisual extends AbstractVisualisation
     {
         for (int i = 0; i < passengerTotals.length; i++)
         {
-            passengerAngles[i] = (int) ((int) passengerTotals[i] * 360 / totPassengers);
+            passengerAngles[i] = (int) ((int) passengerTotals[i] * 2 * Math.PI / 7);
         }
         for (int i = 0; i < vendorTotals.length; i++)
         {
-            vendorAngles[i] = (int) ((int) vendorTotals[i] * 360 / totVendors);
+            vendorAngles[i] = (int) ((int) vendorTotals[i] * 2 * Math.PI / 2);
         }
     }
 
@@ -124,9 +140,12 @@ public class StatsVisual extends AbstractVisualisation
         for (int i = 0; i < passengerTotals.length; i++)
         {
             passengerTotals[i] = 0;
+            passengerAngles[i] = 0;
         }
         vendorTotals[0] = 0;
         vendorTotals[1] = 0;
+        vendorAngles[0] = 0;
+        vendorAngles[1] = 0;
         longestTrip = 0;
         shortestTrip = 100000;
         averageDuration = 0;
