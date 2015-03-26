@@ -67,22 +67,21 @@ public class StatsVisual extends AbstractVisualisation
         for (int i = 0; i < data.length; i++)
         {
             buffer.fill(gray);
-            buffer.arc(x / 2, y / 2, diameter, diameter, lastAngle, lastAngle + renderArea.radians((float) data[i]));
-            buffer.fill(0);
+            buffer.arc(x / 2, y / 2, diameter, diameter, lastAngle, lastAngle + RenderArea.radians((float) data[i]));
+
             if(data[i] != 0)
             {
-                float textAngle = lastAngle + (renderArea.radians((float) data[i]) / 2);
-                double textX =  x / 2 + (15 + diameter / 2) * Math.cos(textAngle);
-                double textY = y /2 + (15 + diameter / 2) * Math.sin(textAngle);
-                
-                //textAlign(CENTER);
+                buffer.fill(0);
+                float textAngle = lastAngle + (RenderArea.radians((float) data[i]) / 2);
+                double textX =  x / 2 + (20 + diameter / 2) * Math.cos(textAngle);
+                double textY = y /2 + (20 + diameter / 2) * Math.sin(textAngle);
                 buffer.text("" + (i+1), (int) textX, (int) textY);
             } 
-            lastAngle += renderArea.radians((float) data[i]);
+            lastAngle += RenderArea.radians((float) data[i]);
             gray += 40;
             if(vendors)
             {
-               gray *= 2;    
+               gray *= 3;    
             }
         }
     }
@@ -170,5 +169,11 @@ public class StatsVisual extends AbstractVisualisation
             setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
             System.out.println("query 3");
         }
+    }
+    
+    @Override
+    public void reloadData()
+    {
+        setData(renderArea.currentQuery.active());
     }
 }
