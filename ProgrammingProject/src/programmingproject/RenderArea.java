@@ -164,10 +164,12 @@ public class RenderArea extends PApplet
         {
             println("Query One:");
             println(gui.queryGUI.getQuery());
+            currentQuery.requestQuery(gui.queryGUI.getQuery(), true);
         } else if (theEvent.isFrom(QueryGUI.QUERY_TWO_LABEL))
         {
             println("Query Two:");
             println(gui.queryGUI.getQuery());
+            currentQuery.requestQuery(gui.queryGUI.getQuery(), false);
         }
     }
 
@@ -181,7 +183,7 @@ public class RenderArea extends PApplet
                 break;
             case 1: //"Taxi Animator":
                 currentVisualisation = mapGraphs.tripAnimator;
-                mapGraphs.tripAnimator.setData(query.getTripsForMonth(1, 50000));
+                mapGraphs.tripAnimator.setData(query.getTaxisAtHour(4, 5000));
                 break;
             case 2: //"Area Map Graph":
                 currentVisualisation = mapGraphs.areaMapGraph;
