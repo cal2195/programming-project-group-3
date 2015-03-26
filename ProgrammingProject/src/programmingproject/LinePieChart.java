@@ -33,7 +33,10 @@ public class LinePieChart extends AbstractVisualisation
     boolean demoMode = true;
 
     //Show lines to centre
-    boolean linesShowing = true;
+    boolean linesShowing = false;
+    
+    //VerticalLines
+    ArrayList<VerticalLine> lines = new ArrayList(); 
 
     /**
      *
@@ -50,10 +53,11 @@ public class LinePieChart extends AbstractVisualisation
         oldRenderWidth = renderArea.width;
     }
 
-    public void setup()
+    public void setup(PGraphics3D buffer)
     {
         getSamples();
         getPositions();
+        createLines(buffer);
     }
 
     public void draw(PGraphics3D buffer)
@@ -61,7 +65,7 @@ public class LinePieChart extends AbstractVisualisation
         buffer.pushStyle();
         if (!doneFirstSetup)
         {
-            setup();
+            setup(buffer);
             doneFirstSetup = true;
         }
         buffer.pushMatrix();
@@ -71,7 +75,7 @@ public class LinePieChart extends AbstractVisualisation
         {
             if (cameraY < 1)
             {
-                cameraY += 0.005f;
+                cameraY += 0.01f;
             }
             cameraX += 0.001f;
         }
@@ -104,6 +108,14 @@ public class LinePieChart extends AbstractVisualisation
     public void mousePressed(MouseEvent e)
     {
         demoMode = false;
+    }
+    
+    public void createLines(PGraphics3D buffer)
+    {
+        for (int count = 0; count < positions.length; count++)
+        {
+            lines.add(new VerticalLine(positions[count][0], positions[count][1], positions[count][2]));
+        }
     }
 
     public void mouseDragged(MouseEvent e)
@@ -150,15 +162,21 @@ public class LinePieChart extends AbstractVisualisation
     {
         for (int count = 0; count < positions.length; count++)
         {
+            /*
             buffer.fill(0, 120, 255);
             buffer.pushMatrix();
             buffer.translate(positions[count][0], positions[count][1], positions[count][2] / 2);
             buffer.box(1, 1, positions[count][2]);
             buffer.stroke(0, 120, 255);
             buffer.popMatrix();
+            */
+            lines.get(count).draw(buffer);
+            buffer.stroke(0, 120, 255);
+            buffer.fill(0, 120, 255);
             if (linesShowing)
             {
                 buffer.pushMatrix();
+                buffer.fill(0, 120, 255);
                 buffer.translate(buffer.width / 2, buffer.height / 2, 34);
                 buffer.box(3, 3, 68);
                 buffer.popMatrix();
