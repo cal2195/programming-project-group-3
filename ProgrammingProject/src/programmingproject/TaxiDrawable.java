@@ -25,7 +25,7 @@ public class TaxiDrawable
     private final short DEATHFRAMES = 1;
     int dataSet;
 
-    TaxiDrawable(Trip trip, UnfoldingMap map)
+    TaxiDrawable(Trip trip, UnfoldingMap map, int query)
     {
         float latitude = trip.pickupLat;
         float longitude = trip.pickupLong;
@@ -53,9 +53,9 @@ public class TaxiDrawable
         dx = (endx - x) / trip.time;
         dy = (endy - y) / trip.time;
 
-        if (trip.vendorID)
+        if (query == 2)
         {
-            //draws DataSet1 as RED taxis, eg, all CMT taxis
+            //draws query2 as RED taxis
             dataSet = 1;
         } else
         {
