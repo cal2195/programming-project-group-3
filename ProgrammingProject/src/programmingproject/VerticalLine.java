@@ -57,7 +57,7 @@ public class VerticalLine {
             buffer.box(1, 1, currentHeight);
             buffer.popMatrix();
             buffer.popStyle();
-            buildStage += 0.5;
+            buildStage += 0.7;
         }
         else
         {
