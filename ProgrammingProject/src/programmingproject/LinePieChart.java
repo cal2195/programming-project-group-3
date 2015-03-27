@@ -33,7 +33,7 @@ public class LinePieChart extends AbstractVisualisation
     boolean demoMode = true;
 
     //Show lines to centre
-    boolean linesShowing = false;
+    boolean linesShowing = true;
     
     //VerticalLines
     ArrayList<VerticalLine> lines; 
@@ -177,7 +177,7 @@ public class LinePieChart extends AbstractVisualisation
         {
             lines.get(count).draw(buffer);
             
-            if (linesShowing)
+            if (linesShowing && lines.get(0).built)
             {
                 hLines.get(count).draw(buffer);
             }
