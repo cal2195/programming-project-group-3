@@ -71,9 +71,14 @@ public class TripAnimator extends AbstractVisualisation
 
     ArrayList<Trip> trips = new ArrayList<>();
     ArrayList<Trip> queuedTrips = new ArrayList<>();
+    
+    ArrayList<Trip> trips2 = new ArrayList<>();
+    ArrayList<Trip> queuedTrips2 = new ArrayList<>();
+    
     ArrayList<TaxiDrawable> cars = new ArrayList<>();
 
     double animatorSecondsPassed = 0;
+    boolean queuedData = false;
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
@@ -81,11 +86,10 @@ public class TripAnimator extends AbstractVisualisation
         gradient = new Gradient(renderArea);
         
         gradientLight = new Gradient(renderArea);
-
         gradientLight = new Gradient(renderArea);
 
+        //for the color of the background
         gradient.addColor(renderArea.color(0, 17, 60));//dark blue for night
-
         gradient.addColor(renderArea.color(5, 42, 87));//sunrise1
         gradient.addColor(renderArea.color(43, 65, 115));//sunrise2
         gradient.addColor(renderArea.color(181, 181, 191));//sunrise3
@@ -96,16 +100,14 @@ public class TripAnimator extends AbstractVisualisation
         gradient.addColor(renderArea.color(206, 195, 230));//sunrise4 modified
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
-
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
         
         
         
         
         
-        
+        //for the colour of the ambient light
         gradientLight.addColor(renderArea.color(20, 37, 80));//dark blue for night
-
         gradientLight.addColor(renderArea.color(15, 52, 97));//sunrise1
         gradientLight.addColor(renderArea.color(43, 65, 115));//sunrise2
         gradientLight.addColor(renderArea.color(181, 181, 191));//sunrise3
@@ -116,26 +118,8 @@ public class TripAnimator extends AbstractVisualisation
         gradientLight.addColor(renderArea.color(226, 200, 230));//sunrise4 modified
         gradientLight.addColor(renderArea.color(240, 240, 240));//standard sky
         gradientLight.addColor(renderArea.color(255, 255, 255));//standard sky
-
         gradientLight.addColor(renderArea.color(255, 255, 255));//standard sky
         
-        
-
-        gradientLight.addColor(renderArea.color(20, 37, 80));//dark blue for night
-
-        gradientLight.addColor(renderArea.color(15, 52, 97));//sunrise1
-        gradientLight.addColor(renderArea.color(43, 65, 115));//sunrise2
-        gradientLight.addColor(renderArea.color(181, 181, 191));//sunrise3
-        gradientLight.addColor(renderArea.color(206, 195, 191));//sunrise4
-        gradientLight.addColor(renderArea.color(252, 206, 173));//sunrise5
-        gradientLight.addColor(renderArea.color(253, 173, 88));//max sunrise
-        gradientLight.addColor(renderArea.color(252, 206, 173));//sunrise5
-        gradientLight.addColor(renderArea.color(226, 200, 230));//sunrise4 modified
-        gradientLight.addColor(renderArea.color(240, 240, 240));//standard sky
-        gradientLight.addColor(renderArea.color(255, 255, 255));//standard sky
-
-        gradientLight.addColor(renderArea.color(255, 255, 255));//standard sky
-
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
     }
@@ -143,7 +127,10 @@ public class TripAnimator extends AbstractVisualisation
     @Override
     public void draw(PGraphics3D buffer)
     {
-
+        if(queuedData){
+            setData(renderArea.currentQuery.queryOne, renderArea.currentQuery.queryTwo);
+            queuedData = false;
+        }
         buffer.pushStyle();
         buffer.pushMatrix();
 
@@ -251,7 +238,7 @@ public class TripAnimator extends AbstractVisualisation
 
         taxisOnScreen = taxis;
 
-        System.out.println("Taxis On Screen: " + taxisOnScreen);
+        //System.out.println("Taxis On Screen: " + taxisOnScreen);
 
         buffer.popMatrix();
         buffer.popStyle();
@@ -278,9 +265,10 @@ public class TripAnimator extends AbstractVisualisation
         return (screenX >= 0 && screenX <= buffer.width && screenY >= 0 && screenY <= buffer.height);
     }
 
-    public void setData(ArrayList<Trip> data)
+    public void setData(ArrayList<Trip> q1, ArrayList<Trip> q2)
     {
-        queuedTrips = data;
+        queuedTrips = q1;
+        queuedTrips2 = q2;
         reset();
         switchData();
     }
@@ -288,8 +276,7 @@ public class TripAnimator extends AbstractVisualisation
     @Override
     public void reloadData()
     {
-        cars.clear();
-        switchData();
+        queuedData = true;
     }
 
     public void reset()
@@ -300,10 +287,17 @@ public class TripAnimator extends AbstractVisualisation
 
     public void switchData()
     {
-        trips = queuedTrips;
+        trips = queuedTrips;   
+        trips2 = queuedTrips2;
+        
         for (Trip trip : trips)
         {
-            TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map);
+            TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map, 1);
+            cars.add(tempCar);
+        }
+        for (Trip trip : trips2)
+        {
+            TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map, 2);
             cars.add(tempCar);
         }
         System.out.println("TRIP SIZE: " + trips.size());
@@ -314,10 +308,10 @@ public class TripAnimator extends AbstractVisualisation
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
         {
-            setData(renderArea.query.getTripsForMonth(1, 100000));
+            setData(renderArea.query.getTripsForMonth(1, 50000), renderArea.query.getTripsForMonth(2, 50000));
         } else if (e.getKeyCode() == KeyEvent.VK_2)
         {
-            setData(renderArea.query.getTripsForMonth(1, 200000));
+            setData(renderArea.query.getTripsForMonth(1, 50000), renderArea.query.getTripsForMonth(2, 50000));
         } else if (e.getKeyCode() == 77) //if m is pressed
         {
             MODE++;
@@ -330,13 +324,11 @@ public class TripAnimator extends AbstractVisualisation
             cars.clear();
             for (Trip trip : trips)
             {
-                TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map);
+                TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map, 1);
                 cars.add(tempCar);
             }
-        } else if (e.getKeyCode() == KeyEvent.VK_3)
-        {
-            setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
-        } else if (e.getKeyCode() == KeyEvent.VK_UP)
+        } 
+        else if (e.getKeyCode() == KeyEvent.VK_UP)
         {
             if (e.isShiftDown())
             {
