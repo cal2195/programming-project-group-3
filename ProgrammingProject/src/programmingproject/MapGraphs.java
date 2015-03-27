@@ -44,7 +44,7 @@ public class MapGraphs
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
     LocationVisualization location;
-    VendorVisual vendorVisual;
+    ComparisionVisual comparisonQuery;
 
     int background;
     int ambient = -1;
@@ -75,7 +75,7 @@ public class MapGraphs
         heatMapGraph = new HeatMapGraph(renderArea, this);
         tripAnimator = new TripAnimator(renderArea, this);
         location = new LocationVisualization(renderArea, this);
-        vendorVisual = new VendorVisual(renderArea, this);
+        comparisonQuery = new ComparisionVisual(renderArea, this);
         areaMapGraph = new AreaMapGraph(renderArea, this);
 
         renderArea.currentVisualisation = heatMapGraph;
