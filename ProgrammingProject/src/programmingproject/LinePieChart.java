@@ -37,11 +37,8 @@ public class LinePieChart extends AbstractVisualisation
     
     //VerticalLines
     ArrayList<VerticalLine> lines; 
+    ArrayList<HorizontalLine> hLines; 
 
-    /**
-     *
-     * @author john
-     */
     public LinePieChart(RenderArea renderArea)
     {
         this.renderArea = renderArea;
@@ -51,7 +48,8 @@ public class LinePieChart extends AbstractVisualisation
         doneFirstSetup = false;
         oldRenderHeight = renderArea.height;
         oldRenderWidth = renderArea.width;
-        lines = new ArrayList<VerticalLine>();
+        lines = new ArrayList<>();
+        hLines = new ArrayList<>();
     }
 
     public void setup(PGraphics3D buffer)
@@ -63,6 +61,13 @@ public class LinePieChart extends AbstractVisualisation
 
     public void draw(PGraphics3D buffer)
     {
+        buffer.pushMatrix();
+        buffer.translate(0,0,0);
+        buffer.fill(255);
+        buffer.box(100);
+        buffer.popMatrix();
+        
+        
         buffer.pushStyle();
         if (!doneFirstSetup)
         {
@@ -100,6 +105,7 @@ public class LinePieChart extends AbstractVisualisation
         if (oldRenderHeight != buffer.height || oldRenderWidth != buffer.width)
         {
             getPositions();
+            createLines(buffer);
         }
         oldRenderHeight = buffer.height;
         oldRenderWidth = buffer.width;
@@ -113,9 +119,15 @@ public class LinePieChart extends AbstractVisualisation
     
     public void createLines(PGraphics3D buffer)
     {
+        lines.clear();
         for (int count = 0; count < positions.length; count++)
         {
             lines.add(new VerticalLine(positions[count][0], positions[count][1], positions[count][2]));
+        }
+        hLines.clear();
+        for (int count = 0; count < positions.length;count++)
+        {
+            hLines.add(new HorizontalLine(positions[count][0], positions[count][1], positions[count][2]));
         }
     }
 
@@ -163,25 +175,11 @@ public class LinePieChart extends AbstractVisualisation
     {
         for (int count = 0; count < positions.length; count++)
         {
-            /*
-            buffer.fill(0, 120, 255);
-            buffer.pushMatrix();
-            buffer.translate(positions[count][0], positions[count][1], positions[count][2] / 2);
-            buffer.box(1, 1, positions[count][2]);
-            buffer.stroke(0, 120, 255);
-            buffer.popMatrix();
-            */
             lines.get(count).draw(buffer);
-            buffer.stroke(0, 120, 255);
-            buffer.fill(0, 120, 255);
+            
             if (linesShowing)
             {
-                buffer.pushMatrix();
-                buffer.fill(0, 120, 255);
-                buffer.translate(buffer.width / 2, buffer.height / 2, 34);
-                buffer.box(3, 3, 68);
-                buffer.popMatrix();
-                buffer.line(positions[count][0], positions[count][1], positions[count][2], buffer.width / 2, buffer.height / 2, positions[count][2]);
+                hLines.get(count).draw(buffer);
             }
         }
     }
