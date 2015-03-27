@@ -11,20 +11,23 @@ import processing.opengl.PGraphics3D;
  *
  * @author John Milsom
  */
-public class VerticalLine {
-    int xPos;
-    int yPos;
-    int height;
-    float buildStage;
-    boolean built;
+public class HorizontalLine {
     
-    VerticalLine(int xPos, int yPos,int height)
+    int startX;
+    int startY;
+    boolean built;
+    float buildStage;
+    float invBuildStage;
+    int height;
+    
+    HorizontalLine(int startX,int startY, int height)
     {
-        this.height = height;
-        this.xPos = xPos;
-        this.yPos = yPos;
-        buildStage = 0;
+        this.startX = startX;
+        this.startY = startY;
         built = false;
+        buildStage = 100;
+        invBuildStage = 0;
+        this.height = height;
     }
     
     public void draw(PGraphics3D buffer)
@@ -35,29 +38,31 @@ public class VerticalLine {
         }
         else
         {
-            buffer.pushStyle();
+            buffer.stroke(0, 120, 255);
             buffer.pushMatrix();
             buffer.fill(0, 120, 255);
-            buffer.translate(xPos, yPos, height/2);
-            buffer.box(1, 1, height);
+            buffer.translate(buffer.width / 2, buffer.height / 2, 34);
+            buffer.box(3, 3, 68);
             buffer.popMatrix();
-            buffer.popStyle();
+            buffer.line(startX, startY, height, buffer.width / 2, buffer.height / 2, height);
         }
     }
     
     public void buildLines(PGraphics3D buffer)
     {
-        if(buildStage < 100)
+        if(buildStage > 0 )
         {
-            float currentHeight = height*buildStage/100;
+            float endX = startX * buildStage/100 + buffer.width/2 * invBuildStage/100;
+            float endY = startY * buildStage/100 + buffer.height/2 * invBuildStage/100;
             buffer.pushStyle();
             buffer.pushMatrix();
             buffer.fill(0, 120, 255);
-            buffer.translate(xPos, yPos, currentHeight/2);
-            buffer.box(1, 1, currentHeight);
+            buffer.stroke(0, 120, 255);
+            buffer.line(startX, startY, height, endX, endY, height);
             buffer.popMatrix();
             buffer.popStyle();
-            buildStage += 0.7;
+            buildStage -= 0.5;
+            invBuildStage += 0.5;
         }
         else
         {
@@ -65,5 +70,4 @@ public class VerticalLine {
             draw(buffer);
         }
     }
-    
 }
