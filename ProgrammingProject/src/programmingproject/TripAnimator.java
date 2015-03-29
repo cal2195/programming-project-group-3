@@ -102,10 +102,6 @@ public class TripAnimator extends AbstractVisualisation
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
         gradient.addColor(renderArea.color(179, 209, 255));//standard sky
         
-        
-        
-        
-        
         //for the colour of the ambient light
         gradientLight.addColor(renderArea.color(20, 37, 80));//dark blue for night
         gradientLight.addColor(renderArea.color(15, 52, 97));//sunrise1
@@ -184,7 +180,6 @@ public class TripAnimator extends AbstractVisualisation
         {
             delta = (System.currentTimeMillis() - lastTime) / 1000f;
             lastTime = System.currentTimeMillis();
-            //   System.out.println(delta);
         }
 
         try
@@ -208,7 +203,7 @@ public class TripAnimator extends AbstractVisualisation
         }
 
         buffer.stroke(0);
-//        buffer.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
+
         for (TaxiDrawable car : cars)
         {
             buffer.pushMatrix();
@@ -222,7 +217,6 @@ public class TripAnimator extends AbstractVisualisation
         animatorSecondsPassed += speedFactor * delta;
 
         buffer.fill(20);
-        //buffer.textFont(this.renderArea.createFont("Calibri", 50, false));
         buffer.textSize(50);
         if (MODE == 0)
         {

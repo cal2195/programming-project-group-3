@@ -22,7 +22,7 @@ public class LocationVisualization extends AbstractVisualisation
         this.mapGraphs = mapGraphs;
         this.renderArea = area;
         //initializes several locations
-        locations = new ArrayList<LocationDrawable>();
+        locations = new ArrayList<>();
         locations.add(new LocationDrawable((float) 40.7484, (float) -73.9857, "Empire State Building", mapGraphs.map)); //Empire State building
         locations.add(new LocationDrawable((float) 40.7116, (float) -74.0123, "Ground Zero", mapGraphs.map)); //ground zero
         locations.add(new LocationDrawable((float) 40.7577, (float) -73.9857, "Times Square", mapGraphs.map)); //Times square
@@ -41,8 +41,6 @@ public class LocationVisualization extends AbstractVisualisation
         buffer.pushStyle();
         buffer.pushMatrix();
         
-//        buffer.translate(mapGraphs.mapWidth / 2, mapGraphs.mapHeight / 2, 0);
-        
         for (LocationDrawable l : locations)
         {
             buffer.pushMatrix();
@@ -51,7 +49,6 @@ public class LocationVisualization extends AbstractVisualisation
             buffer.rotateX(-mapGraphs.cameraY);
             buffer.noStroke();
             buffer.fill(0);
-            //buffer.textFont(renderArea.createFont("Calibri", 15, false));
             buffer.textSize(15);
             buffer.text(l.name + " visitors: " + l.visitors, -50, -25);
             buffer.fill(150);
@@ -59,8 +56,7 @@ public class LocationVisualization extends AbstractVisualisation
             buffer.stroke(0);
             buffer.popMatrix();
         }
-        
-        //test.draw(renderArea);
+       
         frames++;
         
         buffer.popMatrix();

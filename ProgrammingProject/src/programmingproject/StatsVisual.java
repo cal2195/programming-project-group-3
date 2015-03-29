@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programmingproject;
 
 import java.awt.event.KeyEvent;
@@ -46,6 +41,7 @@ public class StatsVisual extends AbstractVisualisation
         totPassengers = 2;
     }
 
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.background(254);
@@ -60,7 +56,7 @@ public class StatsVisual extends AbstractVisualisation
         pieChart(200, vendorAngles, 1350, 350, buffer, true);
     }
 
-    void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer, boolean vendors)
+    public void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer, boolean vendors)
     {
         float lastAngle = 0;
         float gray = 0;
@@ -154,6 +150,7 @@ public class StatsVisual extends AbstractVisualisation
         totPassengers = 0;
     }
 
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)

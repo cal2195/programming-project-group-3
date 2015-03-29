@@ -26,7 +26,7 @@ public class MapGraphs
 
     UnfoldingMap map;
     ArrayList<AbstractMapProvider> mapProviders = new ArrayList<>();
-    int mapWidth = 1000, mapHeight = 1000;
+    int mapWidth = 3000, mapHeight = 3000;
     int currentMap = 0;
 
     //Camera Rotation

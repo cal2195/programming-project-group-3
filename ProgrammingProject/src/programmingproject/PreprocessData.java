@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author cal
  */
-public class PreprocessData
+public class PreprocessData //Used to generate the file for the MySQL database! :D
 {
 
     ArrayList<String> medallions = new ArrayList<>();

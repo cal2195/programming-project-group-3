@@ -25,11 +25,6 @@ public class GUI
         queryGUI = new QueryGUI(renderArea, cp5);
     }
     
-    public void showGUI(int screen)
-    {
-        
-    }
-    
     public void resize()
     {
         mapGraphsGUI.resize();

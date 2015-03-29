@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programmingproject;
 
 import processing.opengl.PGraphics3D;
@@ -11,14 +6,16 @@ import processing.opengl.PGraphics3D;
  *
  * @author John Milsom
  */
-public class VerticalLine {
+public class VerticalLine
+{
+
     int xPos;
     int yPos;
     int height;
     float buildStage;
     boolean built;
-    
-    VerticalLine(int xPos, int yPos,int height)
+
+    public VerticalLine(int xPos, int yPos, int height)
     {
         this.height = height;
         this.xPos = xPos;
@@ -26,44 +23,41 @@ public class VerticalLine {
         buildStage = 0;
         built = false;
     }
-    
+
     public void draw(PGraphics3D buffer)
     {
-        if(!built)
+        if (!built)
         {
             buildLines(buffer);
-        }
-        else
+        } else
         {
             buffer.pushStyle();
             buffer.pushMatrix();
             buffer.fill(0, 120, 255);
-            buffer.translate(xPos, yPos, height/2);
+            buffer.translate(xPos, yPos, height / 2);
             buffer.box(1, 1, height);
             buffer.popMatrix();
             buffer.popStyle();
         }
     }
-    
+
     public void buildLines(PGraphics3D buffer)
     {
-        if(buildStage < 100)
+        if (buildStage < 100)
         {
-            float currentHeight = height*buildStage/100;
+            float currentHeight = height * buildStage / 100;
             buffer.pushStyle();
             buffer.pushMatrix();
             buffer.fill(0, 120, 255);
-            buffer.translate(xPos, yPos, currentHeight/2);
+            buffer.translate(xPos, yPos, currentHeight / 2);
             buffer.box(1, 1, currentHeight);
             buffer.popMatrix();
             buffer.popStyle();
             buildStage += 0.7;
-        }
-        else
+        } else
         {
             built = true;
             draw(buffer);
         }
     }
-    
 }

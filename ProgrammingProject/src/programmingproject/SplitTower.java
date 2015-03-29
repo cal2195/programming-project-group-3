@@ -14,9 +14,4 @@ public class SplitTower
         height1 = h1;
         height2 = h2;
     }
-    
-    public static void draw(RenderArea renderArea)
-    {
-        
-    }
 }

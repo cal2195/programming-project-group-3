@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programmingproject;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -10,7 +5,6 @@ import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.util.ArrayList;
-import processing.opengl.PGraphics3D;
 
 /**
  *
