@@ -19,6 +19,7 @@ public class MapGraphsGUI
         "Heat Map",
         "Taxi Animator",
         "Area Map Graph",
+        "Location Popularity",
         "Query comparison",
         "Line Pie Chart",
         "Stats Visual",

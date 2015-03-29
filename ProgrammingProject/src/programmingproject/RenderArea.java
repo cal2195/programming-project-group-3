@@ -186,13 +186,16 @@ public class RenderArea extends PApplet
             case 2: //"Area Map Graph":
                 currentVisualisation = mapGraphs.areaMapGraph;
                 break;
-            case 3: //"Query comparison":
+            case 3: //"Location Popularity":
+                currentVisualisation = mapGraphs.location;
+                break;
+            case 4: //"Query comparison":
                 currentVisualisation = mapGraphs.comparisonQuery;
                 break;
-            case 4: //"Line Pie Chart":
+            case 5: //"Line Pie Chart":
                 currentVisualisation = linePieChart;
                 break;
-            case 5: //"Stats Visual":
+            case 6: //"Stats Visual":
                 currentVisualisation = statsVisual;
                 break;
             default:
