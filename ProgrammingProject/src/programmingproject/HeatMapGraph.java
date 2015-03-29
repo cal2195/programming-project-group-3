@@ -44,6 +44,8 @@ public class HeatMapGraph extends AbstractVisualisation
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
         buffer = renderArea.createGraphics(renderArea.width, renderArea.height, RenderArea.P3D);
+        
+        super.setCurrentQuery(renderArea.currentQuery);
 
         gradient = new Gradient(renderArea);
         gradient.addColor(renderArea.color(0, 0, 0));
@@ -233,18 +235,6 @@ public class HeatMapGraph extends AbstractVisualisation
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_1)
-        {
-            setData(renderArea.query.getTripsForMonth(1));
-        } else if (e.getKeyCode() == KeyEvent.VK_2)
-        {
-            renderArea.currentQuery.requestQuery("SELECT * FROM taxi_data LIMIT 0,5000", true);
-        } else if (e.getKeyCode() == KeyEvent.VK_3)
-        {
-            setData(renderArea.query.getTripsForMonth(3));
-        } else if (e.getKeyCode() == KeyEvent.VK_4)
-        {
-            setData(renderArea.query.getTripsForMonth(4));
-        }
+        super.keyPressed(e);
     }
 }

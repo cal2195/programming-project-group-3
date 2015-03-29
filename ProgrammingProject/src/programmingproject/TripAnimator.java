@@ -82,7 +82,8 @@ public class TripAnimator extends AbstractVisualisation
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
-
+        super.setCurrentQuery(renderArea.currentQuery);
+        
         gradient = new Gradient(renderArea);
         
         gradientLight = new Gradient(renderArea);
@@ -300,13 +301,8 @@ public class TripAnimator extends AbstractVisualisation
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_1)
-        {
-            setData(renderArea.query.getTripsForMonth(1, 50000), renderArea.query.getTripsForMonth(2, 50000));
-        } else if (e.getKeyCode() == KeyEvent.VK_2)
-        {
-            setData(renderArea.query.getTripsForMonth(1, 50000), renderArea.query.getTripsForMonth(2, 50000));
-        } else if (e.getKeyCode() == 77) //if m is pressed
+        super.keyPressed(e);
+        if (e.getKeyCode() == 77) //if m is pressed
         {
             MODE++;
             if (MODE > MAX_MODE)
