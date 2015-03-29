@@ -42,7 +42,7 @@ public class MapGraphs
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
     LocationVisualization location;
-    ComparisionVisual comparisonQuery;
+    VisualComparision comparisonQuery;
 
     int background;
     int ambient = -1;
@@ -70,7 +70,7 @@ public class MapGraphs
         heatMapGraph = new HeatMapGraph(renderArea, this);
         tripAnimator = new TripAnimator(renderArea, this);
         location = new LocationVisualization(renderArea, this);
-        comparisonQuery = new ComparisionVisual(renderArea, this);
+        comparisonQuery = new VisualComparision(renderArea, this);
         areaMapGraph = new AreaMapGraph(renderArea, this);
 
         renderArea.currentVisualisation = heatMapGraph;
@@ -230,7 +230,7 @@ public class MapGraphs
         } else if (e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) //Previous map
         {
             map.mapDisplay.setMapProvider(mapProviders.get(--currentMap % mapProviders.size()));
-        } else if (e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) //Next map
+        } else if (e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) //Next mapz
         {
             map.mapDisplay.setMapProvider(mapProviders.get(++currentMap % mapProviders.size()));
         }
