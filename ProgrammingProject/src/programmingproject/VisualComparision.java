@@ -14,7 +14,7 @@ import processing.opengl.PGraphics3D;
  *
  * Adapting HeatMapGrpah.java 2015-03-18
  */
-public class ComparisionVisual extends AbstractVisualisation
+public class VisualComparision extends AbstractVisualisation
 {
 
     RenderArea renderArea;
@@ -41,7 +41,7 @@ public class ComparisionVisual extends AbstractVisualisation
 
     PGraphics buffer;
 
-    public ComparisionVisual(RenderArea renderArea, MapGraphs mapGraphs)
+    public VisualComparision(RenderArea renderArea, MapGraphs mapGraphs)
     {
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;

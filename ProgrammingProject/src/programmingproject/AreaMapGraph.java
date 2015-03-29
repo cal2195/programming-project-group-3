@@ -5,6 +5,7 @@ import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
+import processing.opengl.PGraphics3D;
 
 /**
  *
@@ -70,9 +71,9 @@ public class AreaMapGraph extends AbstractVisualisation
                 gridOfTowers[x][y].height += 10;
             } else
             {
-                System.out.println("GRID ERROR - OUT OF BOUNDS");
-                System.out.println("relX = " + relX + " relY = " + relY);
-                System.out.println("x = " + x + " y = " + y);
+//                System.out.println("GRID ERROR - OUT OF BOUNDS");
+//                System.out.println("relX = " + relX + " relY = " + relY);
+//                System.out.println("x = " + x + " y = " + y);
             }
         }
     }
@@ -97,19 +98,26 @@ public class AreaMapGraph extends AbstractVisualisation
         calculateTowers();
         System.out.println("TRIP SIZE: " + trips.size());
     }
-
-    public void draw()
+    
+    @Override
+    public void reloadData()
     {
-        renderArea.pushStyle();
-        renderArea.pushMatrix();
-        renderArea.noStroke();
+        setData(renderArea.currentQuery.active());
+    }
+
+    @Override
+    public void draw(PGraphics3D buffer)
+    {
+        buffer.pushStyle();
+        buffer.pushMatrix();
+        buffer.noStroke();
 
         if (percent < 1)
         {
             percent += 0.005;
         }
 
-        renderArea.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
+        buffer.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
 
         for (int i = 0; i < GRID_WIDTH; i++)
         {
@@ -117,19 +125,20 @@ public class AreaMapGraph extends AbstractVisualisation
             {
                 if (gridOfTowers[i][ii].height != 0)// && gridOfTowers[i][ii].height != 10)
                 {
-                    renderArea.pushMatrix();
-                    renderArea.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) (gridOfTowers[i][ii].height) / 10);
-                    renderArea.fill(15f * (float) Math.log((gridOfTowers[i][ii].height)));
-                    renderArea.ellipse(0, 0, (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent, (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
-                    renderArea.popMatrix();
+                    buffer.pushMatrix();
+                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) (gridOfTowers[i][ii].height) / 10);
+                    buffer.fill(15f * (float) Math.log((gridOfTowers[i][ii].height)));
+                    buffer.ellipse(0, 0, (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent, (float) Math.log10((gridOfTowers[i][ii].height)) * 6 * percent);
+                    buffer.popMatrix();
                 }
             }
         }
 
-        renderArea.popMatrix();
-        renderArea.popStyle();
+        buffer.popMatrix();
+        buffer.popStyle();
     }
     
+    @Override
     public void keyPressed(KeyEvent e)
     {
         super.keyPressed(e);
