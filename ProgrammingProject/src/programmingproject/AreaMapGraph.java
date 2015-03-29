@@ -33,6 +33,8 @@ public class AreaMapGraph extends AbstractVisualisation
     {
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
+        
+        super.setCurrentQuery(renderArea.currentQuery);
 
         gridOfTowers = new Tower[GRID_WIDTH][GRID_HEIGHT];
 
@@ -130,18 +132,6 @@ public class AreaMapGraph extends AbstractVisualisation
     
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_1)
-        {
-            setData(renderArea.query.getTripsForMonth(1));
-        } else if (e.getKeyCode() == KeyEvent.VK_2)
-        {
-            addData(renderArea.query.getTripsForMonth(2));
-        } else if (e.getKeyCode() == KeyEvent.VK_3)
-        {
-            setData(renderArea.query.getTripsForMonth(3));
-        } else if (e.getKeyCode() == KeyEvent.VK_4)
-        {
-            setData(renderArea.query.getTripsForMonth(4));
-        }
+        super.keyPressed(e);
     }
 }

@@ -21,6 +21,9 @@ public class LocationVisualization extends AbstractVisualisation
     {
         this.mapGraphs = mapGraphs;
         this.renderArea = area;
+        
+        super.setCurrentQuery(renderArea.currentQuery);
+        
         //initializes several locations
         locations = new ArrayList<>();
         locations.add(new LocationDrawable((float) 40.7484, (float) -73.9857, "Empire State Building", mapGraphs.map)); //Empire State building
@@ -95,18 +98,6 @@ public class LocationVisualization extends AbstractVisualisation
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_1)
-        {
-            reset();
-            setData(renderArea.query.getTripsForMonth(1, 1000));
-        } else if (e.getKeyCode() == KeyEvent.VK_2)
-        {
-            reset();
-            setData(renderArea.query.getTripsForMonth(2, 1000));
-        } else if (e.getKeyCode() == KeyEvent.VK_3)
-        {
-            reset();
-            setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
-        }
+        super.keyPressed(e);
     }
 }

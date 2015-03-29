@@ -39,8 +39,6 @@ public class MapGraphs
     AreaMapGraph areaMapGraph;
 
     //Graphs
-    //int currentGraph = 0; //0: heatMapGraph; 1: TripAnimator
-    //AbstractVisualisation renderArea.currentVisualisation;
     HeatMapGraph heatMapGraph;
     TripAnimator tripAnimator;
     LocationVisualization location;
@@ -59,10 +57,7 @@ public class MapGraphs
         mapProviders.add(new Microsoft.RoadProvider());
         mapProviders.add(new Microsoft.AerialProvider());
         mapProviders.add(new Yahoo.RoadProvider());
-        mapProviders.add(new Yahoo.HybridProvider());
-//        mapProviders.add(new Microsoft.AerialProvider());
-//        mapProviders.add(new Yahoo.RoadProvider());
-        
+        mapProviders.add(new Yahoo.HybridProvider());        
         
         resetBackground();
 
@@ -198,44 +193,44 @@ public class MapGraphs
 
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_EQUALS)
+        if (e.getKeyCode() == KeyEvent.VK_EQUALS) //Zoom in
         {
             map.zoomLevelIn();
             renderArea.currentVisualisation.reloadData();
-        } else if (e.getKeyCode() == KeyEvent.VK_MINUS)
+        } else if (e.getKeyCode() == KeyEvent.VK_MINUS) //Zoom out
         {
             map.zoomLevelOut();
             renderArea.currentVisualisation.reloadData();
-        } else if (e.getKeyCode() == KeyEvent.VK_I)
+        } else if (e.getKeyCode() == KeyEvent.VK_I) //Pan up
         {
             map.panUp();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
             renderArea.currentVisualisation.reloadData();
-        } else if (e.getKeyCode() == KeyEvent.VK_J)
+        } else if (e.getKeyCode() == KeyEvent.VK_J) //Pan left
         {
             map.panLeft();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
             renderArea.currentVisualisation.reloadData();
-        } else if (e.getKeyCode() == KeyEvent.VK_K)
+        } else if (e.getKeyCode() == KeyEvent.VK_K) //Pan down
         {
             map.panDown();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
             renderArea.currentVisualisation.reloadData();
-        } else if (e.getKeyCode() == KeyEvent.VK_L)
+        } else if (e.getKeyCode() == KeyEvent.VK_L) //Pan right
         {
             map.panRight();
             map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
             renderArea.currentVisualisation.reloadData();
-        } else if (e.getKeyCode() == KeyEvent.VK_QUOTE)
+        } else if (e.getKeyCode() == KeyEvent.VK_QUOTE) //Print camera preset to console
         {
             System.out.println(map.getCenter().getLat() + "f, " + map.getCenter().getLon() + "f, " + map.getZoomLevel() + ", " + cameraX + "f, " + cameraY + "f, " + cameraTransX + "f, " + cameraTransY + "f, " + zoom + "f");
-        } else if (e.getKeyCode() == KeyEvent.VK_Q)
+        } else if (e.getKeyCode() == KeyEvent.VK_Q) //Sample Camera Preset
         {
             setCamera(40.770947f, -73.87256f, 16, 2.67433f, 1.0016665f, -154.64786f, 393.83865f, 1.0f);
-        } else if (e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET)
+        } else if (e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) //Previous map
         {
             map.mapDisplay.setMapProvider(mapProviders.get(--currentMap % mapProviders.size()));
-        } else if (e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET)
+        } else if (e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) //Next map
         {
             map.mapDisplay.setMapProvider(mapProviders.get(++currentMap % mapProviders.size()));
         }

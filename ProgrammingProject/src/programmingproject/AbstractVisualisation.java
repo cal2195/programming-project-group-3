@@ -11,7 +11,7 @@ import processing.opengl.PGraphics3D;
  */
 public class AbstractVisualisation
 {
-    CurrentQuery currentQuery;
+    private CurrentQuery currentQuery;
     
     public void reloadData()
     {
@@ -28,9 +28,22 @@ public class AbstractVisualisation
         System.out.println("ERROR - draw(PGraphics3D buffer) not defined in this class!");
     }
     
+    public void setCurrentQuery(CurrentQuery currentQuery)
+    {
+        this.currentQuery = currentQuery;
+    }   
+    
     public void keyPressed(KeyEvent e)
     {
-        System.out.println("INFO - keyPressed(KeyEvent e) not defined in this class!");
+        if (e.getKeyCode() == KeyEvent.VK_1)
+        {
+            currentQuery.setQueryOneActive();
+            reloadData();
+        } else if (e.getKeyCode() == KeyEvent.VK_2)
+        {
+            currentQuery.setQueryTwoActive();
+            reloadData();
+        }
     }
     
     public void mousePressed(MouseEvent e)

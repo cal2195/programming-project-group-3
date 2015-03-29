@@ -46,6 +46,8 @@ public class ComparisionVisual extends AbstractVisualisation
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
         buffer = renderArea.createGraphics(renderArea.width, renderArea.height, RenderArea.P3D);
+        
+        super.setCurrentQuery(renderArea.currentQuery);
 
         gridOfTowers1 = new Tower[GRID_WIDTH][GRID_HEIGHT];
         gridOfTowers2 = new Tower[GRID_WIDTH][GRID_HEIGHT];
@@ -198,13 +200,10 @@ public class ComparisionVisual extends AbstractVisualisation
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_1)
+        super.keyPressed(e);
+        if (e.getKeyCode() == KeyEvent.VK_V)
         {
-            visualStyle = 0;
-        } else if (e.getKeyCode() == KeyEvent.VK_2)
-        {
-            visualStyle = 1;
+            visualStyle = (visualStyle == 0 ? 1 : 0);
         }
-
     }
 }
