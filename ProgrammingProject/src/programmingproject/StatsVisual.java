@@ -46,6 +46,7 @@ public class StatsVisual extends AbstractVisualisation
         totPassengers = 2;
     }
 
+    //draws two pie charts and prints some satistics to screen
     public void draw(PGraphics3D buffer)
     {
         buffer.background(254);
@@ -60,6 +61,7 @@ public class StatsVisual extends AbstractVisualisation
         pieChart(200, vendorAngles, 1350, 350, buffer, true);
     }
 
+    //draws pie charts and accompying numbers
     void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer, boolean vendors)
     {
         float lastAngle = 0;
@@ -86,6 +88,7 @@ public class StatsVisual extends AbstractVisualisation
         }
     }
 
+    //sets data to be drawn. clears previous data first
     public void setData(ArrayList<Trip> data)
     {
         reset();
@@ -122,6 +125,7 @@ public class StatsVisual extends AbstractVisualisation
         setAngles();
     }
 
+    //calculates angles of pie slices
     private void setAngles()
     {
         for (int i = 0; i < passengerTotals.length; i++)
@@ -134,6 +138,7 @@ public class StatsVisual extends AbstractVisualisation
         }
     }
 
+    //clears current data
     public void reset()
     {
         for (int i = 0; i < passengerTotals.length; i++)
@@ -154,6 +159,7 @@ public class StatsVisual extends AbstractVisualisation
         totPassengers = 0;
     }
 
+    //queries for numbers 1,2,3
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_1)
@@ -171,6 +177,7 @@ public class StatsVisual extends AbstractVisualisation
         }
     }
     
+    //updates to current query
     @Override
     public void reloadData()
     {
