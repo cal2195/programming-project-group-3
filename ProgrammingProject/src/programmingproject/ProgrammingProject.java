@@ -10,7 +10,7 @@ import processing.core.PApplet;
  */
 public class ProgrammingProject extends PApplet
 {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     
     RenderArea renderArea;
     
