@@ -59,6 +59,7 @@ public class LinePieChart extends AbstractVisualisation
         createLines(buffer);
     }
 
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.pushMatrix();
@@ -66,7 +67,6 @@ public class LinePieChart extends AbstractVisualisation
         buffer.fill(255);
         buffer.box(100);
         buffer.popMatrix();
-        
         
         buffer.pushStyle();
         if (!doneFirstSetup)
@@ -112,6 +112,7 @@ public class LinePieChart extends AbstractVisualisation
         buffer.popStyle();
     }
 
+    @Override
     public void mousePressed(MouseEvent e)
     {
         demoMode = false;
@@ -120,17 +121,18 @@ public class LinePieChart extends AbstractVisualisation
     public void createLines(PGraphics3D buffer)
     {
         lines.clear();
-        for (int count = 0; count < positions.length; count++)
+        for (int[] position : positions)
         {
-            lines.add(new VerticalLine(positions[count][0], positions[count][1], positions[count][2]));
+            lines.add(new VerticalLine(position[0], position[1], position[2]));
         }
         hLines.clear();
-        for (int count = 0; count < positions.length;count++)
+        for (int[] position : positions)
         {
-            hLines.add(new HorizontalLine(positions[count][0], positions[count][1], positions[count][2]));
+            hLines.add(new HorizontalLine(position[0], position[1], position[2]));
         }
     }
 
+    @Override
     public void mouseDragged(MouseEvent e)
     {
         if (lastMousePosition == null)
@@ -142,6 +144,7 @@ public class LinePieChart extends AbstractVisualisation
         lastMousePosition = e;
     }
 
+    @Override
     public void mouseReleased(MouseEvent e)
     {
         lastMousePosition = null;
@@ -184,17 +187,12 @@ public class LinePieChart extends AbstractVisualisation
         }
     }
 
+    @Override
     public void keyPressed(KeyEvent e)
     {
         if (e.getKeyCode() == KeyEvent.VK_0)
         {
-            if (linesShowing)
-            {
-                linesShowing = false;
-            } else
-            {
-                linesShowing = true;
-            }
+            linesShowing = !linesShowing;
         }
     }
 }
