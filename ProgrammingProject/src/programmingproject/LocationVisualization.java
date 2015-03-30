@@ -78,6 +78,8 @@ public class LocationVisualization extends AbstractVisualisation
     @Override
     public void reloadData()
     {
+        reset();
+        setData(renderArea.currentQuery.active());
         for (LocationDrawable l : locations)
         {
             l.updateLocation(mapGraphs.map);
