@@ -1,13 +1,6 @@
 package programmingproject;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import processing.data.Table;
 
 /**
  *
@@ -15,22 +8,8 @@ import processing.data.Table;
  */
 public class Data
 {
-
     String[] meds, hacks;
-    ConcurrentHashMap<Integer, Taxi> taxis;
-    Table taxiData;
     RenderArea renderArea;
-    String dataFile = "";
-    Thread loadDataThread = new Thread(new Runnable()
-    {
-
-        @Override
-        public void run()
-        {
-            loadData(dataFile);
-        }
-    }, "Load Data Thread");
-    boolean dataLoaded = false;
 
     //these are no fun, anyone able to check? it wasnt a leap year!
     public static final int[] SECONDS_TILL_MONTH_STARTS =
@@ -59,21 +38,12 @@ public class Data
     public static final String VENDOR_CMT = "CMT";  // Trip.vendorID = True
     public static final String VENDOR_VTS = "VTS";  // Trip.vendorID = False
 
-    int numberOfRecords;
-    int errorCount = 0;
-    //to be used to find the relative x and y of a taxi
-    static float TOP_LEFT_LONGITUDE = -74.195073f;
-    static float TOP_LEFT_LATITUDE = 40.874139f;
-
     public Data(String filename, RenderArea renderArea)
     {
         this.renderArea = renderArea;
-
-        taxis = new ConcurrentHashMap<>();
-        dataFile = filename;
+        
         loadMeds("res/meds.txt");
         loadHacks("res/hacks.txt");
-        loadDataThread.start();
     }
 
     public void loadMeds(String file)
@@ -84,120 +54,5 @@ public class Data
     public void loadHacks(String file)
     {
         hacks = renderArea.loadStrings(file);
-    }
-
-    public void loadData(String file)
-    {
-        BufferedReader buff = null;
-        try
-        {
-            buff = new BufferedReader(new FileReader(file));
-            String current = "";
-            int count = 0;
-            buff.readLine(); //Skip the headers!
-            while ((current = buff.readLine()) != null)
-            {
-                count++;
-                String[] currentLine = current.split(",");
-                if (count % 15000 == 0)
-                {
-                    System.out.println("Loading Line " + count + "...");
-                    //System.out.println(DateTime.secsToDateTime(Integer.parseInt(currentLine[5])));
-                }
-                if (count == 2000000)
-                {
-                    /* Total number of processors or cores available to the JVM */
-                    System.out.println("Available processors (cores): "
-                            + Runtime.getRuntime().availableProcessors());
-
-                    /* Total amount of free memory available to the JVM */
-                    System.out.println("Free memory (megabytes): "
-                            + Runtime.getRuntime().freeMemory() / 1024 / 1024);
-
-                    /* This will return Long.MAX_VALUE if there is no preset limit */
-                    long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;
-                    /* Maximum amount of memory the JVM will attempt to use */
-                    System.out.println("Maximum memory (megabytes): "
-                            + (maxMemory == Long.MAX_VALUE ? "no limit" : maxMemory));
-
-                    /* Total memory currently available to the JVM */
-                    System.out.println("Total memory available to JVM (megabytes): "
-                            + Runtime.getRuntime().totalMemory() / 1024 / 1024);
-                    //return;
-                }
-
-                if (!taxis.containsKey(new Integer(currentLine[0])))
-                {
-                    taxis.put(new Integer(currentLine[0]), new Taxi((byte) taxis.size(), currentLine[1], currentLine[2]));
-                }
-                Taxi temp = taxis.get(new Integer(currentLine[0]));
-                try
-                {
-                    temp.addTrip(new Trip(currentLine[2].equals("CMT"), Integer.parseInt(currentLine[3]), currentLine[4], Integer.parseInt(currentLine[5]), Integer.parseInt(currentLine[6]), Integer.parseInt(currentLine[7]), Float.parseFloat(currentLine[8]), Float.parseFloat(currentLine[9]), Float.parseFloat(currentLine[10]), Float.parseFloat(currentLine[11]), Float.parseFloat(currentLine[12])));
-                } catch (ArrayIndexOutOfBoundsException exception)
-                {
-                    //exception.printStackTrace();
-                    System.out.println("Error parsing line: " + current);
-                    errorCount++;
-                    //Malformed data! Ignoring! ;)
-                }
-
-            }
-        } catch (FileNotFoundException ex)
-        {
-            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-        } finally
-        {
-            try
-            {
-                buff.close();
-            } catch (IOException ex)
-            {
-                Logger.getLogger(Data.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        System.out.println("TOTAL ERRORS FOUND: " + errorCount);
-        dataLoaded = true;
-    }
-
-    public static float latToYPos(float latitude, int height)
-    {
-        float pixelLat = (latitude - TOP_LEFT_LATITUDE) * -1;
-        //calculating using ratio 0.210139:height
-        float pixelYPos = ((pixelLat / 0.210139f) * height);
-        return pixelYPos;
-
-    }
-
-    public static float longToXPos(float longitude, int width)
-    {
-        float pixelLong = (longitude - TOP_LEFT_LONGITUDE);
-        //calculating using ratio 0.495377:width 
-        float pixelXPos = ((pixelLong / 0.495377f) * width);
-        return pixelXPos;
-    }
-
-    public void printTaxiInfo()
-    {
-        for (Integer key : taxis.keySet())
-        {
-            Taxi temp = taxis.get(key);
-            System.out.print(temp.toString());
-        }
-    }
-
-    @Override
-    public String toString()
-    {
-        String result = "";
-        for (Integer key : taxis.keySet())
-        {
-            Taxi temp = taxis.get(key);
-            result += temp.toString();
-        }
-        return result;
     }
 }

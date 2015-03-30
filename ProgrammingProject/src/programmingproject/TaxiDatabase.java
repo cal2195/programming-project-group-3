@@ -21,11 +21,6 @@ public class TaxiDatabase
     boolean connected;
     String IP = "localhost";
 
-    public TaxiDatabase()
-    {
-
-    }
-
     public void connect()
     {
         try

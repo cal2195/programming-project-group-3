@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programmingproject;
 
 import java.awt.event.KeyEvent;
@@ -33,6 +28,9 @@ public class StatsVisual extends AbstractVisualisation
     public StatsVisual(RenderArea area)
     {
         renderArea = area;
+        
+        super.setCurrentQuery(renderArea.currentQuery);
+        
         passengerTotals = new int[7];
         passengerAngles = new int[7];
         vendorTotals = new int[2];
@@ -46,7 +44,7 @@ public class StatsVisual extends AbstractVisualisation
         totPassengers = 2;
     }
 
-    //draws two pie charts and prints some satistics to screen
+    @Override
     public void draw(PGraphics3D buffer)
     {
         buffer.background(254);
@@ -162,22 +160,10 @@ public class StatsVisual extends AbstractVisualisation
         totPassengers = 0;
     }
 
-    //queries for numbers 1,2,3
+    @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_1)
-        {
-            setData(renderArea.query.getTripsForMonth(1, 1000));
-            System.out.println("query 1");
-        } else if (e.getKeyCode() == KeyEvent.VK_2)
-        {
-            setData(renderArea.query.getTripsForMonth(2, 1000));
-            System.out.println("query 2");
-        } else if (e.getKeyCode() == KeyEvent.VK_3)
-        {
-            setData(renderArea.query.GIVEME500LATENIGHTTAXISPLEASE(true));
-            System.out.println("query 3");
-        }
+        super.keyPressed(e);
     }
     
     //updates to current query

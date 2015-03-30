@@ -4,12 +4,13 @@ package programmingproject;
  *
  * @author cal
  */
-class Tower
+public class Tower
 {
-  float height;
-  
-  Tower(float height)
-  {
-    this.height = height;
-  }
+
+    float height;
+
+    public Tower(float height)
+    {
+        this.height = height;
+    }
 }

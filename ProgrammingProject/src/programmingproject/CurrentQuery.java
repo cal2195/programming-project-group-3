@@ -35,6 +35,18 @@ public class CurrentQuery
         activeQueryOne = !activeQueryOne;
     }
 
+    public void setQueryOneActive()
+    {
+        activeQueryOne = true;
+        updateActiveQuery();
+    }
+
+    public void setQueryTwoActive()
+    {
+        activeQueryOne = false;
+        updateActiveQuery();
+    }
+    
     public void requestQuery(String query, boolean setQueryOne)
     {
 
@@ -60,7 +72,7 @@ public class CurrentQuery
             }
         }, "Query Thread " + (setQueryOne ? "1" : "2")).start();
     }
-    
+
     public void notifyVisualisation()
     {
         renderArea.currentVisualisation.reloadData();
@@ -70,7 +82,7 @@ public class CurrentQuery
     {
         return activeQuery;
     }
-    
+
     public void updateActiveQuery()
     {
         activeQuery = (activeQueryOne ? queryOne : queryTwo);

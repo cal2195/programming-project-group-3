@@ -26,7 +26,7 @@ public class Gradient
   public int getGradient(float value)
   {
     // make sure there are colors to use
-    if(colors.size() == 0)
+    if(colors.isEmpty())
       return 0;
      
     // if its too low, use the lowest value
