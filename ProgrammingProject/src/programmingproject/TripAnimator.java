@@ -50,7 +50,6 @@ public class TripAnimator extends AbstractVisualisation
         58, 59, 61, 62, 63, 64, 65, 66, 67
     };
 
-    //have tried to keep this fairly accurate but still works best with speed factors < 100, 
     public static short speedFactor = 1;
     RenderArea renderArea;
     MapGraphs mapGraphs;
@@ -79,6 +78,9 @@ public class TripAnimator extends AbstractVisualisation
 
     double animatorSecondsPassed = 0;
     boolean queuedData = false;
+    boolean musicStart = true;
+    boolean musicStop = false;
+    boolean trafficNoisePlaying = false;
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
@@ -118,11 +120,33 @@ public class TripAnimator extends AbstractVisualisation
 
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
+        
+        
+        
     }
 
     @Override
     public void draw(PGraphics3D buffer)
     {
+        
+        //starts taxi noise if lots of taxis onscreen
+        //taxisOnScreen > 20 && 
+        if(!trafficNoisePlaying){
+            renderArea.audio.loadClip("res/traffic.mp3", "traffic", 0, 0.23, 0.5);
+
+            renderArea.audio.playClip("traffic");
+            renderArea.audio.setGain(-10f, 1);
+            trafficNoisePlaying = true;
+        }
+        
+            float newGain = (float) (taxisOnScreen/100 - 20);
+            renderArea.audio.setGain(newGain, 1);
+
+                
+        if(renderArea.audio.getCurrentPosition() > 42000){
+            trafficNoisePlaying = false;
+        }
+        
         if (queuedData)
         {
             setData(renderArea.currentQuery.queryOne, renderArea.currentQuery.queryTwo);

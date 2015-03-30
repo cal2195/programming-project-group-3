@@ -1,6 +1,6 @@
 package programmingproject;
 
-import ddf.minim.AudioPlayer;
+import ddf.minim.*;
 
 public class SoundClip //Cal'd Own Tried and Tested Audio Playing Package!
 {

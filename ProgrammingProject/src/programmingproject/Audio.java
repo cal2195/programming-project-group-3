@@ -112,6 +112,17 @@ public class Audio //Cal'd Own Tried and Tested Audio Playing Package!
         }
         return 0;
     }
+    
+    
+    public void setGain(float gain, int clip)
+    {
+            clips.get(clip).clip.setGain(gain);
+    }
+    
+        public void shiftGain(float gain, float dunno, int time, int clip)
+    {
+            clips.get(clip).clip.shiftGain(gain, dunno, time);
+    }
 
     public void stopAllClips()
     {
