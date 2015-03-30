@@ -21,7 +21,7 @@ public class ProgrammingProject extends PApplet
     
     public void createUserInterface()
     {
-        JFrame mainWindow = new JFrame("Programming Project");
+        JFrame mainWindow = new JFrame("Programming Project - TOTALLY AWESOME EDITION!");
         
         renderArea = new RenderArea();
         
