@@ -343,11 +343,8 @@ public class TripAnimator extends AbstractVisualisation
 
             //recomputes cars to allow hotswapping between modes
             cars.clear();
-            for (Trip trip : trips)
-            {
-                TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map, 1);
-                cars.add(tempCar);
-            }
+            reloadData();
+            
         } else if (e.getKeyCode() == KeyEvent.VK_UP)
         {
             if (e.isShiftDown())
