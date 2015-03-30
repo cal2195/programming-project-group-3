@@ -68,11 +68,10 @@ public class StatsVisual extends AbstractVisualisation
         float gray = 0;
         for (int i = 0; i < data.length; i++)
         {
-            buffer.fill(gray);
-            buffer.arc(x / 2, y / 2, diameter, diameter, lastAngle, lastAngle + RenderArea.radians((float) data[i]));
-
             if(data[i] != 0)
             {
+                buffer.fill(gray);
+                buffer.arc(x / 2, y / 2, diameter, diameter, lastAngle, lastAngle + RenderArea.radians((float) data[i]));
                 buffer.fill(0);
                 float textAngle = lastAngle + (RenderArea.radians((float) data[i]) / 2);
                 double textX =  x / 2 + (20 + diameter / 2) * Math.cos(textAngle);
@@ -136,11 +135,12 @@ public class StatsVisual extends AbstractVisualisation
     {
         for (int i = 0; i < passengerTotals.length; i++)
         {
-            passengerAngles[i] = (int) ((int) passengerTotals[i] * 2 * Math.PI / numCounter);
+            passengerAngles[i] =  ((int) passengerTotals[i] * 360  / numCounter);
+            System.out.print(passengerAngles[i] + ", ");
         }
         for (int i = 0; i < vendorTotals.length; i++)
         {
-            vendorAngles[i] = (int) ((int) vendorTotals[i] * 2 * Math.PI / 2);
+            vendorAngles[i] = ((int) vendorTotals[i] * 360 / numCounter);
         }
     }
 
