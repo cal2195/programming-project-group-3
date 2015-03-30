@@ -106,7 +106,10 @@ public class StatsVisual extends AbstractVisualisation
             {
                 shortestTrip = t.distance;
             }
-            passengerTotals[t.passengers - 1]++;
+            if(t.passengers != 0)
+            {
+                passengerTotals[t.passengers - 1]++;
+            }
             totalDistance += t.distance;
             totalTime += t.time;
             totalPassengers += t.passengers;
