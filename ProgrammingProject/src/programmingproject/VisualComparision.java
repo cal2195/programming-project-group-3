@@ -12,7 +12,7 @@ import processing.opengl.PGraphics3D;
  *
  * @author cal
  *
- * Adapting HeatMapGrpah.java 2015-03-18
+ * Adapting HeatMapGraph.java 2015-03-18
  */
 public class VisualComparision extends AbstractVisualisation
 {
@@ -35,7 +35,7 @@ public class VisualComparision extends AbstractVisualisation
     Tower[][] gridOfTowers1;
     Tower[][] gridOfTowers2;
 
-    float percent = 1f;
+    float percent = 0f;
     Random random = new Random();
     boolean minimize = false;
 
@@ -85,9 +85,9 @@ public class VisualComparision extends AbstractVisualisation
                 gridOfTowers[x][y].height++;
             } else
             {
-                System.out.println("GRID ERROR - OUT OF BOUNDS");
-                System.out.println("relX = " + relX + " relY = " + relY);
-                System.out.println("x = " + x + " y = " + y);
+//                System.out.println("GRID ERROR - OUT OF BOUNDS");
+//                System.out.println("relX = " + relX + " relY = " + relY);
+//                System.out.println("x = " + x + " y = " + y);
             }
         }
     }

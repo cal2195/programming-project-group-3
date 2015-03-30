@@ -12,6 +12,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import processing.core.PVector;
 import processing.opengl.PGraphics3D;
 
@@ -26,7 +28,7 @@ public class MapGraphs
 
     UnfoldingMap map;
     ArrayList<AbstractMapProvider> mapProviders = new ArrayList<>();
-    int mapWidth = 3000, mapHeight = 3000;
+    int mapWidth = 1000, mapHeight = 1000;
     int currentMap = 0;
 
     //Camera Rotation
@@ -50,15 +52,15 @@ public class MapGraphs
     public MapGraphs(RenderArea renderArea, PGraphics3D buffer)
     {
         this.renderArea = renderArea;
-        
+
         mapProviders.add(new Google.GoogleMapProvider());
         mapProviders.add(new OpenStreetMap.OpenStreetMapProvider());
         mapProviders.add(new StamenMapProvider.Toner());
         mapProviders.add(new Microsoft.RoadProvider());
         mapProviders.add(new Microsoft.AerialProvider());
         mapProviders.add(new Yahoo.RoadProvider());
-        mapProviders.add(new Yahoo.HybridProvider());        
-        
+        mapProviders.add(new Yahoo.HybridProvider());
+
         resetBackground();
 
         //Wanna try a different map?
@@ -90,7 +92,7 @@ public class MapGraphs
     {
         background = renderArea.color(179, 209, 255);
     }
-    
+
     public void setAmbientLight(int color)
     {
         ambient = color;
@@ -106,7 +108,7 @@ public class MapGraphs
         buffer.pushStyle();
         buffer.pushMatrix();
         buffer.background(background);
-        
+
         if (ambient != -1)
         {
             buffer.ambientLight(renderArea.red(ambient), renderArea.green(ambient), renderArea.blue(ambient));
@@ -125,19 +127,19 @@ public class MapGraphs
 
         buffer.rotateX(cameraY);
         buffer.rotateZ(cameraX);
-        
+
         buffer.translate(cameraTransX, cameraTransY, 0);
-        
+
         buffer.pushMatrix();
         buffer.translate(-mapWidth / 2, -mapHeight / 2, 0);
-        
+
         map.draw();
         buffer.image(map.mapDisplay.getOuterPG(), 0, 0);
         buffer.popMatrix();
 
         //Draw whichever visualisation is active
         renderArea.currentVisualisation.draw(buffer);
-        
+
         buffer.popMatrix();
         buffer.pushStyle();
     }
@@ -183,6 +185,7 @@ public class MapGraphs
     public void setCamera(float lat, float lon, int zoomLevel, float cameraX, float cameraY, float cameraTransX, float cameraTransY, float zoom)
     {
         map.zoomAndPanTo(zoomLevel, new Location(lat, lon));
+        map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
         this.cameraX = cameraX;
         this.cameraY = cameraY;
         this.cameraTransX = cameraTransX;
@@ -226,7 +229,18 @@ public class MapGraphs
             System.out.println(map.getCenter().getLat() + "f, " + map.getCenter().getLon() + "f, " + map.getZoomLevel() + ", " + cameraX + "f, " + cameraY + "f, " + cameraTransX + "f, " + cameraTransY + "f, " + zoom + "f");
         } else if (e.getKeyCode() == KeyEvent.VK_Q) //Sample Camera Preset
         {
-            setCamera(40.770947f, -73.87256f, 16, 2.67433f, 1.0016665f, -154.64786f, 393.83865f, 1.0f);
+            //setCamera(40.770947f, -73.87256f, 16, 2.67433f, 1.0016665f, -154.64786f, 393.83865f, 1.0f);
+            renderArea.currentVisualisation = tripAnimator;
+            setCamera(40.731403f, -73.99066f, 14, 0.37599716f, 1.2116657f, 22.387857f, -67.63221f, 0.0f);
+            renderArea.currentQuery.requestQuery("SELECT * FROM taxi_data WHERE (\n"
+                    + "(pickup_datetime >= 0 AND pickup_datetime < 2678400) OR \n"
+                    + "(pickup_datetime >= 2678400 AND pickup_datetime < 5097600)\n"
+                    + ") AND (\n"
+                    + "(pickup_datetime % 86400 >= 21600 AND pickup_datetime % 86400 < 39600)\n"
+                    + ") AND (\n"
+                    + "(passenger_count >= 0 AND passenger_count <= 6)\n"
+                    + ") LIMIT 50000", true);
+            tripAnimator.setTime(6, 240);
         } else if (e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) //Previous map
         {
             map.mapDisplay.setMapProvider(mapProviders.get(--currentMap % mapProviders.size()));
@@ -236,3 +250,4 @@ public class MapGraphs
         }
     }
 }
+//Default View: 40.731415f, -73.99066f, 12, 0.3229994f, 1.0049993f, 0.0f, 0.0f, 0.0f

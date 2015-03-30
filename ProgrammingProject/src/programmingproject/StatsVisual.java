@@ -60,7 +60,7 @@ public class StatsVisual extends AbstractVisualisation
     }
 
     //draws pie charts and accompying numbers
-    void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer, boolean vendors)
+    public void pieChart(float diameter, int[] data, int x, int y, PGraphics3D buffer, boolean vendors)
     {
         float lastAngle = 0;
         float gray = 0;
