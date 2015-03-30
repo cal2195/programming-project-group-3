@@ -44,6 +44,8 @@ public class HeatMapGraph extends AbstractVisualisation
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
         buffer = renderArea.createGraphics(renderArea.width, renderArea.height, RenderArea.P3D);
+        
+        super.setCurrentQuery(renderArea.currentQuery);
 
         gradient = new Gradient(renderArea);
         gradient.addColor(renderArea.color(0, 0, 0));
@@ -178,8 +180,8 @@ public class HeatMapGraph extends AbstractVisualisation
                     buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
                     if (currentID == id)
                     {
-                        labelX = (int) buffer.screenX(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
-                        labelY = (int) buffer.screenY(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
+                        labelX = (int) buffer.screenX(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, 0);
+                        labelY = (int) buffer.screenY(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, 0);
                     }
                     buffer.popMatrix();
                     
@@ -233,18 +235,6 @@ public class HeatMapGraph extends AbstractVisualisation
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_1)
-        {
-            setData(renderArea.query.getTripsForMonth(1));
-        } else if (e.getKeyCode() == KeyEvent.VK_2)
-        {
-            renderArea.currentQuery.requestQuery("SELECT * FROM taxi_data LIMIT 0,5000", true);
-        } else if (e.getKeyCode() == KeyEvent.VK_3)
-        {
-            setData(renderArea.query.getTripsForMonth(3));
-        } else if (e.getKeyCode() == KeyEvent.VK_4)
-        {
-            setData(renderArea.query.getTripsForMonth(4));
-        }
+        super.keyPressed(e);
     }
 }

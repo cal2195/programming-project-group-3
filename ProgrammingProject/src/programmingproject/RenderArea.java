@@ -179,28 +179,31 @@ public class RenderArea extends PApplet
         {
             case 0: //"Heat Map":
                 currentVisualisation = mapGraphs.heatMapGraph;
-                mapGraphs.heatMapGraph.reloadData();
                 break;
             case 1: //"Taxi Animator":
                 currentVisualisation = mapGraphs.tripAnimator;
-                mapGraphs.tripAnimator.reloadData();
                 break;
             case 2: //"Area Map Graph":
                 currentVisualisation = mapGraphs.areaMapGraph;
                 break;
-            case 3: //"Query comparison":
-                currentVisualisation = mapGraphs.comparisonQuery;
-                mapGraphs.comparisonQuery.reloadData();
+            case 3: //"Location Popularity":
+                currentVisualisation = mapGraphs.location;
                 break;
-            case 4: //"Line Pie Chart":
+            case 4: //"Query comparison":
+                currentVisualisation = mapGraphs.comparisonQuery;
+                break;
+            case 5: //"Line Pie Chart":
                 currentVisualisation = linePieChart;
                 break;
-            case 5: //"Stats Visual":
+            case 6: //"Stats Visual":
                 currentVisualisation = statsVisual;
                 break;
             default:
                 break;
         }
+        mapGraphs.resetAmbient();
+        mapGraphs.resetBackground();
+        currentVisualisation.reloadData();
     }
 
     @Override

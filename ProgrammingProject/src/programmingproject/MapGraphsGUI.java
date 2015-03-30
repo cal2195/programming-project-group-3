@@ -19,6 +19,7 @@ public class MapGraphsGUI
         "Heat Map",
         "Taxi Animator",
         "Area Map Graph",
+        "Location Popularity",
         "Query comparison",
         "Line Pie Chart",
         "Stats Visual",
@@ -42,26 +43,6 @@ public class MapGraphsGUI
                 .setItemHeight(20)
                 .setPosition(renderArea.width - 200, 20)
                 .addItems(VISUAL_LABELS);
-        
-/*  Visualisation selection using buttons:
-        // create a new button with name 'buttonA'
-        cp5.addButton("Heat Map")
-                .setPosition(20, 10)
-                .setSize(200, 19);
-
-        // and add another 3 buttons
-        cp5.addButton("Taxi Animator")
-                .setPosition(240, 10)
-                .setSize(200, 19);
-
-        cp5.addButton("Area Map Graph")
-                .setPosition(460, 10)
-                .setSize(200, 19);
-
-        cp5.addButton("Vendor comparison")
-                .setPosition(680, 10)
-                .setSize(200, 19);
-*/
     }
     
     public void resize()

@@ -14,7 +14,7 @@ import processing.opengl.PGraphics3D;
  *
  * Adapting HeatMapGrpah.java 2015-03-18
  */
-public class ComparisionVisual extends AbstractVisualisation
+public class VisualComparision extends AbstractVisualisation
 {
 
     RenderArea renderArea;
@@ -41,11 +41,13 @@ public class ComparisionVisual extends AbstractVisualisation
 
     PGraphics buffer;
 
-    public ComparisionVisual(RenderArea renderArea, MapGraphs mapGraphs)
+    public VisualComparision(RenderArea renderArea, MapGraphs mapGraphs)
     {
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
         buffer = renderArea.createGraphics(renderArea.width, renderArea.height, RenderArea.P3D);
+        
+        super.setCurrentQuery(renderArea.currentQuery);
 
         gridOfTowers1 = new Tower[GRID_WIDTH][GRID_HEIGHT];
         gridOfTowers2 = new Tower[GRID_WIDTH][GRID_HEIGHT];
@@ -124,8 +126,6 @@ public class ComparisionVisual extends AbstractVisualisation
         buffer.pushStyle();
         buffer.pushMatrix();
 
-//        int currentID = drawBuffer();
-        //System.out.println(currentID);
         if (minimize)
         {
             if (percent > 0f)
@@ -145,8 +145,7 @@ public class ComparisionVisual extends AbstractVisualisation
         buffer.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
 
         buffer.fill(255, 0, 0, 100f);
-
-        int id = 1;
+        
         for (int i = 0; i < GRID_WIDTH; i++)
         {
             for (int ii = 0; ii < GRID_HEIGHT; ii++)
@@ -190,92 +189,21 @@ public class ComparisionVisual extends AbstractVisualisation
         }
         buffer.pushMatrix();
         buffer.translate((float) (x + baseOffset) * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) y * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((tower.height)) * SCALE * percent / 2 / 500f);
-        /*        if (currentID == id)
-         {
-         renderArea.fill(255);   // color of mouse over tower
-         }*/
+
         // towers:
         buffer.fill(red, green, blue);
         buffer.box(mapGraphs.mapWidth / GRID_WIDTH * baseX, mapGraphs.mapHeight / GRID_HEIGHT * baseY, (float) ((double) (tower.height)) * SCALE * percent / 500f);
-        /*        if (currentID == id)
-         {
-         renderArea.translate(0, 0, (float) ((double) (tower.height)) * SCALE * percent / 500f / 2);
-         renderArea.fill(0);
-         // mouse over info text:
-         renderArea.rotateZ(-mapGraphs.cameraX);
-         renderArea.rotateX(-mapGraphs.cameraY);
-         renderArea.pushMatrix();
-         renderArea.fill(0,255,0);
-         renderArea.noStroke();
-         renderArea.rect(-5, -15, 60, 18);
-         renderArea.fill(0);
-         renderArea.textFont(renderArea.createFont("Calibri", 15, false));
-         renderArea.textSize(15);
 
-         renderArea.text((int) (tower.height / 10) + " taxis", -2, -2);
-         renderArea.popMatrix();
-         renderArea.stroke(0);
-         }
-         id++; */
         buffer.popMatrix();
     }
 
-    /*    public int drawBuffer() //to detect mouse over
-     {
-     buffer.beginDraw();
-     buffer.pushStyle();
-     buffer.background(0);
-     buffer.translate(renderArea.width / 2, renderArea.height / 2, mapGraphs.zoom);
-
-     buffer.rotateX(mapGraphs.cameraY);
-     buffer.rotateZ(mapGraphs.cameraX);
-
-     buffer.translate(mapGraphs.cameraTransX, mapGraphs.cameraTransY, 0);
-     buffer.translate(-mapGraphs.mapWidth / 2, -mapGraphs.mapHeight / 2, 0);
-
-     int id = 1;
-     buffer.noStroke();
-     for (int i = 0; i < GRID_WIDTH; i++)
-     {
-     for (int ii = 0; ii < GRID_HEIGHT; ii++)
-     {
-     if (gridOfTowers[i][ii].height1 != 0)
-     {
-     buffer.pushMatrix();
-     buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height1)) * SCALE * percent / 2 / 500f);
-     buffer.fill(id++ - 16777215);
-     buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height1)) * SCALE * percent / 500f);
-     buffer.popMatrix();
-     }
-     }
-     }
-     buffer.popStyle();
-     buffer.endDraw();
-     //Used to fix a bug in processing
-     renderArea.pushMatrix();
-     renderArea.translate(-2500, -2500);
-     renderArea.text("processing you confuse me...", 0, 0);
-     renderArea.popMatrix();
-     return buffer.get(renderArea.mouseX, renderArea.mouseY) + 16777215;
-     }*/
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == KeyEvent.VK_1)
+        super.keyPressed(e);
+        if (e.getKeyCode() == KeyEvent.VK_V)
         {
-            visualStyle = 0;
-//            setData(renderArea.query.getTripsForMonth(1), renderArea.query.getTripsForMonth(2));
-        } else if (e.getKeyCode() == KeyEvent.VK_2)
-        {
-            visualStyle = 1;
-//            setData(renderArea.query.getTripsForMonth(2), renderArea.query.getTripsForMonth(3));
-        }/* else if (e.getKeyCode() == KeyEvent.VK_3)
-         {
-         setData(renderArea.query.getTripsForMonth(3));
-         } else if (e.getKeyCode() == KeyEvent.VK_4)
-         {
-         setData(renderArea.query.getTripsForMonth(4));
-         }*/
-
+            visualStyle = (visualStyle == 0 ? 1 : 0);
+        }
     }
 }

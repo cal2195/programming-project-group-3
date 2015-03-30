@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programmingproject;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -34,11 +29,10 @@ public class TaxiDrawable
         startx = x;
         y = screenPosition.y;
         starty = y;
-        if(TripAnimator.MODE == 0)
-        {   
+        if (TripAnimator.MODE == 0)
+        {
             startTime = trip.pickupTime % DateTime.SECONDS_PER_DAY;
-        }
-        else if(TripAnimator.MODE == 1)
+        } else if (TripAnimator.MODE == 1)
         {
             startTime = trip.pickupTime;
         }
@@ -68,7 +62,7 @@ public class TaxiDrawable
     {
         if (dead)
         {
-        
+
             if (time > startTime && deathFrames < DEATHFRAMES && time < startTime + tripTime)
             {
                 buffer.translate(x, y, 4);
