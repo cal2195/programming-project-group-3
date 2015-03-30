@@ -24,6 +24,7 @@ public class StatsVisual extends AbstractVisualisation
     float totPassengers;
     float totVendors;
     ArrayList<Trip> data;
+    int numCounter;
 
     public StatsVisual(RenderArea area)
     {
@@ -42,6 +43,7 @@ public class StatsVisual extends AbstractVisualisation
         averagePassengers = 0;
         totVendors = 0;
         totPassengers = 2;
+        numCounter = 0;
     }
 
     @Override
@@ -107,6 +109,7 @@ public class StatsVisual extends AbstractVisualisation
             if(t.passengers != 0)
             {
                 passengerTotals[t.passengers - 1]++;
+                numCounter++;
             }
             totalDistance += t.distance;
             totalTime += t.time;
@@ -120,9 +123,11 @@ public class StatsVisual extends AbstractVisualisation
             }
         }
         totPassengers = totalPassengers;
-        averageDistance = totalDistance / this.data.size();
-        averageDuration = totalTime / this.data.size();
-        averagePassengers = (int) totalPassengers / this.data.size();
+        if(this.data.size() != 0){
+            averageDistance = totalDistance / this.data.size();
+            averageDuration = totalTime / this.data.size();
+            averagePassengers = (int) totalPassengers / this.data.size();
+        }
         setAngles();
     }
 
@@ -131,7 +136,7 @@ public class StatsVisual extends AbstractVisualisation
     {
         for (int i = 0; i < passengerTotals.length; i++)
         {
-            passengerAngles[i] = (int) ((int) passengerTotals[i] * 2 * Math.PI / 7);
+            passengerAngles[i] = (int) ((int) passengerTotals[i] * 2 * Math.PI / numCounter);
         }
         for (int i = 0; i < vendorTotals.length; i++)
         {
@@ -158,6 +163,7 @@ public class StatsVisual extends AbstractVisualisation
         averagePassengers = 0;
         totVendors = 0;
         totPassengers = 0;
+        numCounter = 0;
     }
 
     @Override
