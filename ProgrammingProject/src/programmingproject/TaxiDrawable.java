@@ -8,6 +8,8 @@ import processing.opengl.PGraphics3D;
 /**
  *
  * @author Dan
+ * contains all necessary info for taxis to be drawn correctly for tripAnimator
+ *
  */
 public class TaxiDrawable
 {

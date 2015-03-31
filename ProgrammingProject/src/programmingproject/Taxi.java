@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Dan
+ * Holds taxi data
  */
 public class Taxi
 {
