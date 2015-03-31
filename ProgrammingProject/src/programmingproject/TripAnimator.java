@@ -129,22 +129,24 @@ public class TripAnimator extends AbstractVisualisation
     public void draw(PGraphics3D buffer)
     {
         
+                
+        float trafficNoiseGain =  ((float) taxisOnScreen/75 - 30);
+        System.out.println(trafficNoiseGain);
         //starts taxi noise if lots of taxis onscreen
         //taxisOnScreen > 20 && 
         if(!trafficNoisePlaying){
             renderArea.audio.loadClip("res/traffic.mp3", "traffic", 0, 0.23, 0.5);
 
-            renderArea.audio.playClip("traffic");
-            renderArea.audio.setGain(-10f, 1);
+            renderArea.audio.playClip(1);
+            renderArea.audio.setGain(trafficNoiseGain, 1);
             trafficNoisePlaying = true;
         }
-        
-            float newGain = (float) (taxisOnScreen/100 - 20);
-            renderArea.audio.setGain(newGain, 1);
+
+        renderArea.audio.setGain(trafficNoiseGain, 1);
 
                 
         if(renderArea.audio.getCurrentPosition() > 42000){
-            trafficNoisePlaying = false;
+            renderArea.audio.playClip(1);
         }
         
         if (queuedData)
