@@ -8,7 +8,7 @@ import processing.opengl.PGraphics3D;
 
 /**
  *
- * @author Dan
+ * @author Daniel Crawford
  */
 public class TripAnimator extends AbstractVisualisation
 {
@@ -18,6 +18,7 @@ public class TripAnimator extends AbstractVisualisation
     public static final short SPEEDSTEP = 1;
 
     //info from http://www.timeanddate.com/sun/usa/new-york?month=1&year=2013
+    //used so sun rises and sets at correct time each day
     //1st - 10th Jan
     int[] dawnOffsets =
     {
@@ -78,8 +79,6 @@ public class TripAnimator extends AbstractVisualisation
 
     double animatorSecondsPassed = 0;
     boolean queuedData = false;
-    boolean musicStart = true;
-    boolean musicStop = false;
     boolean trafficNoisePlaying = false;
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
@@ -129,11 +128,8 @@ public class TripAnimator extends AbstractVisualisation
     public void draw(PGraphics3D buffer)
     {
         
-                
+        //creates nice traffic noise proportional to the number of taxis being drawn on screen
         float trafficNoiseGain =  ((float) taxisOnScreen/75 - 30);
-        System.out.println(trafficNoiseGain);
-        //starts taxi noise if lots of taxis onscreen
-        //taxisOnScreen > 20 && 
         if(!trafficNoisePlaying){
             renderArea.audio.loadClip("res/traffic.mp3", "traffic", 0, 0.23, 0.5);
 
@@ -199,6 +195,7 @@ public class TripAnimator extends AbstractVisualisation
             // System.out.println((currentTime - dawnStart)/360);
         }
 
+        //so that simulation can run in multiples of real time
         delta = 1;
         if (lastTime == 0)
         {
@@ -209,6 +206,7 @@ public class TripAnimator extends AbstractVisualisation
             lastTime = System.currentTimeMillis();
         }
 
+        //adds point lights to illuminate taxis at night, so that taxis near central manhattan are bright
         try
         {
             //empireStateBuilding
@@ -230,8 +228,8 @@ public class TripAnimator extends AbstractVisualisation
             
         }
 
+        //draws taxis
         buffer.stroke(0);
-
         for (TaxiDrawable car : cars)
         {
             buffer.pushMatrix();
@@ -244,7 +242,8 @@ public class TripAnimator extends AbstractVisualisation
         }
         animatorSecondsPassed += speedFactor * delta;
 
-        buffer.fill(20);
+        //prints the clock, with date in full 2-month animator
+        buffer.fill(60);
         buffer.textSize(50);
         if (MODE == 0)
         {
@@ -278,6 +277,7 @@ public class TripAnimator extends AbstractVisualisation
         System.out.println("TRIP SIZE: " + trips.size());
     }
 
+    //used to detect taxis on screen or not
     public boolean isOnScreen(float x, float y, float z, PGraphics3D buffer)
     {
         float screenX = buffer.screenX(x, y, z);
@@ -331,6 +331,7 @@ public class TripAnimator extends AbstractVisualisation
         System.out.println("TRIP SIZE: " + trips.size());
     }
 
+    //keyboard controls
     @Override
     public void keyPressed(KeyEvent e)
     {

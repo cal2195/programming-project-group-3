@@ -3,6 +3,7 @@ package programmingproject;
 /**
  *
  * @author Dan
+ * Holds data for any individual trip
  */
 public class Trip
 {
