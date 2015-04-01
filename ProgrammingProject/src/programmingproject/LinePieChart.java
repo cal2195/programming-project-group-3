@@ -152,7 +152,9 @@ public class LinePieChart extends AbstractVisualisation
 
     public void getSamples()
     {
-        ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
+        super.setCurrentQuery(renderArea.currentQuery);
+        //ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
+        ArrayList<Trip> currentTrips = renderArea.currentQuery.active();
         for (int count = 0; count < timeAndPassengers.length; count++)
         {
             timeAndPassengers[count][0] = (int) (currentTrips.get(count).pickupTime) % DateTime.SECONDS_PER_DAY;
