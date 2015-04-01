@@ -8,7 +8,7 @@ import processing.opengl.PGraphics3D;
 
 /**
  *
- * @author Dan
+ * @author Daniel Crawford
  */
 public class TripAnimator extends AbstractVisualisation
 {
@@ -18,6 +18,7 @@ public class TripAnimator extends AbstractVisualisation
     public static final short SPEEDSTEP = 1;
 
     //info from http://www.timeanddate.com/sun/usa/new-york?month=1&year=2013
+    //used so sun rises and sets at correct time each day
     //1st - 10th Jan
     int[] dawnOffsets =
     {
@@ -50,7 +51,6 @@ public class TripAnimator extends AbstractVisualisation
         58, 59, 61, 62, 63, 64, 65, 66, 67
     };
 
-    //have tried to keep this fairly accurate but still works best with speed factors < 100, 
     public static short speedFactor = 1;
     RenderArea renderArea;
     MapGraphs mapGraphs;
@@ -79,6 +79,7 @@ public class TripAnimator extends AbstractVisualisation
 
     double animatorSecondsPassed = 0;
     boolean queuedData = false;
+    boolean trafficNoisePlaying = false;
 
     public TripAnimator(RenderArea renderArea, MapGraphs mapGraphs)
     {
@@ -118,11 +119,32 @@ public class TripAnimator extends AbstractVisualisation
 
         this.renderArea = renderArea;
         this.mapGraphs = mapGraphs;
+        
+        
+        
     }
 
     @Override
     public void draw(PGraphics3D buffer)
     {
+        
+        //creates nice traffic noise proportional to the number of taxis being drawn on screen
+        float trafficNoiseGain =  ((float) taxisOnScreen/75 - 30);
+        if(!trafficNoisePlaying){
+            renderArea.audio.loadClip("res/traffic.mp3", "traffic", 0, 0.23, 0.5);
+
+            renderArea.audio.playClip(1);
+            renderArea.audio.setGain(trafficNoiseGain, 1);
+            trafficNoisePlaying = true;
+        }
+
+        renderArea.audio.setGain(trafficNoiseGain, 1);
+
+                
+        if(renderArea.audio.getCurrentPosition() > 42000){
+            renderArea.audio.playClip(1);
+        }
+        
         if (queuedData)
         {
             setData(renderArea.currentQuery.queryOne, renderArea.currentQuery.queryTwo);
@@ -173,6 +195,7 @@ public class TripAnimator extends AbstractVisualisation
             // System.out.println((currentTime - dawnStart)/360);
         }
 
+        //so that simulation can run in multiples of real time
         delta = 1;
         if (lastTime == 0)
         {
@@ -183,6 +206,7 @@ public class TripAnimator extends AbstractVisualisation
             lastTime = System.currentTimeMillis();
         }
 
+        //adds point lights to illuminate taxis at night, so that taxis near central manhattan are bright
         try
         {
             //empireStateBuilding
@@ -204,8 +228,8 @@ public class TripAnimator extends AbstractVisualisation
             
         }
 
+        //draws taxis
         buffer.stroke(0);
-
         for (TaxiDrawable car : cars)
         {
             buffer.pushMatrix();
@@ -218,7 +242,8 @@ public class TripAnimator extends AbstractVisualisation
         }
         animatorSecondsPassed += speedFactor * delta;
 
-        buffer.fill(20);
+        //prints the clock, with date in full 2-month animator
+        buffer.fill(60);
         buffer.textSize(50);
         if (MODE == 0)
         {
@@ -252,6 +277,7 @@ public class TripAnimator extends AbstractVisualisation
         System.out.println("TRIP SIZE: " + trips.size());
     }
 
+    //used to detect taxis on screen or not
     public boolean isOnScreen(float x, float y, float z, PGraphics3D buffer)
     {
         float screenX = buffer.screenX(x, y, z);
@@ -305,6 +331,7 @@ public class TripAnimator extends AbstractVisualisation
         System.out.println("TRIP SIZE: " + trips.size());
     }
 
+    //keyboard controls
     @Override
     public void keyPressed(KeyEvent e)
     {
@@ -319,11 +346,8 @@ public class TripAnimator extends AbstractVisualisation
 
             //recomputes cars to allow hotswapping between modes
             cars.clear();
-            for (Trip trip : trips)
-            {
-                TaxiDrawable tempCar = new TaxiDrawable(trip, mapGraphs.map, 1);
-                cars.add(tempCar);
-            }
+            reloadData();
+            
         } else if (e.getKeyCode() == KeyEvent.VK_UP)
         {
             if (e.isShiftDown())

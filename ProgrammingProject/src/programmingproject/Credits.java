@@ -35,6 +35,7 @@ public class Credits extends AbstractVisualisation
     private FFT fft;
 
     int y = 0;
+    int frames = 0;
 
     public Credits(RenderArea renderArea, MapGraphs mapGraphs)
     {
@@ -77,6 +78,7 @@ public class Credits extends AbstractVisualisation
         mapGraphs.map.mapDisplay.setInnerTransformationCenter(new PVector(0, 0));
         renderArea.audio.playClip("credits");
         fft = new FFT(renderArea.audio.clips.get(0).clip.bufferSize(), renderArea.audio.clips.get(0).clip.sampleRate());
+        frames = 0;
     }
 
     public void setScale(int sampleSize)
@@ -102,7 +104,7 @@ public class Credits extends AbstractVisualisation
         buffer.fill(255, 0, 0, 100f);
 
         
-        if (renderArea.audio.getCurrentLevel() > renderArea.audio.getAudioEdge())
+        if (renderArea.audio.getCurrentLevel()*2 > renderArea.audio.getAudioEdge())
         {
             y++;
             if (y >= GRID_HEIGHT)
@@ -145,9 +147,19 @@ public class Credits extends AbstractVisualisation
                 }
             }
         }
-
+        
+        buffer.fill((1000 * renderArea.audio.clips.get(renderArea.audio.currentClip).clip.mix.level()));
+        buffer.textSize(80);
+        buffer.text("Created by...", (mapGraphs.mapWidth / 2) - 300, mapGraphs.mapHeight - frames/2 -600, 100);
+        buffer.text("Cal Martin", (mapGraphs.mapWidth / 2) - 300, mapGraphs.mapHeight - frames/2 - 100, 100);
+        buffer.text("Daniel Crawford", (mapGraphs.mapWidth / 2) - 300, mapGraphs.mapHeight - frames/2 - 200, 100);
+        buffer.text("Shane Fay", (mapGraphs.mapWidth / 2) - 300, mapGraphs.mapHeight - frames/2 - 300, 100);
+        buffer.text("Aran Nolan", (mapGraphs.mapWidth / 2) - 300, mapGraphs.mapHeight - frames/2 - 400, 100);
+        buffer.text("John Milsom", (mapGraphs.mapWidth / 2) - 300, mapGraphs.mapHeight - frames/2 - 500, 100);
+                
         buffer.popMatrix();
         buffer.popStyle();
+        frames++;
     }
 
     @Override
