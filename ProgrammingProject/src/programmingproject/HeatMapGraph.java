@@ -21,7 +21,7 @@ public class HeatMapGraph extends AbstractVisualisation
     //Constants
     final int GRID_WIDTH = 300;
     final int GRID_HEIGHT = 300;
-    final float ABS_SCALE = 1E6f;
+    final float ABS_SCALE = 2000f;
     float relScale = 1;
 
     Gradient gradient;
@@ -169,7 +169,7 @@ public class HeatMapGraph extends AbstractVisualisation
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     buffer.pushMatrix();
-                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * relScale * percent / 2 / 500f);
+                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * relScale * percent / 2);
                     if (currentID == id)
                     {
                         buffer.fill(255, 0, 0);
@@ -177,7 +177,7 @@ public class HeatMapGraph extends AbstractVisualisation
                     {
                         buffer.fill(gradient.getGradient((float) Math.log10((gridOfTowers[i][ii].height)) * 1.8f));
                     }
-                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
+                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent);
                     if (currentID == id)
                     {
                         labelX = (int) buffer.screenX(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, 0);
@@ -215,9 +215,9 @@ public class HeatMapGraph extends AbstractVisualisation
                 if (gridOfTowers[i][ii].height != 0)
                 {
                     buffer.pushMatrix();
-                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * relScale * percent / 2 / 500f);
+                    buffer.translate((float) i * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) ii * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((gridOfTowers[i][ii].height)) * relScale * percent / 2);
                     buffer.fill(id - 16777215);
-                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent / 500f);
+                    buffer.box(mapGraphs.mapWidth / GRID_WIDTH, mapGraphs.mapHeight / GRID_HEIGHT, (float) ((double) (gridOfTowers[i][ii].height)) * relScale * percent);
                     buffer.popMatrix();
                 }
                 id++;
