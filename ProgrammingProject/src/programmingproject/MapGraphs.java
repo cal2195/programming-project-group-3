@@ -58,8 +58,6 @@ public class MapGraphs
         mapProviders.add(new StamenMapProvider.Toner());
         mapProviders.add(new Microsoft.RoadProvider());
         mapProviders.add(new Microsoft.AerialProvider());
-        mapProviders.add(new Yahoo.RoadProvider());
-        mapProviders.add(new Yahoo.HybridProvider());
 
         resetBackground();
 
