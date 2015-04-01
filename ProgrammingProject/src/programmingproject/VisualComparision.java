@@ -23,7 +23,9 @@ public class VisualComparision extends AbstractVisualisation
     //Constants
     final int GRID_WIDTH = 300;
     final int GRID_HEIGHT = 300;
-    final int SCALE = 1000;
+    final float ABS_SCALE = 50000f;
+    
+    float relScale = 1;
 
     // 0 = telescope,   1 = side by side
     int visualStyle = 1;
@@ -92,6 +94,10 @@ public class VisualComparision extends AbstractVisualisation
         }
     }
 
+    public void setScale(int sampleSize) {
+        relScale = ABS_SCALE / sampleSize;
+    }
+    
     public void setData(ArrayList<Trip> data1, ArrayList<Trip> data2)
     {
         minimize = true;
@@ -103,6 +109,7 @@ public class VisualComparision extends AbstractVisualisation
     {
         trips1 = queuedTrips1;
         trips2 = queuedTrips2;
+        setScale(trips1.size() + trips1.size());
         resetTowers(gridOfTowers1);
         resetTowers(gridOfTowers2);
         calculateTowers(trips1, gridOfTowers1);
@@ -188,11 +195,11 @@ public class VisualComparision extends AbstractVisualisation
             return;
         }
         buffer.pushMatrix();
-        buffer.translate((float) (x + baseOffset) * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) y * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((tower.height)) * SCALE * percent / 2 / 500f);
+        buffer.translate((float) (x + baseOffset) * (mapGraphs.mapWidth / (float) GRID_WIDTH), (float) y * (mapGraphs.mapHeight / (float) GRID_HEIGHT), (float) ((tower.height)) * relScale * percent / 2);
 
         // towers:
         buffer.fill(red, green, blue);
-        buffer.box(mapGraphs.mapWidth / GRID_WIDTH * baseX, mapGraphs.mapHeight / GRID_HEIGHT * baseY, (float) ((double) (tower.height)) * SCALE * percent / 500f);
+        buffer.box(mapGraphs.mapWidth / GRID_WIDTH * baseX, mapGraphs.mapHeight / GRID_HEIGHT * baseY, (float) ((double) (tower.height)) * relScale * percent);
 
         buffer.popMatrix();
     }

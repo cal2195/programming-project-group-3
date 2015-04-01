@@ -12,10 +12,11 @@ public class MapGraphsGUI
 
     RenderArea renderArea;
     ControlP5 cp5;
-    
+
     DropdownList visList;
     public static final String VIS_LIST_LABEL = "visList";
-    public static final String[] VISUAL_LABELS = new String[] {
+    public static final String[] VISUAL_LABELS = new String[]
+    {
         "Heat Map",
         "Taxi Animator",
         "Area Map Graph",
@@ -44,7 +45,7 @@ public class MapGraphsGUI
                 .setPosition(renderArea.width - 200, 20)
                 .addItems(VISUAL_LABELS);
     }
-    
+
     public void resize()
     {
         visList.setPosition(renderArea.width - 200, 20);
