@@ -150,6 +150,9 @@ public class RenderArea extends PApplet
         {
             currentVisualisation = credits;
             credits.start();
+        } else if (e.getKeyCode() == KeyEvent.VK_H)
+        {
+            gui.hotkeyGUI.toggleDisplay();
         }
         currentVisualisation.keyPressed(e);
         mapGraphs.keyPressed(e);
@@ -162,13 +165,9 @@ public class RenderArea extends PApplet
             mapGraphsGUIEvent(theEvent);
         } else if (theEvent.isFrom(QueryGUI.QUERY_ONE_LABEL))
         {
-            println("Query One:");
-            println(gui.queryGUI.getQuery());
             currentQuery.requestQuery(gui.queryGUI.getQuery(), true);
         } else if (theEvent.isFrom(QueryGUI.QUERY_TWO_LABEL))
         {
-            println("Query Two:");
-            println(gui.queryGUI.getQuery());
             currentQuery.requestQuery(gui.queryGUI.getQuery(), false);
         }
     }

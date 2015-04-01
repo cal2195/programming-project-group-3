@@ -13,6 +13,8 @@ public class VisualSelectGUI
     RenderArea renderArea;
     ControlP5 cp5;
 
+    public static final int WIDTH = 200;
+    
     DropdownList visList;
     public static final String VIS_LIST_LABEL = "visList";
     public static final String[] VISUAL_LABELS = new String[]
@@ -36,18 +38,17 @@ public class VisualSelectGUI
 
     public void setup()
     {
-        int width = 200;
         visList = cp5.addDropdownList(VIS_LIST_LABEL)
                 .setCaptionLabel("Visualisations")
-                .setSize(width, 400)
+                .setSize(WIDTH, 400)
                 .setBarHeight(20)
                 .setItemHeight(20)
-                .setPosition(renderArea.width - 200, 20)
+                .setPosition(renderArea.width - WIDTH, 20)
                 .addItems(VISUAL_LABELS);
     }
 
     public void resize()
     {
-        visList.setPosition(renderArea.width - 200, 20);
+        visList.setPosition(renderArea.width - WIDTH, 20);
     }
 }

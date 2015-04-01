@@ -11,8 +11,9 @@ public class GUI
     RenderArea renderArea;
     ControlP5 cp5;
     
-    VisualSelectGUI mapGraphsGUI;
+    VisualSelectGUI visualSelectGUI;
     QueryGUI queryGUI;
+    HotkeyGUI hotkeyGUI;
 
     public GUI(RenderArea renderArea)
     {
@@ -21,12 +22,14 @@ public class GUI
         
         cp5.setFont(renderArea.createFont("Arial", 12));
         
-        mapGraphsGUI = new VisualSelectGUI(renderArea, cp5);
+        visualSelectGUI = new VisualSelectGUI(renderArea, cp5);
         queryGUI = new QueryGUI(renderArea, cp5);
+        hotkeyGUI = new HotkeyGUI(renderArea, cp5);
     }
     
     public void resize()
     {
-        mapGraphsGUI.resize();
+        visualSelectGUI.resize();
+        hotkeyGUI.resize();
     }
 }

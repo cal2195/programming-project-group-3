@@ -208,7 +208,7 @@ public class VisualComparision extends AbstractVisualisation
     public void keyPressed(KeyEvent e)
     {
         super.keyPressed(e);
-        if (e.getKeyCode() == KeyEvent.VK_V)
+        if (e.getKeyCode() == KeyEvent.VK_M)
         {
             visualStyle = (visualStyle == 0 ? 1 : 0);
         }
