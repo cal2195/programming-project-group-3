@@ -241,7 +241,16 @@ public class MapGraphs
             tripAnimator.setTime(6, 240);
         } else if (e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) //Previous map
         {
-            map.mapDisplay.setMapProvider(mapProviders.get(--currentMap % mapProviders.size()));
+            //System.out.println(currentMap);
+            if(currentMap == 0)
+            {
+                currentMap = mapProviders.size() - 1;
+                map.mapDisplay.setMapProvider(mapProviders.get(currentMap));
+            }
+            else
+            {
+                map.mapDisplay.setMapProvider(mapProviders.get(--currentMap % mapProviders.size()));   
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) //Next mapz
         {
             map.mapDisplay.setMapProvider(mapProviders.get(++currentMap % mapProviders.size()));
