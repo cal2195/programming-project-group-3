@@ -1,8 +1,5 @@
 package programmingproject;
 
-import com.github.authorfu.lrcparser.LrcParser;
-import com.github.authorfu.lrcparser.Lyric;
-import com.github.authorfu.lrcparser.parser.Sentence;
 import ddf.minim.Minim;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +13,6 @@ public class Audio //Cal'd Own Tried and Tested Audio Playing Package!
 {
 
     ArrayList<SoundClip> clips = new ArrayList<SoundClip>();
-    ArrayList<Lyrics> lyrics = new ArrayList<Lyrics>();
     Minim minim;
     int currentClip = -1;
 
@@ -29,7 +25,6 @@ public class Audio //Cal'd Own Tried and Tested Audio Playing Package!
     {
         System.out.println("Loading " + file);
         clips.add(new SoundClip(minim.loadFile(file), name, audioEdge, shakeValue));
-        lyrics.add(new Lyrics(name, offset));
     }
 
     public void playClip(String name)
@@ -75,15 +70,6 @@ public class Audio //Cal'd Own Tried and Tested Audio Playing Package!
         {
             return -1;
         }
-    }
-
-    public String getCurrentLyric()
-    {
-        if (currentClip != -1)
-        {
-            return lyrics.get(currentClip).getCurrent(getCurrentPosition());
-        }
-        return "";
     }
 
     public double getAudioShake()
@@ -150,72 +136,4 @@ public class Audio //Cal'd Own Tried and Tested Audio Playing Package!
             }
         }
     }
-    
-    
-    /*
-     *
-     * @author Cal
-     */
-
-    public class Lyrics
-    {
-
-        ArrayList<Sentence> sentences;
-        int offset = 0;
-
-        public Lyrics(String name, int offset)
-        {
-            if (new File("music/" + name + ".lrc").exists())
-            {
-                loadFile("music/" + name + ".lrc");
-                this.offset = offset;
-            }
-        }
-
-        public Lyrics(String name)
-        {
-            if (new File("C:/Lyrics/" + name + ".lrc").exists())
-            {
-                loadFile("C:/Lyrics/" + name + ".lrc");
-            }
-        }
-
-        public void loadFile(String file)
-        {
-            try
-            {
-                BufferedReader buff = new BufferedReader(new FileReader(file));
-                Lyric lyric;
-                try
-                {
-                    lyric = LrcParser.create(buff);
-                    sentences = lyric.findAllSentences(-1, -1);
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            } catch (Exception ex)
-            {
-                Logger.getLogger(Lyrics.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-
-        public String getCurrent(int position)
-        {
-            if (sentences != null)
-            {
-                for (int i = 0; i < sentences.size(); i++)
-                {
-                    if (sentences.get(i).isInTime(position + offset))
-                    {
-                        //System.out.println(position);
-                        return sentences.get(i).getContent();
-                    }
-                }
-            }
-            return "";
-        }
-    }
-
 }
