@@ -7,13 +7,10 @@ import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.Microsoft;
 import de.fhpotsdam.unfolding.providers.OpenStreetMap;
 import de.fhpotsdam.unfolding.providers.StamenMapProvider;
-import de.fhpotsdam.unfolding.providers.Yahoo;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import processing.core.PVector;
 import processing.opengl.PGraphics3D;
 
@@ -241,15 +238,13 @@ public class MapGraphs
             tripAnimator.setTime(6, 240);
         } else if (e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) //Previous map
         {
-            //System.out.println(currentMap);
-            if(currentMap == 0)
+            if (currentMap == 0)
             {
                 currentMap = mapProviders.size() - 1;
                 map.mapDisplay.setMapProvider(mapProviders.get(currentMap));
-            }
-            else
+            } else
             {
-                map.mapDisplay.setMapProvider(mapProviders.get(--currentMap % mapProviders.size()));   
+                map.mapDisplay.setMapProvider(mapProviders.get(--currentMap % mapProviders.size()));
             }
         } else if (e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) //Next mapz
         {
