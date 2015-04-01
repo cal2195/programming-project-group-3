@@ -17,14 +17,10 @@ public class LinePieChart extends AbstractVisualisation
     PImage bg;
     int[][] timeAndPassengers;
     int[][] positions;
-    boolean doneFirstSetup;
 
     //In-case window is re-sized:
     int oldRenderHeight;
     int oldRenderWidth;
-
-    //Data Visualisation
-    int sampleSize = 300;
 
     //Camera rotation
     float cameraX, cameraY;
@@ -35,6 +31,9 @@ public class LinePieChart extends AbstractVisualisation
     //Show lines to centre
     boolean linesShowing = true;
     
+    //Trip Data
+    ArrayList<Trip> trips;
+    
     //VerticalLines
     ArrayList<VerticalLine> lines; 
     ArrayList<HorizontalLine> hLines; 
@@ -43,20 +42,10 @@ public class LinePieChart extends AbstractVisualisation
     {
         this.renderArea = renderArea;
         bg = renderArea.loadImage("res/pieBase.png");
-        timeAndPassengers = new int[sampleSize][2];
-        positions = new int[sampleSize][3];
-        doneFirstSetup = false;
         oldRenderHeight = renderArea.height;
         oldRenderWidth = renderArea.width;
         lines = new ArrayList<>();
         hLines = new ArrayList<>();
-    }
-
-    public void setup(PGraphics3D buffer)
-    {
-        getSamples();
-        getPositions();
-        createLines(buffer);
     }
 
     @Override
@@ -69,11 +58,6 @@ public class LinePieChart extends AbstractVisualisation
         buffer.popMatrix();
         
         buffer.pushStyle();
-        if (!doneFirstSetup)
-        {
-            setup(buffer);
-            doneFirstSetup = true;
-        }
         buffer.pushMatrix();
         buffer.background(0);
 
@@ -105,7 +89,7 @@ public class LinePieChart extends AbstractVisualisation
         if (oldRenderHeight != buffer.height || oldRenderWidth != buffer.width)
         {
             getPositions();
-            createLines(buffer);
+            createLines();
         }
         oldRenderHeight = buffer.height;
         oldRenderWidth = buffer.width;
@@ -118,7 +102,7 @@ public class LinePieChart extends AbstractVisualisation
         demoMode = false;
     }
     
-    public void createLines(PGraphics3D buffer)
+    public void createLines()
     {
         lines.clear();
         for (int[] position : positions)
@@ -150,18 +134,28 @@ public class LinePieChart extends AbstractVisualisation
         lastMousePosition = null;
     }
 
+    @Override
+    public void reloadData()
+    {
+        trips = renderArea.currentQuery.activeQuery;
+        getSamples();
+        getPositions();
+        createLines();
+    }
+    
     public void getSamples()
     {
-        ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
+        timeAndPassengers = new int[trips.size()][2];
         for (int count = 0; count < timeAndPassengers.length; count++)
         {
-            timeAndPassengers[count][0] = (int) (currentTrips.get(count).pickupTime) % DateTime.SECONDS_PER_DAY;
-            timeAndPassengers[count][1] = currentTrips.get(count).passengers;
+            timeAndPassengers[count][0] = (int) (trips.get(count).pickupTime) % DateTime.SECONDS_PER_DAY;
+            timeAndPassengers[count][1] = trips.get(count).passengers;
         }
     }
 
     public void getPositions()
     {
+        positions = new int[trips.size()][3];
         for (int count = 0; count < positions.length; count++)
         {
             double angle = ((double) timeAndPassengers[count][0]) / 3600 / 24 * 360 - 90;
