@@ -29,9 +29,9 @@ public class StatsVisual extends AbstractVisualisation
     public StatsVisual(RenderArea area)
     {
         renderArea = area;
-        
+
         super.setCurrentQuery(renderArea.currentQuery);
-        
+
         passengerTotals = new int[7];
         passengerAngles = new int[7];
         vendorTotals = new int[2];
@@ -55,8 +55,8 @@ public class StatsVisual extends AbstractVisualisation
         buffer.text("Average Duration: " + averageDuration, 550, 410);
         buffer.text("Longest Trip: " + longestTrip, 50, 350);
         buffer.text("Shortest Trip: " + shortestTrip, 50, 380);
-        buffer.text("Passenger Distribution", 115,45);
-        buffer.text("Vendor Distrubution",615,45);
+        buffer.text("Passenger Distribution", 115, 45);
+        buffer.text("Vendor Distrubution", 615, 45);
         pieChart(200, passengerAngles, 350, 350, buffer, false);
         pieChart(200, vendorAngles, 1350, 350, buffer, true);
     }
@@ -68,21 +68,21 @@ public class StatsVisual extends AbstractVisualisation
         float gray = 0;
         for (int i = 0; i < data.length; i++)
         {
-            if(data[i] != 0)
+            if (data[i] != 0)
             {
                 buffer.fill(gray);
                 buffer.arc(x / 2, y / 2, diameter, diameter, lastAngle, lastAngle + RenderArea.radians((float) data[i]));
                 buffer.fill(0);
                 float textAngle = lastAngle + (RenderArea.radians((float) data[i]) / 2);
-                double textX =  x / 2 + (20 + diameter / 2) * Math.cos(textAngle);
-                double textY = y /2 + (20 + diameter / 2) * Math.sin(textAngle);
-                buffer.text("" + (i+1), (int) textX, (int) textY);
-            } 
+                double textX = x / 2 + (20 + diameter / 2) * Math.cos(textAngle);
+                double textY = y / 2 + (20 + diameter / 2) * Math.sin(textAngle);
+                buffer.text("" + (i + 1), (int) textX, (int) textY);
+            }
             lastAngle += RenderArea.radians((float) data[i]);
             gray += 40;
-            if(vendors)
+            if (vendors)
             {
-               gray *= 3;    
+                gray *= 3;
             }
         }
     }
@@ -105,7 +105,7 @@ public class StatsVisual extends AbstractVisualisation
             {
                 shortestTrip = t.distance;
             }
-            if(t.passengers != 0)
+            if (t.passengers != 0)
             {
                 passengerTotals[t.passengers - 1]++;
                 numCounter++;
@@ -122,7 +122,8 @@ public class StatsVisual extends AbstractVisualisation
             }
         }
         totPassengers = totalPassengers;
-        if(this.data.size() != 0){
+        if (!this.data.isEmpty())
+        {
             averageDistance = totalDistance / this.data.size();
             averageDuration = totalTime / this.data.size();
             averagePassengers = (int) totalPassengers / this.data.size();
@@ -133,14 +134,16 @@ public class StatsVisual extends AbstractVisualisation
     //calculates angles of pie slices
     private void setAngles()
     {
-        for (int i = 0; i < passengerTotals.length; i++)
+        if (numCounter != 0)
         {
-            passengerAngles[i] =  ((int) passengerTotals[i] * 360  / numCounter);
-            System.out.print(passengerAngles[i] + ", ");
-        }
-        for (int i = 0; i < vendorTotals.length; i++)
-        {
-            vendorAngles[i] = ((int) vendorTotals[i] * 360 / numCounter);
+            for (int i = 0; i < passengerTotals.length; i++)
+            {
+                passengerAngles[i] = ((int) passengerTotals[i] * 360 / numCounter);
+            }
+            for (int i = 0; i < vendorTotals.length; i++)
+            {
+                vendorAngles[i] = ((int) vendorTotals[i] * 360 / numCounter);
+            }
         }
     }
 
@@ -171,7 +174,7 @@ public class StatsVisual extends AbstractVisualisation
     {
         super.keyPressed(e);
     }
-    
+
     //updates to current query
     @Override
     public void reloadData()
