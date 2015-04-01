@@ -25,6 +25,11 @@ public class StatsVisual extends AbstractVisualisation
     float totVendors;
     ArrayList<Trip> data;
     int numCounter;
+    int passengerPieX;
+    int passengerPieY;
+    int vendorPieX;
+    int vendorPieY;
+    int pieDiameter;
 
     public StatsVisual(RenderArea area)
     {
@@ -74,9 +79,17 @@ public class StatsVisual extends AbstractVisualisation
                 buffer.arc(x / 2, y / 2, diameter, diameter, lastAngle, lastAngle + RenderArea.radians((float) data[i]));
                 buffer.fill(0);
                 float textAngle = lastAngle + (RenderArea.radians((float) data[i]) / 2);
-                double textX =  x / 2 + (20 + diameter / 2) * Math.cos(textAngle);
+                double textX =  x / 2 + (30 + diameter / 2) * Math.cos(textAngle);
                 double textY = y /2 + (20 + diameter / 2) * Math.sin(textAngle);
-                buffer.text("" + (i+1), (int) textX, (int) textY);
+                if(vendors){
+                    if(i == 0){
+                         buffer.text("CMT", (int) textX, (int) textY);
+                    } else {
+                        buffer.text("VTS", (int) textX, (int) textY);
+                    }
+                } else {
+                    buffer.text("" + (i+1), (int) textX, (int) textY);
+                }    
             } 
             lastAngle += RenderArea.radians((float) data[i]);
             gray += 40;
