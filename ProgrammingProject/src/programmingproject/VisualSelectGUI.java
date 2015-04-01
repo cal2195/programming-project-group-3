@@ -7,7 +7,7 @@ import controlP5.DropdownList;
  *
  * @author cal
  */
-public class MapGraphsGUI
+public class VisualSelectGUI
 {
 
     RenderArea renderArea;
@@ -26,7 +26,7 @@ public class MapGraphsGUI
         "Stats Visual",
     };
 
-    public MapGraphsGUI(RenderArea renderArea, ControlP5 cp5)
+    public VisualSelectGUI(RenderArea renderArea, ControlP5 cp5)
     {
         this.renderArea = renderArea;
         this.cp5 = cp5;

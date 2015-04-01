@@ -11,7 +11,7 @@ public class GUI
     RenderArea renderArea;
     ControlP5 cp5;
     
-    MapGraphsGUI mapGraphsGUI;
+    VisualSelectGUI mapGraphsGUI;
     QueryGUI queryGUI;
 
     public GUI(RenderArea renderArea)
@@ -21,7 +21,7 @@ public class GUI
         
         cp5.setFont(renderArea.createFont("Arial", 12));
         
-        mapGraphsGUI = new MapGraphsGUI(renderArea, cp5);
+        mapGraphsGUI = new VisualSelectGUI(renderArea, cp5);
         queryGUI = new QueryGUI(renderArea, cp5);
     }
     
