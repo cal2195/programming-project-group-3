@@ -157,7 +157,7 @@ public class RenderArea extends PApplet
 
     public void controlEvent(ControlEvent theEvent)
     {
-        if (theEvent.isFrom(MapGraphsGUI.VIS_LIST_LABEL))
+        if (theEvent.isFrom(VisualSelectGUI.VIS_LIST_LABEL))
         {
             mapGraphsGUIEvent(theEvent);
         } else if (theEvent.isFrom(QueryGUI.QUERY_ONE_LABEL))

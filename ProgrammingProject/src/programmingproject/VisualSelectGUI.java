@@ -7,15 +7,16 @@ import controlP5.DropdownList;
  *
  * @author cal
  */
-public class MapGraphsGUI
+public class VisualSelectGUI
 {
 
     RenderArea renderArea;
     ControlP5 cp5;
-    
+
     DropdownList visList;
     public static final String VIS_LIST_LABEL = "visList";
-    public static final String[] VISUAL_LABELS = new String[] {
+    public static final String[] VISUAL_LABELS = new String[]
+    {
         "Heat Map",
         "Taxi Animator",
         "Area Map Graph",
@@ -25,7 +26,7 @@ public class MapGraphsGUI
         "Stats Visual",
     };
 
-    public MapGraphsGUI(RenderArea renderArea, ControlP5 cp5)
+    public VisualSelectGUI(RenderArea renderArea, ControlP5 cp5)
     {
         this.renderArea = renderArea;
         this.cp5 = cp5;
@@ -44,7 +45,7 @@ public class MapGraphsGUI
                 .setPosition(renderArea.width - 200, 20)
                 .addItems(VISUAL_LABELS);
     }
-    
+
     public void resize()
     {
         visList.setPosition(renderArea.width - 200, 20);

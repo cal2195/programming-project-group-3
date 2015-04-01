@@ -25,7 +25,8 @@ public class LinePieChart extends AbstractVisualisation
 
     //Data Visualisation
     int sampleSize = 300;
-
+    ArrayList<Trip> currentTrips;
+    
     //Camera rotation
     float cameraX, cameraY;
     MouseEvent lastMousePosition;
@@ -62,6 +63,10 @@ public class LinePieChart extends AbstractVisualisation
     @Override
     public void draw(PGraphics3D buffer)
     {
+        if(!(currentTrips == renderArea.currentQuery.active()))
+        {
+            reloadData(buffer);
+        }
         buffer.pushMatrix();
         buffer.translate(0,0,0);
         buffer.fill(255);
@@ -154,7 +159,7 @@ public class LinePieChart extends AbstractVisualisation
     {
         super.setCurrentQuery(renderArea.currentQuery);
         //ArrayList<Trip> currentTrips = renderArea.query.getRandomTrips(sampleSize);
-        ArrayList<Trip> currentTrips = renderArea.currentQuery.active();
+        currentTrips = renderArea.currentQuery.active();
         for (int count = 0; count < timeAndPassengers.length; count++)
         {
             timeAndPassengers[count][0] = (int) (currentTrips.get(count).pickupTime) % DateTime.SECONDS_PER_DAY;
@@ -196,5 +201,11 @@ public class LinePieChart extends AbstractVisualisation
         {
             linesShowing = !linesShowing;
         }
+    }
+    
+    public void reloadData(PGraphics3D buffer)
+    {
+        currentTrips = renderArea.currentQuery.active();
+        setup(buffer);
     }
 }

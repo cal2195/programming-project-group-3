@@ -33,6 +33,12 @@ public class LocationVisualization extends AbstractVisualisation
         locations.add(new LocationDrawable((float) 40.6397, (float) -73.7789, "JFK Airport", mapGraphs.map)); //JFK airport
         locations.add(new LocationDrawable((float) 40.7833, (float) -73.9667, "Central Park", mapGraphs.map)); //Central park
         locations.add(new LocationDrawable((float) 40.7494, (float) -73.9681, "UN HQ", mapGraphs.map)); //UN HQ
+        locations.add(new LocationDrawable((float) 40.8506, (float) -73.8754, "Bronx Z00", mapGraphs.map));
+        locations.add(new LocationDrawable((float) 40.7057, (float) -73.9964, "Brooklyn Bridge", mapGraphs.map));
+        locations.add(new LocationDrawable((float) 40.7506, (float) -73.9936, "Madison Square Garden", mapGraphs.map));
+        locations.add(new LocationDrawable((float) 40.7586, (float) -73.9792, "Rockefeller Center", mapGraphs.map));
+        locations.add(new LocationDrawable((float) 40.7151, (float) -74.0165, "Irish Hunger Memorial", mapGraphs.map));
+        locations.add(new LocationDrawable((float) 40.7615, (float) -73.9777, "Museum of Modern Art", mapGraphs.map));
         test = new LocationDrawable((float) 40.7455, (float) 73.7777, "test", mapGraphs.map);
     }
 
