@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -35,6 +36,7 @@ public class TaxiDatabase
             }
         } catch (Exception ex)
         {
+            JOptionPane.showMessageDialog(null, "Sorry, but we are unable to connect to the local mysql database! Please make sure to follow the instructions in the read me file located inside the project folder!");
             System.out.println("ERROR: Could not connect to database server at: " + IP);
             ex.printStackTrace();
             connected = false;
