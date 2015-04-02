@@ -252,6 +252,9 @@ public class MapGraphs
         } else if (e.getKeyCode() == KeyEvent.VK_R)
         {
             setCamera(40.731415f, -73.99066f, 12, 0.3229994f, 1.0049993f, 0.0f, 0.0f, 0.0f); //Reset to default view
+        } else if (e.getKeyCode() == KeyEvent.VK_D)
+        {
+            demoMode = true;
         }
     }
 }
