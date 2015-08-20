@@ -54,6 +54,8 @@ public class StatsVisual extends AbstractVisualisation
     @Override
     public void draw(PGraphics3D buffer)
     {
+        buffer.pushStyle();
+        
         buffer.background(254);
         buffer.text("Average passengers: " + averagePassengers, 550, 350);
         buffer.text("Average distance: " + averageDistance, 550, 380);
@@ -64,6 +66,7 @@ public class StatsVisual extends AbstractVisualisation
         buffer.text("Vendor Distrubution", 615, 45);
         pieChart(200, passengerAngles, 350, 350, buffer, false);
         pieChart(200, vendorAngles, 1350, 350, buffer, true);
+        buffer.popStyle();
     }
 
     //draws pie charts and accompying numbers
