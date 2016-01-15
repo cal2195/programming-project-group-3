@@ -19,30 +19,49 @@ Thank you!
 
 **CONTROLS**
 
-General: 
-'1' display to query one 
+General:
+
+'1' display to query one
+
 '2' display to query two 
+
 '[', ']' cycle through maps 
+
 '+', '-' zoom in/out 
+
 'R' reset camera view 
 
+
 Left click pan 
+
 Right click rotate 
+
 Scroll Zoom 
+
 
 'O' Easter Egg 
 
+
 Heat Map: 
+
 Hover over towers to display data 
 
 Query Comparison: 
+
 'M' switch between pair/telescoped mode 
 
 Taxi Animator: 
+
 'M' toggle separate by date 
+
 'UP' move forward hour 
+
 'DOWN move backward hour 
+
 'SHIFT + UP' move forward day 
+
 'SHIFT + DOWN' move backward day 
+
 'LEFT' (+ SHIFT) speed up time (by 10) 
+
 'RIGHT' (+ SHIFT) slow down time (by 10)
