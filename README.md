@@ -17,9 +17,9 @@ and the gui to change views.
 
 Thank you!
 
-**CONTROLS**
+***CONTROLS***
 
-General:
+**General:**
 
 '1' display to query one
 
@@ -42,15 +42,15 @@ Scroll Zoom
 'O' Easter Egg 
 
 
-Heat Map: 
+**Heat Map:**
 
 Hover over towers to display data 
 
-Query Comparison: 
+**Query Comparison:**
 
 'M' switch between pair/telescoped mode 
 
-Taxi Animator: 
+**Taxi Animator:**
 
 'M' toggle separate by date 
 
